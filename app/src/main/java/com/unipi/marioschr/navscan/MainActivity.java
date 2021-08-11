@@ -15,10 +15,4 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
-    public void SignOut(View view){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(this,AuthActivity.class));
-        finish();
-    }
 }
