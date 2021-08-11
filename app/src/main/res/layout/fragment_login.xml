@@ -20,7 +20,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/world_travel" />
 
@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:divider="@drawable/divider"
+                    android:divider="@drawable/divider_horizontal"
                     android:gravity="fill"
                     android:showDividers="middle">
 

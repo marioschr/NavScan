@@ -17,4 +17,12 @@
     <string name="are_you_interested">Are you interested?</string>
     <string name="description">Description</string>
     <string name="features">Features</string>
+    <string name="register">Register</string>
+    <string name="sign_in_now">Sign in now!</string>
+    <string name="already_a_member">Already a member?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="birthday">Birthday</string>
 </resources>
