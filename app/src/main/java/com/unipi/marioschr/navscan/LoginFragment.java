@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // Configure Google Sign In
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id)) // The string is created during the build
+                    .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 

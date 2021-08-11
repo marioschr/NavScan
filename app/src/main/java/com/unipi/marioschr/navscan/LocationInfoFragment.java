@@ -46,7 +46,7 @@ public class LocationInfoFragment extends Fragment {
 
         CarouselListener carouselListener = new CarouselListener() {
             @Override
-            public void onClick(int i, CarouselItem carouselItem) {
+            public void onClick(int i, @NonNull CarouselItem carouselItem) {
                 Dialog customDialog = new Dialog(getContext());
                 customDialog.setContentView(R.layout.preview_layout);
                 customDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -59,15 +59,15 @@ public class LocationInfoFragment extends Fragment {
             }
 
             @Override
-            public void onLongClick(int i, CarouselItem carouselItem) {
+            public void onLongClick(int i, @NonNull CarouselItem carouselItem) {
 
             }
             @Override
-            public ViewBinding onCreateViewHolder(LayoutInflater layoutInflater, ViewGroup viewGroup) {
+            public ViewBinding onCreateViewHolder(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup) {
                 return null;
             }
             @Override
-            public void onBindViewHolder(ViewBinding viewBinding, CarouselItem carouselItem, int i) {
+            public void onBindViewHolder(@NonNull ViewBinding viewBinding, @NonNull CarouselItem carouselItem, int i) {
 
             }
         };

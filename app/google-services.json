@@ -12,27 +12,11 @@
           "package_name": "com.unipi.marioschr.navscan"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "723372119570-r87dsp7kqvar54ij61vd1cvg12pje48d.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
       "api_key": [
         {
           "current_key": "AIzaSyCpXOZ93qBPnX5K4i7wqw0xr4RsfJllyTA"
         }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "723372119570-r87dsp7kqvar54ij61vd1cvg12pje48d.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+      ]
     }
   ],
   "configuration_version": "1"
