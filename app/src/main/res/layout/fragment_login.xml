@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/arizona_greenblue"
+    android:fitsSystemWindows="true"
+    tools:context=".LoginFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/world_travel" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_top_corners"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/shadows_into_light_two"
+                    android:gravity="bottom|center_horizontal"
+                    android:text="@string/navscan"
+                    android:textColor="@color/branch_brown"
+                    android:textSize="42sp" />
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="3dp"
+                    android:background="?android:attr/listDivider"
+                    android:backgroundTint="#8D6E63" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/shadows_into_light_two"
+                    android:text="@string/login"
+                    android:textColor="@color/branch_brown"
+                    android:textSize="28sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/branch_brown"
+                    app:boxStrokeColor="@color/arizona_greenblue">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/TextView16Style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/branch_brown"
+                        android:textSize="20sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:textColorHint="@color/branch_brown"
+                    app:boxStrokeColor="@color/arizona_greenblue"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/TextView16Style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:textColor="@color/branch_brown"
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btnSignIn"
+                    style="@style/ButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/arizona_greenblue"
+                    android:fontFamily="@font/shadows_into_light_two"
+                    android:paddingVertical="20dp"
+                    android:text="@string/sign_in"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    style="@style/TextView16Style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/or_sign_in_with"
+                    android:textAlignment="center"
+                    android:textColor="@color/branch_brown" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:divider="@drawable/divider"
+                    android:gravity="fill"
+                    android:showDividers="middle">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnFacebookSignIn"
+                        style="@style/ButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:paddingVertical="18dp"
+                        android:text="@string/facebook"
+                        android:textAllCaps="false"
+                        app:backgroundTint="@color/colorOnButton"
+                        app:icon="@drawable/ic_baseline_facebook_24"
+                        app:iconGravity="textStart"
+                        app:iconSize="26sp"
+                        app:iconTint="@color/backgroundColor"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGoogleSignIn"
+                        style="@style/ButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:paddingVertical="18dp"
+                        android:text="@string/google"
+                        android:textAllCaps="false"
+                        app:backgroundTint="@color/colorOnButton"
+                        app:icon="@drawable/ic_google"
+                        app:iconGravity="textStart"
+                        app:iconPadding="15dp"
+                        app:iconSize="23sp"
+                        app:iconTint="@color/backgroundColor"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextView16Style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5sp"
+                        android:text="@string/not_a_member"
+                        android:textColor="@color/branch_brown" />
+
+                    <TextView
+                        android:id="@+id/tvSignUpLoginFrag"
+                        style="@style/TextView16Style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sign_up_now"
+                        android:textColor="#1B6EAF" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
