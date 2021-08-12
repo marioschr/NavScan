@@ -21,19 +21,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 	private static final String TAG = "GoogleActivity";
 	private static final int RC_SIGN_IN = 9001;
 
 	private FirebaseAuth mAuth;
+	private FirebaseFirestore db;
 	private GoogleSignInClient mGoogleSignInClient;
 
 	private TextView tvSignUp;
@@ -51,16 +53,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 		mAuth = FirebaseAuth.getInstance();
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		// Check if user is signed in (non-null) and update UI accordingly.
-		FirebaseUser currentUser = mAuth.getCurrentUser();
-		if (currentUser != null) {
-			navigateToMain();
-		}
+		db = FirebaseFirestore.getInstance();
 	}
 
 	@Override
@@ -77,6 +70,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		tvSignUp.setOnClickListener(this);
 		btnGoogleSignIn.setOnClickListener(this);
 		btnFacebookSignIn.setOnClickListener(this);
+
+		if (getActivity().getIntent().getBooleanExtra("HaveToGoogleRegister",false)) {
+			getActivity().getIntent().removeExtra("HaveToGoogleRegister");
+			navigateToGoogleSignUp();
+		}
 	}
 
 	private void findViews(View view) {
@@ -136,7 +134,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 						// Sign in success, update UI with the signed-in user's information
 						Log.d(TAG, "signInWithCredential:success");
 						FirebaseUser user = mAuth.getCurrentUser();
-						navigateToMain();
+						DocumentReference docIdRef = db.collection("users").document(user.getUid());
+						docIdRef.get().addOnCompleteListener(task1 -> {
+							if (task.isSuccessful()) {
+								DocumentSnapshot document = task1.getResult();
+								if (document.exists()) {
+									Log.d(TAG, "Document exists!");
+									navigateToMain();
+								} else {
+									Log.d(TAG, "Document does not exist!");
+									navigateToGoogleSignUp();
+								}
+							} else {
+								Log.d(TAG, "Failed with: ", task.getException());
+							}
+						});
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -157,5 +169,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 	private void navigateToSignUp() {
 		NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment);
+	}
+
+	private void navigateToGoogleSignUp() {
+		NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_googleRegisterFragment);
 	}
 }
