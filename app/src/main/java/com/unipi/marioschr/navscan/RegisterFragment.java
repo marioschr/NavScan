@@ -192,7 +192,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 	private void signUp() {
 		if(!validateData()) return;
 		register(email,password);
-		//TODO:Create account with firebase
 	}
 
 	private void navigateBack() {

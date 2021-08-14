@@ -1,22 +1,46 @@
 {
   "project_info": {
-    "project_number": "723372119570",
-    "project_id": "navscan-marioschr",
-    "storage_bucket": "navscan-marioschr.appspot.com"
+    "project_number": "1065842039262",
+    "project_id": "nav-scan",
+    "storage_bucket": "nav-scan.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723372119570:android:caac687714dba34722eacb",
+        "mobilesdk_app_id": "1:1065842039262:android:69ff42843f3a776a38254f",
         "android_client_info": {
           "package_name": "com.unipi.marioschr.navscan"
         }
       },
+      "oauth_client": [
+        {
+          "client_id": "1065842039262-8g896mqa6tem7vnadnpa48te00dnmu9g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unipi.marioschr.navscan",
+            "certificate_hash": "85243e5744225532a3659d0aed7bf9a536560c16"
+          }
+        },
+        {
+          "client_id": "1065842039262-qo57nkmm5m9cmust4jmes72i300rfrfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCpXOZ93qBPnX5K4i7wqw0xr4RsfJllyTA"
+          "current_key": "AIzaSyBaA0LVWWhKY976JK4jYYVwLmTTxgjNYGU"
         }
-      ]
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065842039262-qo57nkmm5m9cmust4jmes72i300rfrfj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

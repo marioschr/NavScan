@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +59,8 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 
 	@Override
 	public void onClick(View view) {
-		switch (view.getId()) {
-			case R.id.btnGoogleSignUp:
-				signUp();
-				break;
+		if (view.getId() == R.id.btnGoogleSignUp) {
+			signUp();
 		}
 	}
 	private void findViewsAndSetListeners(View view) {
@@ -76,6 +76,51 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 			if (hasFocus) openDatePicker();
 			else hideDatePicker();
 		});
+
+		//region TextChangedListeners
+		tietGoogleFirstName.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			@Override
+			public void afterTextChanged(Editable editable) {}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int count, int after) {
+				if (s.toString().trim().isEmpty()) {
+					setErrorFirstName();
+				} else {
+					tilGoogleFirstName.setError(null);
+				}
+			}
+		});
+		tietGoogleLastName.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			@Override
+			public void afterTextChanged(Editable editable) {}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int count, int after) {
+				if (s.toString().trim().isEmpty()) {
+					setErrorLastName();
+				} else {
+					tilGoogleLastName.setError(null);
+				}
+			}
+		});
+		tietGoogleBirthday.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			@Override
+			public void afterTextChanged(Editable editable) {}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int count, int after) {
+				if (s.toString().trim().isEmpty()) {
+					setErrorBirthday();
+				} else {
+					tilGoogleBirthday.setError(null);
+				}
+			}
+		});
+		//endregion
 
 		btnGoogleSignUp = view.findViewById(R.id.btnGoogleSignUp);
 

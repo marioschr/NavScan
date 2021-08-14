@@ -2,6 +2,8 @@ package com.unipi.marioschr.navscan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -21,14 +22,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 	private static final String TAG = "GoogleActivity";
@@ -41,13 +49,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	private TextView tvSignUp;
 	private Button btnSignIn, btnFacebookSignIn, btnGoogleSignIn;
 
+	private TextInputLayout tilLoginEmail, tilLoginPassword;
+	private TextInputEditText tietLoginEmail, tietLoginPassword;
+	private String loginEmail, loginPassword;
+	private boolean foundError = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Configure Google Sign In
 
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestIdToken(getString(R.string.default_web_client_id))
+				.requestIdToken(getString(R.string.default_web_client_id)) // Token is created on build
 				.requestEmail()
 				.build();
 
@@ -64,12 +76,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	}
 
 	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(@Nonnull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		findViews(view);
-		tvSignUp.setOnClickListener(this);
-		btnGoogleSignIn.setOnClickListener(this);
-		btnFacebookSignIn.setOnClickListener(this);
+		findViewsAndSetListeners(view);
 
 		if (getActivity().getIntent().getBooleanExtra("HaveToGoogleRegister",false)) {
 			getActivity().getIntent().removeExtra("HaveToGoogleRegister");
@@ -77,11 +86,52 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		}
 	}
 
-	private void findViews(View view) {
+	private void findViewsAndSetListeners(View view) {
 		tvSignUp = view.findViewById(R.id.tvSignUpLoginFrag);
 		btnSignIn = view.findViewById(R.id.btnSignIn);
 		btnFacebookSignIn = view.findViewById(R.id.btnFacebookSignIn);
 		btnGoogleSignIn = view.findViewById(R.id.btnGoogleSignIn);
+
+		tietLoginEmail = view.findViewById(R.id.tietLoginEmail);
+		tietLoginPassword = view.findViewById(R.id.tietLoginPassword);
+		tilLoginEmail = view.findViewById(R.id.tilLoginEmail);
+		tilLoginPassword = view.findViewById(R.id.tilLoginPassword);
+
+		tvSignUp.setOnClickListener(this);
+		btnSignIn.setOnClickListener(this);
+		btnGoogleSignIn.setOnClickListener(this);
+		btnFacebookSignIn.setOnClickListener(this);
+
+		//region TextChanged Listeners
+		tietLoginEmail.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			@Override
+			public void afterTextChanged(Editable editable) {}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int count, int after) {
+				if (tietLoginEmail.hasFocus() && s.toString().trim().isEmpty()) {
+					setErrorLoginEmail();
+				} else {
+					tilLoginEmail.setError(null);
+				}
+			}
+		});
+		tietLoginPassword.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			@Override
+			public void afterTextChanged(Editable editable) {}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int count, int after) {
+				if (tietLoginEmail.hasFocus() && s.toString().trim().isEmpty()) {
+					setErrorLoginPassword();
+				} else {
+					tilLoginPassword.setError(null);
+				}
+			}
+		});
+		//endregion
 	}
 
 	@Override
@@ -95,6 +145,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				break;
 			case R.id.tvSignUpLoginFrag:
 				navigateToSignUp();
+				break;
+			case R.id.btnSignIn:
+				emailSignIn();
 				break;
 		}
 	}
@@ -159,7 +212,52 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	//endregion
 
 	private void facebookSignIn() {
+		//TODO: Facebook Sign In
+	}
 
+	private void emailSignIn() {
+		if(!validateData()) return;
+		mAuth.signInWithEmailAndPassword(loginEmail, loginPassword).addOnCompleteListener(requireActivity(), task -> {
+			if (task.isSuccessful()) {
+				// Sign in success, update UI with the signed-in user's information
+				Log.d(TAG, "signInWithEmail:success");
+				FirebaseUser user = mAuth.getCurrentUser();
+				navigateToMain();
+			} else {
+				// If sign in fails, display a message to the user.
+				Log.w(TAG, "signInWithEmail:failure", task.getException());
+				Toast.makeText(getContext(), "Authentication failed.",
+						Toast.LENGTH_SHORT).show();
+			}
+
+		});
+	}
+
+	private boolean validateData() {
+		loginEmail = tietLoginEmail.getText().toString().trim();
+		loginPassword = tietLoginPassword.getText().toString();
+		if (loginEmail.isEmpty()) {
+			setErrorLoginEmail();
+			foundError = true;
+		}
+		if (loginPassword.trim().isEmpty()) {
+			setErrorLoginPassword();
+			foundError = true;
+		}
+		if (foundError) {
+			foundError = false;
+			return false;
+		}
+		foundError = false;
+		Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
+		return true;
+	}
+
+	private void setErrorLoginEmail() {
+		tilLoginEmail.setError("You have to fill in your email");
+	}
+	private void setErrorLoginPassword() {
+		tilLoginPassword.setError("You have to fill in your password");
 	}
 
 	private void navigateToMain() {
