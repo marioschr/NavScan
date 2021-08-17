@@ -32,9 +32,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GoogleRegisterFragment extends Fragment implements View.OnClickListener {
-	private TextInputEditText tietGoogleFirstName,tietGoogleLastName,tietGoogleBirthday;
-	private TextInputLayout tilGoogleFirstName,tilGoogleLastName,tilGoogleBirthday;
-	private String firstName,lastName,birthday;
+	private TextInputEditText tietGoogleFullName,tietGoogleBirthday;
+	private TextInputLayout tilGoogleFullName,tilGoogleBirthday;
+	private String fullName,birthday;
 	private Button btnGoogleSignUp;
 	private LocalDate birthdayLD;
 	private DatePickerDialog datePickerDialog;
@@ -64,12 +64,10 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 		}
 	}
 	private void findViewsAndSetListeners(View view) {
-		tietGoogleFirstName = view.findViewById(R.id.tietGoogleFirstName);
-		tietGoogleLastName = view.findViewById(R.id.tietGoogleLastName);
+		tietGoogleFullName = view.findViewById(R.id.tietGoogleFullName);
 		tietGoogleBirthday = view.findViewById(R.id.tietGoogleBirthday);
 
-		tilGoogleFirstName = view.findViewById(R.id.tilGoogleFirstName);
-		tilGoogleLastName = view.findViewById(R.id.tilGoogleLastName);
+		tilGoogleFullName = view.findViewById(R.id.tilGoogleFullName);
 		tilGoogleBirthday = view.findViewById(R.id.tilGoogleBirthday);
 
 		tietGoogleBirthday.setOnFocusChangeListener((v, hasFocus) -> {
@@ -78,7 +76,7 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 		});
 
 		//region TextChangedListeners
-		tietGoogleFirstName.addTextChangedListener(new TextWatcher() {
+		tietGoogleFullName.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -86,23 +84,9 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 			@Override
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
 				if (s.toString().trim().isEmpty()) {
-					setErrorFirstName();
+					setErrorFullName();
 				} else {
-					tilGoogleFirstName.setError(null);
-				}
-			}
-		});
-		tietGoogleLastName.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			@Override
-			public void afterTextChanged(Editable editable) {}
-			@Override
-			public void onTextChanged(CharSequence s, int start, int count, int after) {
-				if (s.toString().trim().isEmpty()) {
-					setErrorLastName();
-				} else {
-					tilGoogleLastName.setError(null);
+					tilGoogleFullName.setError(null);
 				}
 			}
 		});
@@ -134,16 +118,11 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 
 
 	private boolean validateData() {
-		firstName = String.valueOf(tietGoogleFirstName.getText());
-		lastName = String.valueOf(tietGoogleLastName.getText());
+		fullName = String.valueOf(tietGoogleFullName.getText());
 		birthday = String.valueOf(tietGoogleBirthday.getText());
 
-		if (firstName.trim().isEmpty()) {
-			setErrorFirstName();
-			foundError = true;
-		}
-		if (lastName.trim().isEmpty()) {
-			setErrorLastName();
+		if (fullName.trim().isEmpty()) {
+			setErrorFullName();
 			foundError = true;
 		}
 		if (birthday.trim().isEmpty())  {
@@ -164,8 +143,7 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 		Log.d("Firebase Register", "createUserWithEmail:success");
 		FirebaseUser user = mAuth.getCurrentUser();
 		Map<String, Object> userData = new HashMap<>();
-		userData.put("firstName", firstName);
-		userData.put("lastName", lastName);
+		userData.put("fullName", fullName);
 		userData.put("birthday", new Timestamp(new Date(birthdayLD.getMonth().toString() + " " + birthdayLD.getDayOfMonth() + ", " + birthdayLD.getYear())));
 		userData.put("email", user.getEmail());
 
@@ -230,11 +208,8 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 	//endregion
 
 	//region Set Errors
-	private void setErrorFirstName() {
-		tilGoogleFirstName.setError("You have to fill in your first name");
-	}
-	private void setErrorLastName() {
-		tilGoogleLastName.setError("You have to fill in your last name");
+	private void setErrorFullName() {
+		tilGoogleFullName.setError("You have to fill in your full name");
 	}
 	private void setErrorBirthday() {
 		tilGoogleBirthday.setError("You have to fill in your birthday");

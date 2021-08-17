@@ -19,6 +19,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -30,6 +31,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +41,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,7 +57,6 @@ import javax.annotation.Nullable;
 public class LoginFragment extends Fragment implements View.OnClickListener {
 	private static final String TAG = "GoogleActivity";
 	private static final int RC_SIGN_IN = 9001;
-
 	private FirebaseAuth mAuth;
 	private FirebaseFirestore db;
 	private GoogleSignInClient mGoogleSignInClient;
@@ -65,7 +74,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		callbackManager = CallbackManager.Factory.create();
-		// Configure Google Sign In
 
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(getString(R.string.default_web_client_id)) // Token is created on build
@@ -80,7 +88,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.fragment_login, container, false);
 	}
 
@@ -113,7 +120,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
-				Toast.makeText(getContext(), loginResult.getAccessToken().getUserId(), Toast.LENGTH_SHORT).show();
 				handleFacebookAccessToken(loginResult.getAccessToken());
 			}
 
@@ -177,7 +183,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		}
 	}
 
-
 	//region Google Sign In
 	private void googleSignIn() {
 		Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -216,7 +221,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 						FirebaseUser user = mAuth.getCurrentUser();
 						DocumentReference docIdRef = db.collection("users").document(user.getUid());
 						docIdRef.get().addOnCompleteListener(task1 -> {
-							if (task.isSuccessful()) {
+							if (task1.isSuccessful()) {
 								DocumentSnapshot document = task1.getResult();
 								if (document.exists()) {
 									Log.d(TAG, "Document exists!");
@@ -238,6 +243,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	}
 	//endregion
 
+	//region Facebook Sign In
 	private void facebookSignIn() {
 		LoginManager.getInstance().logInWithReadPermissions(
 				this,
@@ -254,8 +260,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 					if (task.isSuccessful()) {
 						// Sign in success, update UI with the signed-in user's information
 						Log.d(TAG, "signInWithCredential:success");
-						FirebaseUser user = mAuth.getCurrentUser();
-						navigateToMain();
+						DocumentReference docIdRef = db.collection("users").document(mAuth.getUid());
+						docIdRef.get().addOnCompleteListener(firestoreTask -> {
+							if (task.isSuccessful()) {
+								DocumentSnapshot document = firestoreTask.getResult();
+								if (document.exists()) {
+									Log.d("TAG", "Document exists!");
+									navigateToMain();
+								} else {
+									Log.d("TAG", "Document doesn't exist!");
+									getUserDetailFromFB(token);
+								}
+							} else {
+								Log.d("TAG", "Failed with: ", task.getException());
+							}
+						});
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -265,6 +284,56 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				});
 	}
 
+	private void getUserDetailFromFB(AccessToken accessToken) {
+		GraphRequest request = GraphRequest.newMeRequest(
+				accessToken, (object, response) -> {
+					if (object != null) {
+						try {
+							String name = object.getString("name");
+							String email = object.getString("email");
+							String fbUserID = object.getString("id");
+							String birthday = object.getString("birthday");
+							Map<String, Object> userData = new HashMap<>();
+							userData.put("fullName", name);
+							SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+							try {
+								Date date= formatter.parse(birthday);
+								userData.put("birthday", new Timestamp(date));
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							userData.put("email", email);
+
+							db.collection("users").document(mAuth.getUid())
+									.set(userData)
+									.addOnSuccessListener(l -> {
+										Log.d("Firestore DB", "DocumentSnapshot successfully written!");
+										Toast.makeText(getContext(), "Successfully created user", Toast.LENGTH_SHORT).show();
+										navigateToMain();
+									})
+									.addOnFailureListener(e -> {
+										Log.w("Firestore DB", "Error writing document", e);
+										mAuth.getCurrentUser().delete().addOnSuccessListener(l -> {
+											Toast.makeText(getContext(), "Error creating user. Try again", Toast.LENGTH_SHORT).show();
+										});
+									});
+						}
+						catch (JSONException | NullPointerException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+		Bundle parameters = new Bundle();
+		parameters.putString(
+				"fields",
+				"id, name, email, birthday");
+		request.setParameters(parameters);
+		request.executeAsync();
+	}
+	//endregion
+
+	//region Email/Password Sign In
 	private void emailSignIn() {
 		if(!validateData()) return;
 		mAuth.signInWithEmailAndPassword(loginEmail, loginPassword).addOnCompleteListener(requireActivity(), task -> {
@@ -282,6 +351,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 		});
 	}
+	//endregion
 
 	private boolean validateData() {
 		loginEmail = tietLoginEmail.getText().toString().trim();

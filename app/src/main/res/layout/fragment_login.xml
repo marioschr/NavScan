@@ -36,13 +36,10 @@
             android:paddingVertical="10dp">
 
             <TextView
-                android:layout_width="match_parent"
+                style="@style/TextView42Style"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/shadows_into_light_two"
-                android:gravity="bottom|center_horizontal"
-                android:text="@string/navscan"
-                android:textColor="@color/branch_brown"
-                android:textSize="42sp" />
+                android:text="@string/navscan" />
 
             <View
                 android:layout_width="120dp"
@@ -51,12 +48,10 @@
                 android:backgroundTint="#8D6E63" />
 
             <TextView
+                style="@style/TextView28Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/shadows_into_light_two"
-                android:text="@string/login"
-                android:textColor="@color/branch_brown"
-                android:textSize="28sp" />
+                android:text="@string/login" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLoginEmail"
@@ -68,13 +63,11 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietLoginEmail"
-                    style="@style/TextView16Style"
+                    style="@style/TextView20Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/branch_brown"
-                    android:textSize="20sp" />
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,13 +83,11 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietLoginPassword"
-                    style="@style/TextView16Style"
+                    style="@style/TextView20Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:textColor="@color/branch_brown"
-                    android:textSize="20sp" />
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -105,22 +96,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/arizona_greenblue"
-                android:fontFamily="@font/shadows_into_light_two"
                 android:paddingVertical="20dp"
                 android:text="@string/sign_in"
-                android:textAllCaps="false"
-                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 style="@style/TextView16Style"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="@string/or_sign_in_with"
-                android:textAlignment="center"
-                android:textColor="@color/branch_brown" />
+                android:gravity="center_horizontal"
+                android:text="@string/or_sign_in_with" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -138,8 +124,6 @@
                     android:layout_weight="0.4"
                     android:paddingVertical="18dp"
                     android:text="@string/facebook"
-                    android:textAllCaps="false"
-                    app:backgroundTint="@color/colorOnButton"
                     app:icon="@drawable/ic_baseline_facebook_24"
                     app:iconGravity="textStart"
                     app:iconSize="26sp"
@@ -154,8 +138,6 @@
                     android:layout_weight="0.6"
                     android:paddingVertical="18dp"
                     android:text="@string/google"
-                    android:textAllCaps="false"
-                    app:backgroundTint="@color/colorOnButton"
                     app:icon="@drawable/ic_google"
                     app:iconGravity="textStart"
                     app:iconPadding="15dp"
@@ -176,8 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5sp"
-                    android:text="@string/not_a_member"
-                    android:textColor="@color/branch_brown" />
+                    android:text="@string/not_a_member" />
 
                 <TextView
                     android:id="@+id/tvSignUpLoginFrag"

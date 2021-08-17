@@ -36,11 +36,10 @@
             android:paddingVertical="10dp">
 
             <TextView
-                style="@style/TextViewStyle"
+                style="@style/TextView42Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navscan"
-                android:textSize="42sp" />
+                android:text="@string/navscan" />
 
             <View
                 android:layout_width="120dp"
@@ -49,11 +48,10 @@
                 android:backgroundTint="#8D6E63" />
 
             <TextView
-                style="@style/TextViewStyle"
+                style="@style/TextView28Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/register"
-                android:textSize="28sp" />
+                android:text="@string/register" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,7 +61,7 @@
                 android:showDividers="middle">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFirstName"
+                    android:id="@+id/tilFullName"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -71,34 +69,12 @@
                     app:boxStrokeColor="@color/arizona_greenblue">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tietFirstName"
-                        style="@style/TextView16Style"
+                        android:id="@+id/tietFullName"
+                        style="@style/TextView20Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/first_name"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/branch_brown"
-                        android:textSize="20sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilLastName"
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColorHint="@color/branch_brown"
-                    app:boxStrokeColor="@color/arizona_greenblue">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tietLastName"
-                        style="@style/TextView16Style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/last_name"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/branch_brown"
-                        android:textSize="20sp" />
+                        android:hint="@string/full_name"
+                        android:inputType="textPersonName" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,14 +88,12 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tietBirthday"
-                        style="@style/TextView16Style"
+                        style="@style/TextView20Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:editable="false"
                         android:hint="@string/birthday"
-                        android:inputType="none"
-                        android:textColor="@color/branch_brown"
-                        android:textSize="20sp" />
+                        android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,13 +107,11 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tietEmail"
-                        style="@style/TextView16Style"
+                        style="@style/TextView20Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/branch_brown"
-                        android:textSize="20sp" />
+                        android:inputType="textEmailAddress" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,13 +126,11 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tietPassword"
-                        style="@style/TextView16Style"
+                        style="@style/TextView20Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:textColor="@color/branch_brown"
-                        android:textSize="20sp" />
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -174,13 +144,11 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tietConfirmPassword"
-                        style="@style/TextView16Style"
+                        style="@style/TextView20Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/confirm_password"
-                        android:inputType="textPassword"
-                        android:textColor="@color/branch_brown"
-                        android:textSize="20sp" />
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
@@ -189,12 +157,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:backgroundTint="@color/arizona_greenblue"
-                    android:fontFamily="@font/shadows_into_light_two"
                     android:paddingVertical="20dp"
                     android:text="@string/sign_up"
-                    android:textAllCaps="false"
-                    android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent" />
 
             </LinearLayout>
@@ -210,8 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5sp"
-                    android:text="@string/already_a_member"
-                    android:textColor="@color/branch_brown" />
+                    android:text="@string/already_a_member" />
 
                 <TextView
                     android:id="@+id/tvSignInRegisterFrag"

@@ -19,10 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-
-
-
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
@@ -31,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,11 +35,11 @@ import java.util.Map;
 
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
-	private TextInputEditText tietFirstName,tietLastName,tietBirthday,tietEmail,tietPassword,tietConfirmPassword;
-	private TextInputLayout tilFirstName,tilLastName,tilBirthday,tilEmail,tilPassword,tilConfirmPassword;
+	private TextInputEditText tietFullName,tietBirthday,tietEmail,tietPassword,tietConfirmPassword;
+	private TextInputLayout tilFullName,tilBirthday,tilEmail,tilPassword,tilConfirmPassword;
 	private TextView tvSignInRegisterFrag;
 	private Button btnSignUp;
-	private String firstName,lastName,birthday,email,password,confirmPassword;
+	private String fullName,birthday,email,password,confirmPassword;
 	private LocalDate birthdayLD;
 	private DatePickerDialog datePickerDialog;
 	private boolean foundError = false, passOk = true;
@@ -65,15 +60,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
 	private void findViewsAndSetListeners(View view) {
 		//region FindViewById
-		tietFirstName = view.findViewById(R.id.tietFirstName);
-		tietLastName = view.findViewById(R.id.tietLastName);
+		tietFullName = view.findViewById(R.id.tietFullName);
 		tietBirthday = view.findViewById(R.id.tietBirthday);
 		tietEmail = view.findViewById(R.id.tietEmail);
 		tietPassword = view.findViewById(R.id.tietPassword);
 		tietConfirmPassword = view.findViewById(R.id.tietConfirmPassword);
 
-		tilFirstName = view.findViewById(R.id.tilFirstName);
-		tilLastName = view.findViewById(R.id.tilLastName);
+		tilFullName = view.findViewById(R.id.tilFullName);
 		tilBirthday = view.findViewById(R.id.tilBirthday);
 		tilEmail = view.findViewById(R.id.tilEmail);
 		tilPassword = view.findViewById(R.id.tilPassword);
@@ -85,7 +78,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 		//endregion
 
 		//region TextChangedListeners
-		tietFirstName.addTextChangedListener(new TextWatcher() {
+		tietFullName.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -93,23 +86,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
 				if (s.toString().trim().isEmpty()) {
-					setErrorFirstName();
+					setErrorFullName();
 				} else {
-					tilFirstName.setError(null);
-				}
-			}
-		});
-		tietLastName.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			@Override
-			public void afterTextChanged(Editable editable) {}
-			@Override
-			public void onTextChanged(CharSequence s, int start, int count, int after) {
-				if (s.toString().trim().isEmpty()) {
-					setErrorLastName();
-				} else {
-					tilLastName.setError(null);
+					tilFullName.setError(null);
 				}
 			}
 		});
@@ -204,19 +183,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private boolean validateData() {
-		firstName = String.valueOf(tietFirstName.getText());
-		lastName = String.valueOf(tietLastName.getText());
+		fullName = String.valueOf(tietFullName.getText());
 		birthday = String.valueOf(tietBirthday.getText());
 		email = String.valueOf(tietEmail.getText());
 		password = String.valueOf(tietPassword.getText());
 		confirmPassword = String.valueOf(tietConfirmPassword.getText());
 
-		if (firstName.trim().isEmpty()) {
-			setErrorFirstName();
-			foundError = true;
-		}
-		if (lastName.trim().isEmpty()) {
-			setErrorLastName();
+		if (fullName.trim().isEmpty()) {
+			setErrorFullName();
 			foundError = true;
 		}
 		if (birthday.trim().isEmpty())  {
@@ -249,7 +223,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			return false;
 		}
 		foundError = false;
-		Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
 		return true;
 	}
 
@@ -261,8 +234,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 						Log.d("Firebase Register", "createUserWithEmail:success");
 						FirebaseUser user = mAuth.getCurrentUser();
 						Map<String, Object> userData = new HashMap<>();
-						userData.put("firstName", firstName);
-						userData.put("lastName", lastName);
+						userData.put("fullName", fullName);
 						userData.put("birthday", new Timestamp(new Date(birthdayLD.getMonth().toString() + " " + birthdayLD.getDayOfMonth() + ", " + birthdayLD.getYear())));
 						userData.put("email", email);
 
@@ -279,13 +251,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 										Toast.makeText(getContext(), "Error creating user. Try again", Toast.LENGTH_SHORT).show();
 									});
 								});
-						//updateUI(user);
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w("Firebase Register", "createUserWithEmail:failure", task.getException());
 						Toast.makeText(getContext(), "Authentication failed.",
 								Toast.LENGTH_SHORT).show();
-						//updateUI(null);
 					}
 				});
 	}
@@ -331,11 +301,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 	//endregion
 
 	//region Set Errors
-	private void setErrorFirstName() {
-		tilFirstName.setError("You have to fill in your first name");
-	}
-	private void setErrorLastName() {
-		tilLastName.setError("You have to fill in your last name");
+	private void setErrorFullName() {
+		tilFullName.setError("You have to fill in your name");
 	}
 	private void setErrorBirthday() {
 		tilBirthday.setError("You have to fill in your birthday");
