@@ -12,28 +12,34 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,15 +53,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	private GoogleSignInClient mGoogleSignInClient;
 
 	private TextView tvSignUp;
-	private Button btnSignIn, btnFacebookSignIn, btnGoogleSignIn;
+	private Button btnSignIn, btnGoogleSignIn, btnFacebookSignIn;
 
 	private TextInputLayout tilLoginEmail, tilLoginPassword;
 	private TextInputEditText tietLoginEmail, tietLoginPassword;
 	private String loginEmail, loginPassword;
 	private boolean foundError = false;
+	CallbackManager callbackManager;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		callbackManager = CallbackManager.Factory.create();
 		// Configure Google Sign In
 
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -101,7 +110,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		btnSignIn.setOnClickListener(this);
 		btnGoogleSignIn.setOnClickListener(this);
 		btnFacebookSignIn.setOnClickListener(this);
+		LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+			@Override
+			public void onSuccess(LoginResult loginResult) {
+				Toast.makeText(getContext(), loginResult.getAccessToken().getUserId(), Toast.LENGTH_SHORT).show();
+				handleFacebookAccessToken(loginResult.getAccessToken());
+			}
 
+			@Override
+			public void onCancel() {
+				Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onError(FacebookException error) {
+				Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+			}
+		});
 		//region TextChanged Listeners
 		tietLoginEmail.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -176,6 +201,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 					Toast.makeText(requireActivity(), "Sign in failed. Try again.", Toast.LENGTH_SHORT).show();
 				}
 			}
+		} else {
+			callbackManager.onActivityResult(requestCode, resultCode, data);
 		}
 	}
 
@@ -212,7 +239,30 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	//endregion
 
 	private void facebookSignIn() {
-		//TODO: Facebook Sign In
+		LoginManager.getInstance().logInWithReadPermissions(
+				this,
+				Arrays.asList("email", "user_birthday", "public_profile")
+		);
+	}
+
+	private void handleFacebookAccessToken(AccessToken token) {
+		Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+		AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+		mAuth.signInWithCredential(credential)
+				.addOnCompleteListener(requireActivity(), task -> {
+					if (task.isSuccessful()) {
+						// Sign in success, update UI with the signed-in user's information
+						Log.d(TAG, "signInWithCredential:success");
+						FirebaseUser user = mAuth.getCurrentUser();
+						navigateToMain();
+					} else {
+						// If sign in fails, display a message to the user.
+						Log.w(TAG, "signInWithCredential:failure", task.getException());
+						Toast.makeText(getContext(), "Authentication failed.",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
 	}
 
 	private void emailSignIn() {

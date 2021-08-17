@@ -23,4 +23,7 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="birthday">Birthday</string>
+
+    <string name="facebook_app_id">4574239629288600</string>
+    <string name="fb_login_protocol_scheme">fb4574239629288600</string>
 </resources>
