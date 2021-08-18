@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.Auth;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -23,6 +23,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.unipi.marioschr.navscan.MainActivity;
+import com.unipi.marioschr.navscan.R;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

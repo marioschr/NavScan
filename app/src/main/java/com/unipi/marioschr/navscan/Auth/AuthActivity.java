@@ -1,8 +1,10 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.Auth;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.unipi.marioschr.navscan.R;
 
 public class AuthActivity extends AppCompatActivity {
 

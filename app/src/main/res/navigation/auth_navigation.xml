@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.unipi.marioschr.navscan.LoginFragment"
+        android:name="com.unipi.marioschr.navscan.Auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.unipi.marioschr.navscan.RegisterFragment"
+        android:name="com.unipi.marioschr.navscan.Auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/googleRegisterFragment"
-        android:name="com.unipi.marioschr.navscan.GoogleRegisterFragment"
+        android:name="com.unipi.marioschr.navscan.Auth.GoogleRegisterFragment"
         android:label="fragment_google_register"
         tools:layout="@layout/fragment_google_register" />
 </navigation>

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.unipi.marioschr.navscan.Auth.AuthActivity;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
 	Button btnAkamas, btnLogout;

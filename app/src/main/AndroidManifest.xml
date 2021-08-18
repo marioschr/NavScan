@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthActivity"
+            android:name=".Auth.AuthActivity"
             android:exported="true"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"

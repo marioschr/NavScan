@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +40,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.unipi.marioschr.navscan.MainActivity;
+import com.unipi.marioschr.navscan.R;
 
 import org.json.JSONException;
 
@@ -313,9 +315,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 									})
 									.addOnFailureListener(e -> {
 										Log.w("Firestore DB", "Error writing document", e);
-										mAuth.getCurrentUser().delete().addOnSuccessListener(l -> {
-											Toast.makeText(getContext(), "Error creating user. Try again", Toast.LENGTH_SHORT).show();
-										});
+										mAuth.getCurrentUser().delete().addOnSuccessListener(l ->
+												Toast.makeText(getContext(), "Error creating user. Try again", Toast.LENGTH_SHORT).show());
 									});
 						}
 						catch (JSONException | NullPointerException e) {
@@ -340,7 +341,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 			if (task.isSuccessful()) {
 				// Sign in success, update UI with the signed-in user's information
 				Log.d(TAG, "signInWithEmail:success");
-				FirebaseUser user = mAuth.getCurrentUser();
 				navigateToMain();
 			} else {
 				// If sign in fails, display a message to the user.
@@ -354,8 +354,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	//endregion
 
 	private boolean validateData() {
-		loginEmail = tietLoginEmail.getText().toString().trim();
-		loginPassword = tietLoginPassword.getText().toString();
+		loginEmail = String.valueOf(tietLoginEmail.getText()).trim();
+		loginPassword = String.valueOf(tietLoginPassword.getText());
 		if (loginEmail.isEmpty()) {
 			setErrorLoginEmail();
 			foundError = true;

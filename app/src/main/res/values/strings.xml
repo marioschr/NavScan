@@ -20,7 +20,7 @@
     <string name="already_a_member">Already a member?</string>
     <string name="sign_up">Sign up</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="full_name">First Name</string>
+    <string name="full_name">Full Name</string>
     <string name="birthday">Birthday</string>
 
     <string name="facebook_app_id">4574239629288600</string>
