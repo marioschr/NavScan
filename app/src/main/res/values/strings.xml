@@ -25,4 +25,8 @@
 
     <string name="facebook_app_id">4574239629288600</string>
     <string name="fb_login_protocol_scheme">fb4574239629288600</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

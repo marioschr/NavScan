@@ -12,6 +12,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
+import com.unipi.marioschr.navscan.MainActivity.MainActivity;
+
+import es.dmoral.toasty.Toasty;
 
 public class LauncherActivity extends AppCompatActivity {
 
@@ -20,6 +23,7 @@ public class LauncherActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launcher);
 
+		Toasty.Config.getInstance().setToastTypeface(getResources().getFont(R.font.shadows_into_light_two)).apply();
 		FirebaseAuth mAuth = FirebaseAuth.getInstance();
 		FirebaseFirestore db = FirebaseFirestore.getInstance();
 		// Check if user is signed in (non-null) and update UI accordingly.

@@ -25,8 +25,9 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.unipi.marioschr.navscan.MainActivity;
+import com.unipi.marioschr.navscan.MainActivity.MainActivity;
 import com.unipi.marioschr.navscan.R;
+import com.unipi.marioschr.navscan.databinding.FragmentRegisterBinding;
 
 import java.time.LocalDate;;
 import java.time.format.DateTimeFormatter;
@@ -37,50 +38,32 @@ import java.util.Map;
 
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
-	private TextInputEditText tietFullName,tietBirthday,tietEmail,tietPassword,tietConfirmPassword;
-	private TextInputLayout tilFullName,tilBirthday,tilEmail,tilPassword,tilConfirmPassword;
-	private TextView tvSignInRegisterFrag;
-	private Button btnSignUp;
 	private String fullName,birthday,email,password,confirmPassword;
 	private LocalDate birthdayLD;
 	private DatePickerDialog datePickerDialog;
 	private boolean foundError = false, passOk = true;
 	private FirebaseAuth mAuth;
 	private FirebaseFirestore db;
+	private FragmentRegisterBinding binding;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_register, container, false);
+		binding = FragmentRegisterBinding.inflate(inflater, container, false);
+		mAuth = FirebaseAuth.getInstance();
+		db = FirebaseFirestore.getInstance();
+		SetListeners();
+		return binding.getRoot();
 	}
 
 	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		findViewsAndSetListeners(view);
-		mAuth = FirebaseAuth.getInstance();
-		db = FirebaseFirestore.getInstance();
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 
-	private void findViewsAndSetListeners(View view) {
-		//region FindViewById
-		tietFullName = view.findViewById(R.id.tietFullName);
-		tietBirthday = view.findViewById(R.id.tietBirthday);
-		tietEmail = view.findViewById(R.id.tietEmail);
-		tietPassword = view.findViewById(R.id.tietPassword);
-		tietConfirmPassword = view.findViewById(R.id.tietConfirmPassword);
-
-		tilFullName = view.findViewById(R.id.tilFullName);
-		tilBirthday = view.findViewById(R.id.tilBirthday);
-		tilEmail = view.findViewById(R.id.tilEmail);
-		tilPassword = view.findViewById(R.id.tilPassword);
-		tilConfirmPassword = view.findViewById(R.id.tilConfirmPassword);
-
-		tvSignInRegisterFrag = view.findViewById(R.id.tvSignInRegisterFrag);
-
-		btnSignUp = view.findViewById(R.id.btnSignUp);
-		//endregion
-
+	private void SetListeners() {
 		//region TextChangedListeners
-		tietFullName.addTextChangedListener(new TextWatcher() {
+		binding.tietFullName.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -90,11 +73,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 				if (s.toString().trim().isEmpty()) {
 					setErrorFullName();
 				} else {
-					tilFullName.setError(null);
+					binding.tilFullName.setError(null);
 				}
 			}
 		});
-		tietBirthday.addTextChangedListener(new TextWatcher() {
+		binding.tietBirthday.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -104,11 +87,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 				if (s.toString().trim().isEmpty()) {
 					setErrorBirthday();
 				} else {
-					tilBirthday.setError(null);
+					binding.tilBirthday.setError(null);
 				}
 			}
 		});
-		tietEmail.addTextChangedListener(new TextWatcher() {
+		binding.tietEmail.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -118,11 +101,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 				if (s.toString().trim().isEmpty()) {
 					setErrorEmail();
 				} else {
-					tilEmail.setError(null);
+					binding.tilEmail.setError(null);
 				}
 			}
 		});
-		tietPassword.addTextChangedListener(new TextWatcher() {
+		binding.tietPassword.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -131,11 +114,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
 				if (s.toString().trim().isEmpty()) setErrorPassword();
 				else if (s.toString().trim().length()<6)
-					tilPassword.setError("You need a stronger password (Minimum length: 6)");
-				else tilPassword.setError(null);
+					binding.tilPassword.setError("You need a stronger password (Minimum length: 6)");
+				else binding.tilPassword.setError(null);
 			}
 		});
-		tietConfirmPassword.addTextChangedListener(new TextWatcher() {
+		binding.tietConfirmPassword.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -143,16 +126,16 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
 				if (s.toString().trim().isEmpty()) setErrorConfirmPassword();
-				else if (!s.toString().equals(String.valueOf(tietPassword.getText())))
-					tilConfirmPassword.setError("Passwords don't match");
-				else tilConfirmPassword.setError(null);
+				else if (!s.toString().equals(String.valueOf(binding.tietPassword.getText())))
+					binding.tilConfirmPassword.setError("Passwords don't match");
+				else binding.tilConfirmPassword.setError(null);
 			}
 		});
 		//endregion
 
-		btnSignUp.setOnClickListener(this);
-		tvSignInRegisterFrag.setOnClickListener(this);
-		tietBirthday.setOnFocusChangeListener((v, hasFocus) -> {
+		binding.btnSignUp.setOnClickListener(this);
+		binding.tvSignInRegisterFrag.setOnClickListener(this);
+		binding.tietBirthday.setOnFocusChangeListener((v, hasFocus) -> {
 			if (hasFocus) openDatePicker();
 			else hideDatePicker();
 		});
@@ -185,11 +168,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private boolean validateData() {
-		fullName = String.valueOf(tietFullName.getText());
-		birthday = String.valueOf(tietBirthday.getText());
-		email = String.valueOf(tietEmail.getText());
-		password = String.valueOf(tietPassword.getText());
-		confirmPassword = String.valueOf(tietConfirmPassword.getText());
+		fullName = String.valueOf(binding.tietFullName.getText());
+		birthday = String.valueOf(binding.tietBirthday.getText());
+		email = String.valueOf(binding.tietEmail.getText());
+		password = String.valueOf(binding.tietPassword.getText());
+		confirmPassword = String.valueOf(binding.tietConfirmPassword.getText());
 
 		if (fullName.trim().isEmpty()) {
 			setErrorFullName();
@@ -215,7 +198,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 		}
 		if (passOk) {
 			if (!password.equals(confirmPassword)) {
-				tilConfirmPassword.setError("Passwords don't match");
+				binding.tilConfirmPassword.setError("Passwords don't match");
 				foundError = true;
 			}
 		}
@@ -272,29 +255,29 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 		int mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-		if (String.valueOf(tietBirthday.getText()).equals("")) {
+		if (String.valueOf(binding.tietBirthday.getText()).equals("")) {
 			datePickerDialog = new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
-				tietBirthday.setText(String.format("%02d", dayOfMonth)
+				binding.tietBirthday.setText(String.format("%02d", dayOfMonth)
 						+ "-" + String.format("%02d", monthOfYear + 1)
 						+ "-" + String.format("%02d", year));
-				birthdayLD = LocalDate.parse(String.valueOf(tietBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				tietBirthday.clearFocus();
+				birthdayLD = LocalDate.parse(String.valueOf(binding.tietBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				binding.tietBirthday.clearFocus();
 			}, mYear, mMonth, mDay);
 		} else {
-			LocalDate localDate = LocalDate.parse(String.valueOf(tietBirthday.getText()), DateTimeFormatter.ofPattern("d-M-yyyy"));
+			LocalDate localDate = LocalDate.parse(String.valueOf(binding.tietBirthday.getText()), DateTimeFormatter.ofPattern("d-M-yyyy"));
 			datePickerDialog = new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
-				tietBirthday.setText(String.format("%02d", dayOfMonth)
+				binding.tietBirthday.setText(String.format("%02d", dayOfMonth)
 						+ "-" + String.format("%02d", monthOfYear + 1)
 						+ "-" + String.format("%02d", year));
-				birthdayLD = LocalDate.parse(String.valueOf(tietBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				tietBirthday.clearFocus();
+				birthdayLD = LocalDate.parse(String.valueOf(binding.tietBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				binding.tietBirthday.clearFocus();
 			}, localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
 		}
 		datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
 		Calendar minYear = Calendar.getInstance();
 		minYear.add(Calendar.YEAR, -110);
 		datePickerDialog.getDatePicker().setMinDate(minYear.getTimeInMillis());
-		datePickerDialog.setOnCancelListener(l -> tietBirthday.clearFocus());
+		datePickerDialog.setOnCancelListener(l -> binding.tietBirthday.clearFocus());
 		datePickerDialog.show();
 	}
 	private void hideDatePicker() {
@@ -304,19 +287,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
 	//region Set Errors
 	private void setErrorFullName() {
-		tilFullName.setError("You have to fill in your name");
+		binding.tilFullName.setError("You have to fill in your name");
 	}
 	private void setErrorBirthday() {
-		tilBirthday.setError("You have to fill in your birthday");
+		binding.tilBirthday.setError("You have to fill in your birthday");
 	}
 	private void setErrorEmail() {
-		tilEmail.setError("You have to fill in your email");
+		binding.tilEmail.setError("You have to fill in your email");
 	}
 	private void setErrorPassword() {
-		tilPassword.setError("You have to fill in your password");
+		binding.tilPassword.setError("You have to fill in your password");
 	}
 	private void setErrorConfirmPassword() {
-		tilConfirmPassword.setError("You have to fill in your password");
+		binding.tilConfirmPassword.setError("You have to fill in your password");
 	}
 	//endregion
 }

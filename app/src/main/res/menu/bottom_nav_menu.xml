@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home"
+        app:exb_color="@color/arizona_greenblue" />
+
+    <item
+        android:id="@+id/navigation_leaderboard"
+        android:icon="@drawable/ic_baseline_leaderboard_24"
+        android:title="Leaderboard"
+        app:exb_color="@color/arizona_greenblue" />
+
+    <item
+        android:id="@+id/navigation_scanner"
+        android:icon="@drawable/ic_baseline_qr_code_scanner_24"
+        android:title="Scan"
+        app:exb_color="@color/arizona_greenblue" />
+</menu>

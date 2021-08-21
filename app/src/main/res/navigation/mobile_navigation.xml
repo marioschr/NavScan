@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.unipi.marioschr.navscan.MainActivity.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_dashboard"
+            app:destination="@id/navigation_leaderboard" />
+        <action
+            android:id="@+id/action_navigation_home_to_locationInfoFragment"
+            app:destination="@id/locationInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_leaderboard"
+        android:name="com.unipi.marioschr.navscan.MainActivity.LeaderboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_leaderboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_notifications"
+            app:destination="@id/navigation_scanner" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_scanner"
+        android:name="com.unipi.marioschr.navscan.MainActivity.ScannerFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_scan" />
+    <fragment
+        android:id="@+id/locationInfoFragment"
+        android:name="com.unipi.marioschr.navscan.LocationInfoFragment"
+        android:label="fragment_location_info"
+        tools:layout="@layout/fragment_location_info" />
+</navigation>

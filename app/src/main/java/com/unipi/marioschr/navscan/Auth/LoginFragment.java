@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +20,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,8 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -40,8 +38,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.unipi.marioschr.navscan.MainActivity;
+import com.unipi.marioschr.navscan.MainActivity.MainActivity;
 import com.unipi.marioschr.navscan.R;
+import com.unipi.marioschr.navscan.databinding.FragmentLoginBinding;
 
 import org.json.JSONException;
 
@@ -63,14 +62,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	private FirebaseFirestore db;
 	private GoogleSignInClient mGoogleSignInClient;
 
-	private TextView tvSignUp;
-	private Button btnSignIn, btnGoogleSignIn, btnFacebookSignIn;
-
-	private TextInputLayout tilLoginEmail, tilLoginPassword;
-	private TextInputEditText tietLoginEmail, tietLoginPassword;
 	private String loginEmail, loginPassword;
 	private boolean foundError = false;
-	CallbackManager callbackManager;
+	private CallbackManager callbackManager;
+	private FragmentLoginBinding binding;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,7 +86,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_login, container, false);
+		binding = FragmentLoginBinding.inflate(inflater, container, false);
+		return binding.getRoot();
 	}
 
 	@Override
@@ -105,20 +102,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void findViewsAndSetListeners(View view) {
-		tvSignUp = view.findViewById(R.id.tvSignUpLoginFrag);
-		btnSignIn = view.findViewById(R.id.btnSignIn);
-		btnFacebookSignIn = view.findViewById(R.id.btnFacebookSignIn);
-		btnGoogleSignIn = view.findViewById(R.id.btnGoogleSignIn);
-
-		tietLoginEmail = view.findViewById(R.id.tietLoginEmail);
-		tietLoginPassword = view.findViewById(R.id.tietLoginPassword);
-		tilLoginEmail = view.findViewById(R.id.tilLoginEmail);
-		tilLoginPassword = view.findViewById(R.id.tilLoginPassword);
-
-		tvSignUp.setOnClickListener(this);
-		btnSignIn.setOnClickListener(this);
-		btnGoogleSignIn.setOnClickListener(this);
-		btnFacebookSignIn.setOnClickListener(this);
+		binding.tvSignUpLoginFrag.setOnClickListener(this);
+		binding.btnSignIn.setOnClickListener(this);
+		binding.btnGoogleSignIn.setOnClickListener(this);
+		binding.btnFacebookSignIn.setOnClickListener(this);
 		LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
@@ -136,31 +123,31 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 			}
 		});
 		//region TextChanged Listeners
-		tietLoginEmail.addTextChangedListener(new TextWatcher() {
+		binding.tietLoginEmail.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
 			public void afterTextChanged(Editable editable) {}
 			@Override
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
-				if (tietLoginEmail.hasFocus() && s.toString().trim().isEmpty()) {
+				if (binding.tietLoginEmail.hasFocus() && s.toString().trim().isEmpty()) {
 					setErrorLoginEmail();
 				} else {
-					tilLoginEmail.setError(null);
+					binding.tilLoginEmail.setError(null);
 				}
 			}
 		});
-		tietLoginPassword.addTextChangedListener(new TextWatcher() {
+		binding.tietLoginPassword.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
 			public void afterTextChanged(Editable editable) {}
 			@Override
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
-				if (tietLoginEmail.hasFocus() && s.toString().trim().isEmpty()) {
+				if (binding.tietLoginEmail.hasFocus() && s.toString().trim().isEmpty()) {
 					setErrorLoginPassword();
 				} else {
-					tilLoginPassword.setError(null);
+					binding.tilLoginPassword.setError(null);
 				}
 			}
 		});
@@ -293,7 +280,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 						try {
 							String name = object.getString("name");
 							String email = object.getString("email");
-							String fbUserID = object.getString("id");
 							String birthday = object.getString("birthday");
 							Map<String, Object> userData = new HashMap<>();
 							userData.put("fullName", name);
@@ -354,8 +340,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	//endregion
 
 	private boolean validateData() {
-		loginEmail = String.valueOf(tietLoginEmail.getText()).trim();
-		loginPassword = String.valueOf(tietLoginPassword.getText());
+		loginEmail = String.valueOf(binding.tietLoginEmail.getText()).trim();
+		loginPassword = String.valueOf(binding.tietLoginPassword.getText());
 		if (loginEmail.isEmpty()) {
 			setErrorLoginEmail();
 			foundError = true;
@@ -374,10 +360,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void setErrorLoginEmail() {
-		tilLoginEmail.setError("You have to fill in your email");
+		binding.tilLoginEmail.setError("You have to fill in your email");
 	}
 	private void setErrorLoginPassword() {
-		tilLoginPassword.setError("You have to fill in your password");
+		binding.tilLoginPassword.setError("You have to fill in your password");
 	}
 
 	private void navigateToMain() {

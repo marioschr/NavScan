@@ -14,17 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.unipi.marioschr.navscan.MainActivity;
+import com.unipi.marioschr.navscan.MainActivity.MainActivity;
 import com.unipi.marioschr.navscan.R;
+import com.unipi.marioschr.navscan.databinding.FragmentGoogleRegisterBinding;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,21 +32,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GoogleRegisterFragment extends Fragment implements View.OnClickListener {
-	private TextInputEditText tietGoogleFullName,tietGoogleBirthday;
-	private TextInputLayout tilGoogleFullName,tilGoogleBirthday;
 	private String fullName,birthday;
-	private Button btnGoogleSignUp;
 	private LocalDate birthdayLD;
 	private DatePickerDialog datePickerDialog;
 	private boolean foundError = false;
 	private FirebaseAuth mAuth;
 	private FirebaseFirestore db;
+	private FragmentGoogleRegisterBinding binding;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_google_register, container, false);
+		binding = FragmentGoogleRegisterBinding.inflate(inflater, container, false);
+		return binding.getRoot();
 	}
 
 	@Override
@@ -66,19 +62,13 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 		}
 	}
 	private void findViewsAndSetListeners(View view) {
-		tietGoogleFullName = view.findViewById(R.id.tietGoogleFullName);
-		tietGoogleBirthday = view.findViewById(R.id.tietGoogleBirthday);
-
-		tilGoogleFullName = view.findViewById(R.id.tilGoogleFullName);
-		tilGoogleBirthday = view.findViewById(R.id.tilGoogleBirthday);
-
-		tietGoogleBirthday.setOnFocusChangeListener((v, hasFocus) -> {
+		binding.tietGoogleBirthday.setOnFocusChangeListener((v, hasFocus) -> {
 			if (hasFocus) openDatePicker();
 			else hideDatePicker();
 		});
 
 		//region TextChangedListeners
-		tietGoogleFullName.addTextChangedListener(new TextWatcher() {
+		binding.tietGoogleFullName.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -88,11 +78,11 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 				if (s.toString().trim().isEmpty()) {
 					setErrorFullName();
 				} else {
-					tilGoogleFullName.setError(null);
+					binding.tilGoogleFullName.setError(null);
 				}
 			}
 		});
-		tietGoogleBirthday.addTextChangedListener(new TextWatcher() {
+		binding.tietGoogleBirthday.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
@@ -102,15 +92,13 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 				if (s.toString().trim().isEmpty()) {
 					setErrorBirthday();
 				} else {
-					tilGoogleBirthday.setError(null);
+					binding.tilGoogleBirthday.setError(null);
 				}
 			}
 		});
 		//endregion
 
-		btnGoogleSignUp = view.findViewById(R.id.btnGoogleSignUp);
-
-		btnGoogleSignUp.setOnClickListener(this);
+		binding.btnGoogleSignUp.setOnClickListener(this);
 	}
 
 	private void signUp() {
@@ -120,8 +108,8 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 
 
 	private boolean validateData() {
-		fullName = String.valueOf(tietGoogleFullName.getText());
-		birthday = String.valueOf(tietGoogleBirthday.getText());
+		fullName = String.valueOf(binding.tietGoogleFullName.getText());
+		birthday = String.valueOf(binding.tietGoogleBirthday.getText());
 
 		if (fullName.trim().isEmpty()) {
 			setErrorFullName();
@@ -179,29 +167,29 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 		int mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-		if (String.valueOf(tietGoogleBirthday.getText()).equals("")) {
+		if (String.valueOf(binding.tietGoogleBirthday.getText()).equals("")) {
 			datePickerDialog = new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
-				tietGoogleBirthday.setText(String.format("%02d", dayOfMonth)
+				binding.tietGoogleBirthday.setText(String.format("%02d", dayOfMonth)
 						+ "-" + String.format("%02d", monthOfYear + 1)
 						+ "-" + String.format("%02d", year));
-				birthdayLD = LocalDate.parse(String.valueOf(tietGoogleBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				tietGoogleBirthday.clearFocus();
+				birthdayLD = LocalDate.parse(String.valueOf(binding.tietGoogleBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				binding.tietGoogleBirthday.clearFocus();
 			}, mYear, mMonth, mDay);
 		} else {
-			LocalDate localDate = LocalDate.parse(String.valueOf(tietGoogleBirthday.getText()), DateTimeFormatter.ofPattern("d-M-yyyy"));
+			LocalDate localDate = LocalDate.parse(String.valueOf(binding.tietGoogleBirthday.getText()), DateTimeFormatter.ofPattern("d-M-yyyy"));
 			datePickerDialog = new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
-				tietGoogleBirthday.setText(String.format("%02d", dayOfMonth)
+				binding.tietGoogleBirthday.setText(String.format("%02d", dayOfMonth)
 						+ "-" + String.format("%02d", monthOfYear + 1)
 						+ "-" + String.format("%02d", year));
-				birthdayLD = LocalDate.parse(String.valueOf(tietGoogleBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				tietGoogleBirthday.clearFocus();
+				birthdayLD = LocalDate.parse(String.valueOf(binding.tietGoogleBirthday.getText()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				binding.tietGoogleBirthday.clearFocus();
 			}, localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
 		}
 		datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
 		Calendar minYear = Calendar.getInstance();
 		minYear.add(Calendar.YEAR, -110);
 		datePickerDialog.getDatePicker().setMinDate(minYear.getTimeInMillis());
-		datePickerDialog.setOnCancelListener(l -> tietGoogleBirthday.clearFocus());
+		datePickerDialog.setOnCancelListener(l -> binding.tietGoogleBirthday.clearFocus());
 		datePickerDialog.show();
 	}
 	private void hideDatePicker() {
@@ -211,10 +199,10 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 
 	//region Set Errors
 	private void setErrorFullName() {
-		tilGoogleFullName.setError("You have to fill in your full name");
+		binding.tilGoogleFullName.setError("You have to fill in your full name");
 	}
 	private void setErrorBirthday() {
-		tilGoogleBirthday.setError("You have to fill in your birthday");
+		binding.tilGoogleBirthday.setError("You have to fill in your birthday");
 	}
 	//endregion
 }

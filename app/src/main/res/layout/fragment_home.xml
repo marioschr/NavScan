@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="24dp"
-    tools:context=".MainFragment">
+    tools:context=".MainActivity.HomeFragment">
 
     <Button
         android:id="@+id/button2"
@@ -29,5 +28,4 @@
         android:text="Akamas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
