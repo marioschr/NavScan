@@ -1,12 +1,14 @@
-package com.unipi.marioschr.navscan.classes;
+package com.unipi.marioschr.navscan.models;
 
-public class UserClass {
+import com.google.firebase.Timestamp;
+
+public class UserModel {
     private String fullName;
-
     private String email;
     private int exp;
+    private Timestamp birthday;
 
-    public UserClass() {}
+    public UserModel() {}
 
     public String getFullName() {
         return fullName;
@@ -30,5 +32,13 @@ public class UserClass {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Timestamp getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Timestamp birthday) {
+        this.birthday = birthday;
     }
 }

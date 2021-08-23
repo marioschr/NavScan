@@ -38,6 +38,7 @@
             android:paddingHorizontal="15dp">
 
             <TextView
+                android:id="@+id/tvLocationName"
                 style="@style/TextView34Style"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -62,7 +63,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvLocation"
             style="@style/TextView16Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,7 +115,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/tvLocationDescription"
                     style="@style/TextView20Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

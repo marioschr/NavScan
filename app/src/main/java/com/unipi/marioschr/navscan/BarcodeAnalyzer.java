@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,7 +41,6 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                 if (barcodes != null && barcodes.size() > 0) {
                     CollectionReference colRef = db.collection("locations");
                     for (Barcode barcode: barcodes) {
-                        System.out.println("Code:"+barcode.getRawValue());
                         DocumentReference docRef = colRef.document(barcode.getRawValue());
                         docRef.get().addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
@@ -47,8 +48,8 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                                 if (document.exists()) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("code", barcode.getRawValue());
-                                    //NavController navController = Navigation.findNavController(ScannerFragment.getScannerFragmentContext().getActivity() , R.id.host_fragment_main);
-                                    //navController.navigate(R.id.action_scannerFragment_to_locationFragment, bundle);
+                                    NavController navController = Navigation.findNavController(ScannerFragment.getScannerFragmentContext().getActivity() , R.id.nav_host_fragment_activity_main2);
+                                    navController.navigate(R.id.action_navigation_scanner_to_locationInfoFragment, bundle);
                                 } else {
                                     Log.d(TAG, "No such document");
                                 }

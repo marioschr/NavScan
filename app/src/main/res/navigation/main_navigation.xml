@@ -11,9 +11,6 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_navigation_dashboard"
-            app:destination="@id/navigation_leaderboard" />
-        <action
             android:id="@+id/action_navigation_home_to_locationInfoFragment"
             app:destination="@id/locationInfoFragment" />
     </fragment>
@@ -22,17 +19,18 @@
         android:id="@+id/navigation_leaderboard"
         android:name="com.unipi.marioschr.navscan.MainActivity.LeaderboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_leaderboard" >
-        <action
-            android:id="@+id/action_navigation_dashboard_to_navigation_notifications"
-            app:destination="@id/navigation_scanner" />
-    </fragment>
+        tools:layout="@layout/fragment_leaderboard" />
 
     <fragment
         android:id="@+id/navigation_scanner"
         android:name="com.unipi.marioschr.navscan.MainActivity.ScannerFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_navigation_scanner_to_locationInfoFragment"
+            app:destination="@id/locationInfoFragment">
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/locationInfoFragment"
         android:name="com.unipi.marioschr.navscan.LocationInfoFragment"

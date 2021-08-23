@@ -21,7 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import com.unipi.marioschr.navscan.LeaderboardAdapter;
 import com.unipi.marioschr.navscan.R;
-import com.unipi.marioschr.navscan.classes.UserClass;
+import com.unipi.marioschr.navscan.models.UserModel;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class LeaderboardFragment extends Fragment {
 	FirebaseAuth auth;
 	FirebaseUser user;
 	CollectionReference colRef;
-	ArrayList<UserClass> data = new ArrayList<>();
+	ArrayList<UserModel> data = new ArrayList<>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +69,7 @@ public class LeaderboardFragment extends Fragment {
 					noInternetWarning();
 				} else {
 					for (QueryDocumentSnapshot document : task.getResult()) {
-						data.add(document.toObject(UserClass.class));
+						data.add(document.toObject(UserModel.class));
 					}
 				}
 			} else {
