@@ -1,10 +1,14 @@
 package com.unipi.marioschr.navscan;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,20 +18,39 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
 import com.unipi.marioschr.navscan.MainActivity.MainActivity;
 
+import java.security.Permission;
+
 import es.dmoral.toasty.Toasty;
 
 public class LauncherActivity extends AppCompatActivity {
+	private FirebaseAuth mAuth;
+	private FirebaseFirestore db;
+	private FirebaseUser currentUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launcher);
 
+		ActivityResultLauncher<String[]> requestPermissionLauncher =
+				registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+					if (!isGranted.get(Manifest.permission.CAMERA)) {
+						Toast.makeText(getApplicationContext(), "Can't continue without the required permissions for camera", Toast.LENGTH_LONG).show();
+					}
+					if (!isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
+						Toast.makeText(getApplicationContext(), "Can't continue without the required permissions for location", Toast.LENGTH_LONG).show();
+					}
+					CheckforUser(currentUser);
+				});
+
 		Toasty.Config.getInstance().setToastTypeface(getResources().getFont(R.font.shadows_into_light_two)).apply();
-		FirebaseAuth mAuth = FirebaseAuth.getInstance();
-		FirebaseFirestore db = FirebaseFirestore.getInstance();
-		// Check if user is signed in (non-null) and update UI accordingly.
-		FirebaseUser currentUser = mAuth.getCurrentUser();
+		mAuth = FirebaseAuth.getInstance();
+		db = FirebaseFirestore.getInstance();
+		currentUser = mAuth.getCurrentUser();
+		requestPermissionLauncher.launch(new String[]{Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION});
+	}
+
+	private void CheckforUser(FirebaseUser currentUser) {
 		if (currentUser != null) {
 			DocumentReference docIdRef = db.collection("users").document(currentUser.getUid());
 			docIdRef.get().addOnCompleteListener(task -> {
@@ -49,7 +72,6 @@ public class LauncherActivity extends AppCompatActivity {
 			navigateToAuth();
 		}
 	}
-
 	private void navigateToMain() {
 		startActivity(new Intent(this, MainActivity.class));
 		finish();

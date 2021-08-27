@@ -1,11 +1,15 @@
 package com.unipi.marioschr.navscan.MainActivity;
 
+import android.Manifest;
 import 	android.os.Bundle;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -43,15 +47,25 @@ public class ScannerFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentScanBinding.inflate(inflater, container, false);
+		ActivityResultLauncher<String[]> requestPermissionLauncher =
+				registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+					if (!isGranted.get(Manifest.permission.CAMERA)) {
+						Toast.makeText(getContext(), "Can't continue without the required permissions for camera", Toast.LENGTH_LONG).show();
+					}
+					if (!isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
+						Toast.makeText(getContext(), "Can't continue without the required permissions for location", Toast.LENGTH_LONG).show();
+					}
+					analysisExecutor = Executors.newSingleThreadExecutor();
+					cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+					cameraProviderFuture.addListener(() -> {
+						try {
+							ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+							bindPreview(cameraProvider);
+						} catch (ExecutionException | InterruptedException ignored) { }
+					}, ContextCompat.getMainExecutor(requireContext()));
+				});
 		scannerFragmentContext = this;
-		analysisExecutor = Executors.newSingleThreadExecutor();
-		cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
-		cameraProviderFuture.addListener(() -> {
-			try {
-				ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-				bindPreview(cameraProvider);
-			} catch (ExecutionException | InterruptedException ignored) { }
-		}, ContextCompat.getMainExecutor(requireContext()));
+		requestPermissionLauncher.launch(new String[]{Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION});
 		binding.flashlightButton.setOnClickListener(view -> Flash());
 		return binding.getRoot();
 	}

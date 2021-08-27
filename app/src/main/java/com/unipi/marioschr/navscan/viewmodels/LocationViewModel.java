@@ -4,18 +4,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unipi.marioschr.navscan.models.LocationModel;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LocationViewModel extends ViewModel {
+    private LocationModel locationModel;
+    private MutableLiveData<String> toastMessageObserver = new MutableLiveData();
     private MutableLiveData<LocationModel> locationData;
     private MutableLiveData<ArrayList<String>> locationImages;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -24,8 +27,9 @@ public class LocationViewModel extends ViewModel {
     public LiveData<LocationModel> getLocationData(String code) {
         if (locationData == null) {
             locationData = new MutableLiveData<>();
-            loadLocationData(code);
         }
+        toastMessageObserver = new MutableLiveData<>();
+        loadLocationData(code);
         return locationData;
     }
 
@@ -37,13 +41,19 @@ public class LocationViewModel extends ViewModel {
         return locationImages;
     }
 
+    public LiveData<String> getToastObserver(){
+        return toastMessageObserver;
+    }
+
     private void loadLocationData(String code) {
         DocumentReference docRef = db.collection("locations").document(code);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    locationData.setValue(document.toObject(LocationModel.class));
+                    locationModel = document.toObject(LocationModel.class);
+                    locationData.setValue(locationModel);
+                    checkIfUserAlreadyVisited(code, locationModel);
                 }
             }
         });
@@ -66,22 +76,20 @@ public class LocationViewModel extends ViewModel {
         });
     }
 
-    public void loadLocationData(String code, String userID) {
-        List<String> data = new ArrayList<>();
-        DocumentReference docRef = db.collection("locations").document(code);
-        docRef.get().addOnCompleteListener(task -> {
+    private void checkIfUserAlreadyVisited(String code, LocationModel locationModel) {
+        DocumentReference ref = db.collection("users").document(FirebaseAuth.getInstance().getUid());
+        ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    //_name.setValue(String.valueOf(document.get("name")));
-                    //_placesID.setValue(String.valueOf(document.get("placesAPI_ID")));
-                    //getLocationInfoData(_placesID.getValue());
-/*                    data.add(String.valueOf(document.get("name")));
-                    data.add(String.valueOf(document.get("coords")));
-                    //coords = document.getGeoPoint("coords");
-                    //points = document.getDouble("exp");
-                    data.add(String.valueOf(document.get("points")));
-                    locationData.setValue(data);*/
+                ArrayList<String> visited = (ArrayList<String>) task.getResult().get("visited");
+                if (visited != null && visited.contains(code)) {
+                    System.out.println("Already Visited");
+                    toastMessageObserver.setValue("Already Visited");
+                } else {
+                    System.out.println("First visit");
+                    ref.update("visited", FieldValue.arrayUnion(code));
+                    toastMessageObserver.setValue("Good job! You have successfully visited "
+                            +locationModel.getName()+"! You have also earned "
+                            +locationModel.getPoints()+" points!");
                 }
             }
         });
@@ -126,28 +134,31 @@ public class LocationViewModel extends ViewModel {
         _rating.observeForever(value -> _rating.setValue(String.valueOf(rating1)));
     }*/
 }
+/*public class Event<out T>(private T content) {
+
+        var hasBeenHandled = false
+        private set // Allow external read but not write
+
+        *//**
+         * Returns the content and prevents its use again.
+         *//*
+        fun getContentIfNotHandledOrReturnNull(): T? {
+        return if (hasBeenHandled) {
+        null
+        } else {
+        hasBeenHandled = true
+        content
+        }
+        }
+
+        *//**
+         * Returns the content, even if it's already been handled.
+         *//*
+        fun peekContent(): T = content
+        }*/
 
 
                     /*DocumentReference docRef1 = db.collection("users").document(userID);
-                    docRef1.get().addOnCompleteListener(task1 -> {
-                        if (task1.isSuccessful()) {
-                            DocumentSnapshot document1 = task1.getResult();
-                            if (document1.exists()) {
-                                ArrayList<String> visited = (ArrayList<String>) document1.get("visited");
-                                if (visited != null && !visited.contains(code)) {
-                                    locationListener = new MyLocationListener();
-                                    locationManager.requestLocationUpdates(
-                                            LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                                } else {
-                                    MotionToast.Companion.createColorToast(requireActivity(),"Oops, problem!",
-                                            "You have already visited this location",
-                                            MotionToast.TOAST_WARNING,
-                                            MotionToast.GRAVITY_BOTTOM,
-                                            MotionToast.LONG_DURATION,
-                                            ResourcesCompat.getFont(requireContext(),R.font.helvetica));                                    }
-                            }
-                        }
-                    });DocumentReference docRef1 = db.collection("users").document(userID);
                     docRef1.get().addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
                             DocumentSnapshot document1 = task1.getResult();
