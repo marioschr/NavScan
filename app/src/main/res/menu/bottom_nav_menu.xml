@@ -11,12 +11,23 @@
     <item
         android:id="@+id/navigation_leaderboard"
         android:icon="@drawable/ic_baseline_leaderboard_24"
-        android:title="Leaderboard"
+        android:title="@string/title_leaderboard"
         app:exb_color="@color/arizona_greenblue" />
 
     <item
         android:id="@+id/navigation_scanner"
         android:icon="@drawable/ic_baseline_qr_code_scanner_24"
-        android:title="Scan"
+        android:title="@string/title_scan"
+        app:exb_color="@color/arizona_greenblue" />
+
+    <item
+        android:id="@+id/navigation_store"
+        android:icon="@drawable/ic_baseline_local_grocery_store_24"
+        android:title="@string/title_store"
+        app:exb_color="@color/arizona_greenblue" />
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/title_settings"
         app:exb_color="@color/arizona_greenblue" />
 </menu>

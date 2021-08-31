@@ -21,6 +21,8 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;
 import com.unipi.marioschr.navscan.MainActivity.ScannerFragment;
 
+import es.dmoral.toasty.Toasty;
+
 public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
     BarcodeScannerOptions options =
             new BarcodeScannerOptions.Builder()
@@ -39,7 +41,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                     InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
             String TAG = "Document";
             barcodeScanner.process(image).addOnSuccessListener(barcodes -> {
-                if (barcodes != null && barcodes.size() > 0) {
+                if (!barcodes.isEmpty()) {
                     CollectionReference colRef = db.collection("locations");
                     for (Barcode barcode: barcodes) {
                         DocumentReference docRef = colRef.document(barcode.getRawValue());
@@ -49,9 +51,12 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                                 if (document.exists()) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("code", barcode.getRawValue());
-                                    navController.navigate(R.id.action_navigation_scanner_to_locationInfoFragment, bundle);
+                                    if (navController.getCurrentDestination().getId() == R.id.navigation_scanner) {
+                                        navController.navigate(R.id.action_navigation_scanner_to_locationInfoFragment, bundle);
+                                    }
                                 } else {
                                     Log.d(TAG, "No such document");
+                                    Toasty.warning(ScannerFragment.getScannerFragmentContext().requireActivity(), "This QR-code doesn't match with any of the available locations.",Toasty.LENGTH_LONG).show();
                                 }
                             } else {
                                 Log.d(TAG, "get failed with ", task.getException());

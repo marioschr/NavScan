@@ -23,7 +23,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:exb_itemInactiveColor="@color/arizona_greenblue"
+        app:exb_item_horizontal_padding="10dp"
+        app:exb_item_vertical_margin="5dp"
+        app:exb_item_vertical_padding="5dp"
         app:exb_items="@menu/bottom_nav_menu"
+        app:exb_transitionDuration="70"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
