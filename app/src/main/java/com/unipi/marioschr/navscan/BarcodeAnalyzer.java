@@ -28,6 +28,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                     .build();
     BarcodeScanner barcodeScanner = BarcodeScanning.getClient(options);
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    NavController navController = Navigation.findNavController(ScannerFragment.getScannerFragmentContext().getActivity() , R.id.nav_host_fragment_main);
 
     @Override
     public void analyze(ImageProxy imageProxy) {
@@ -48,7 +49,6 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                                 if (document.exists()) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("code", barcode.getRawValue());
-                                    NavController navController = Navigation.findNavController(ScannerFragment.getScannerFragmentContext().getActivity() , R.id.nav_host_fragment_main);
                                     navController.navigate(R.id.action_navigation_scanner_to_locationInfoFragment, bundle);
                                 } else {
                                     Log.d(TAG, "No such document");

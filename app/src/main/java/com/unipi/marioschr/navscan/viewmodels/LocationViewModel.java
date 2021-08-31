@@ -11,30 +11,31 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.unipi.marioschr.navscan.models.LocationModel;
+import com.unipi.marioschr.navscan.models.LocationFBModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LocationViewModel extends ViewModel {
-    private LocationModel locationModel;
+    private LocationFBModel locationFBModel;
     private MutableLiveData<String> toastMessageObserver = new MutableLiveData();
-    private MutableLiveData<LocationModel> locationData;
+    private MutableLiveData<LocationFBModel> locationData;
     private MutableLiveData<ArrayList<String>> locationImages;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private String lastLocationID;
 
-    public LiveData<LocationModel> getLocationData(String code) {
-        if (locationData == null) {
-            locationData = new MutableLiveData<>();
-        }
+    public LiveData<LocationFBModel> getLocationData(String code) {
         toastMessageObserver = new MutableLiveData<>();
-        loadLocationData(code);
+        if (locationData == null || !code.equals(lastLocationID)) {
+            locationData = new MutableLiveData<>();
+            loadLocationData(code);
+        }
         return locationData;
     }
 
     public LiveData<ArrayList<String>> getLocationImages(String code) {
-        if (locationImages == null) {
+        if (locationImages == null || !code.equals(lastLocationID)) {
             locationImages = new MutableLiveData<>();
             loadLocationimages(code);
         }
@@ -46,14 +47,15 @@ public class LocationViewModel extends ViewModel {
     }
 
     private void loadLocationData(String code) {
+        lastLocationID = code;
         DocumentReference docRef = db.collection("locations").document(code);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    locationModel = document.toObject(LocationModel.class);
-                    locationData.setValue(locationModel);
-                    checkIfUserAlreadyVisited(code, locationModel);
+                    locationFBModel = document.toObject(LocationFBModel.class);
+                    locationData.setValue(locationFBModel);
+                    checkIfUserAlreadyVisited(code, locationFBModel);
                 }
             }
         });
@@ -76,20 +78,18 @@ public class LocationViewModel extends ViewModel {
         });
     }
 
-    private void checkIfUserAlreadyVisited(String code, LocationModel locationModel) {
+    private void checkIfUserAlreadyVisited(String code, LocationFBModel locationFBModel) {
         DocumentReference ref = db.collection("users").document(FirebaseAuth.getInstance().getUid());
         ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<String> visited = (ArrayList<String>) task.getResult().get("visited");
                 if (visited != null && visited.contains(code)) {
-                    System.out.println("Already Visited");
                     toastMessageObserver.setValue("Already Visited");
                 } else {
-                    System.out.println("First visit");
                     ref.update("visited", FieldValue.arrayUnion(code));
                     toastMessageObserver.setValue("Good job! You have successfully visited "
-                            +locationModel.getName()+"! You have also earned "
-                            +locationModel.getPoints()+" points!");
+                            + locationFBModel.getName()+"! You have also earned "
+                            + locationFBModel.getPoints()+" points!");
                 }
             }
         });

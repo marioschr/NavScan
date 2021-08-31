@@ -6,118 +6,258 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity.HomeFragment">
 
-    <Button
-        android:id="@+id/button2"
-        style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="24dp"
-        android:onClick="SignOut"
-        android:text="Sign Out"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:src="@drawable/rounded_bottom_corners_colored"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button3"
-        style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="60dp"
-        android:text="Akamas"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@drawable/rounded_bottom_corners"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/male"
+            app:layout_constraintBottom_toTopOf="@+id/tvName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/TextView28Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:shadowColor="#49220E"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="0.1"
+            android:text="TextView"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView9"
+                style="@style/TextView24Style"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Name:" />
+                android:gravity="center"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
+                android:text="Visited"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView6"
+                style="@style/TextView20Style"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:gravity="center"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
+                android:text="26"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView16"
+                style="@style/TextView24Style"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Birthday:" />
+                android:gravity="center"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
+                android:text="Level"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvBirthday"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvLevel"
+                style="@style/TextView20Style"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:gravity="center"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
+                android:text="7"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView13"
+                style="@style/TextView24Style"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Exp:" />
+                android:gravity="center"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
+                android:text="Coins"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvExp"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView11"
+                style="@style/TextView20Style"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:gravity="center"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
+                android:text="1735"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Email:" />
-
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
-        </LinearLayout>
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSignOut"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="SignOut"
+        android:text="Sign Out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expProgressBar" />
+
+    <TextView
+        android:id="@+id/tvExpPoints"
+        style="@style/TextView20Style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/shadows_into_light_two"
+        android:shadowColor="#49220E"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="0.1"
+        android:text="Experience Points"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"/>
+
+
+    <com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
+        android:id="@+id/expProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvExpPoints"
+        app:rcAnimationEnable="true"
+        app:rcAnimationSpeedScale="3"
+        app:rcBackgroundColor="@color/arizona_greenblue"
+        app:rcMax="0"
+        app:rcProgress="0"
+        app:rcProgressColor="@color/darker_arizona_greenblue" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/arizona_greenblue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSignOut">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextView24Style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Suggested Locations"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

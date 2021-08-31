@@ -2,13 +2,13 @@ package com.unipi.marioschr.navscan.models;
 
 import com.google.firebase.firestore.GeoPoint;
 
-public class LocationModel {
+public class LocationFBModel {
     private GeoPoint coords;
     private int points;
     private String name;
     private String location;
     private String description;
-    public LocationModel() { }
+    public LocationFBModel() { }
 
     public GeoPoint getCoords() {
         return coords;

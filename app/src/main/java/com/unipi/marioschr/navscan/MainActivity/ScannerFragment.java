@@ -34,7 +34,6 @@ public class ScannerFragment extends Fragment {
 
 	private static ScannerFragment scannerFragmentContext;
 	public AtomicBoolean processingBarcode = new AtomicBoolean(false);
-	private BarcodeAnalyzer barcodeAnalyzer = new BarcodeAnalyzer();
 	private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 	private Executor analysisExecutor;
 	private Camera camera;
@@ -43,6 +42,7 @@ public class ScannerFragment extends Fragment {
 	public static ScannerFragment getScannerFragmentContext() {
 		return scannerFragmentContext;
 	}
+	BarcodeAnalyzer barcodeAnalyzer;
 
 	public View onCreateView(@NonNull LayoutInflater inflater,
 							 ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class ScannerFragment extends Fragment {
 					if (!isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
 						Toast.makeText(getContext(), "Can't continue without the required permissions for location", Toast.LENGTH_LONG).show();
 					}
+					barcodeAnalyzer = new BarcodeAnalyzer();
 					analysisExecutor = Executors.newSingleThreadExecutor();
 					cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
 					cameraProviderFuture.addListener(() -> {

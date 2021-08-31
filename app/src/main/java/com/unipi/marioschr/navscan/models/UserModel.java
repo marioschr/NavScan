@@ -1,12 +1,12 @@
 package com.unipi.marioschr.navscan.models;
 
-import com.google.firebase.Timestamp;
-
 public class UserModel {
     private String fullName;
     private String email;
-    private int exp;
-    private Timestamp birthday;
+    private int level;
+    private float currentLevelXp;
+    private float currentLevelMaxXp;
+    private String birthday;
 
     public UserModel() {}
 
@@ -18,14 +18,6 @@ public class UserModel {
         this.fullName = fullName;
     }
 
-    public int getExp() {
-        return exp;
-    }
-
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -34,11 +26,35 @@ public class UserModel {
         this.email = email;
     }
 
-    public Timestamp getBirthday() {
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public float getCurrentLevelXp() {
+        return currentLevelXp;
+    }
+
+    public void setCurrentLevelXp(float currentLevelXp) {
+        this.currentLevelXp = currentLevelXp;
+    }
+
+    public float getCurrentLevelMaxXp() {
+        return currentLevelMaxXp;
+    }
+
+    public void setCurrentLevelMaxXp(float currentLevelMaxXp) {
+        this.currentLevelMaxXp = currentLevelMaxXp;
+    }
+
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Timestamp birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 }

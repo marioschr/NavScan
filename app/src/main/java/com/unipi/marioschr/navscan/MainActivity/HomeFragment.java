@@ -2,6 +2,8 @@ package com.unipi.marioschr.navscan.MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,22 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
 import com.unipi.marioschr.navscan.viewmodels.HomeFragmentViewModel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class HomeFragment extends Fragment implements View.OnClickListener {
 	private FragmentHomeBinding binding;
 	private HomeFragmentViewModel viewModel;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -38,20 +35,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = new ViewModelProvider(requireActivity()).get(HomeFragmentViewModel.class);
-
 		viewModel.getUserData(FirebaseAuth.getInstance().getUid()).observe(requireActivity(), user -> {
+			Glide.with(requireContext()).load(R.drawable.prof).circleCrop().into(binding.imageViewProfile);
 			binding.tvName.setText(user.getFullName());
-			Date birthday = user.getBirthday().toDate();
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			binding.tvBirthday.setText(dateFormat.format(birthday));
-			binding.tvEmail.setText(user.getEmail());
-			binding.tvExp.setText(Integer.toString(user.getExp()));
+			//binding.tvBirthday.setText(user.getBirthday());
+			//binding.tvEmail.setText(user.getEmail());
+			binding.tvLevel.setText(String.valueOf(user.getLevel()));
+			binding.expProgressBar.setMax(user.getCurrentLevelMaxXp());
+			binding.expProgressBar.setProgressText((int) user.getCurrentLevelXp() + "/" + (int) user.getCurrentLevelMaxXp());
+			final Handler handler = new Handler(Looper.getMainLooper());
+			handler.postDelayed(() -> binding.expProgressBar.setProgress(user.getCurrentLevelXp()),0);
 		});
 	}
 
+
 	public void SetListeners() {
-		binding.button3.setOnClickListener(this);
-		binding.button2.setOnClickListener(this);
+		binding.buttonSignOut.setOnClickListener(this);
 	}
 
 	public void SignOut() {
@@ -60,19 +59,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 		requireActivity().finish();
 	}
 
-	public void NavigateToLocation() {
-		NavHostFragment.findNavController(this).navigate(R.id.action_navigation_home_to_locationInfoFragment);
-	}
-
 	@Override
 	public void onClick(View view) {
-		switch (view.getId()) {
-			case R.id.button3:
-				NavigateToLocation();
-				break;
-			case R.id.button2:
-				SignOut();
-				break;
+		if (view.getId() == R.id.buttonSignOut) {
+			SignOut();
 		}
 	}
 }

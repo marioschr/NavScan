@@ -11,6 +11,7 @@
     <color name="dark_cornflower_blue">#313B72</color>
     <color name="tiffany_blue">#07BEB8</color>
     <color name="arizona_greenblue">#7FCBAF</color>
+    <color name="darker_arizona_greenblue">#4F9A80</color>
     <color name="branch_brown">#8D6E63</color>
     <color name="colorOnButton">@color/arizona_greenblue</color>
     <color name="backgroundColor">@color/cardview_light_background</color>

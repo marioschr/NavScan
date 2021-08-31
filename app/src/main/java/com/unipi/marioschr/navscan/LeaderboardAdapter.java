@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.unipi.marioschr.navscan.models.UserModel;
+import com.unipi.marioschr.navscan.models.UserFBModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,16 +41,16 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     }
 
     // Add a list of items -- change to type used
-    public void addAll(List<UserModel> list) {
+    public void addAll(List<UserFBModel> list) {
         mUsers.addAll(list);
         notifyDataSetChanged();
     }
 
     // Store a member variable for the contacts
-    private List<UserModel> mUsers;
+    private List<UserFBModel> mUsers;
 
     // Pass in the contact array into the constructor
-    public LeaderboardAdapter(List<UserModel> users) {
+    public LeaderboardAdapter(List<UserFBModel> users) {
         mUsers = users;
     }
 
@@ -72,7 +72,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get the data model based on position
-        UserModel user = mUsers.get(position);
+        UserFBModel user = mUsers.get(position);
 
         // Set item views based on your views and data model
         TextView textView1 = holder.itemNumber;

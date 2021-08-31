@@ -30,8 +30,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,7 +41,7 @@ import com.google.firebase.storage.StorageReference;
 import com.limerse.slider.listener.CarouselListener;
 import com.limerse.slider.model.CarouselItem;
 import com.unipi.marioschr.navscan.databinding.FragmentLocationInfoBinding;
-import com.unipi.marioschr.navscan.models.LocationModel;
+import com.unipi.marioschr.navscan.models.LocationFBModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,12 +57,13 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 	DocumentReference refUsers = db.collection("users").document(auth.getUid());
 	String locationCode;
 	LocationManager locationManager;
-	LocationModel locationModel;
-
+	LocationFBModel locationFBModel;
+	SettingsClient client;
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = FragmentLocationInfoBinding.inflate(inflater, container, false);
+		client = LocationServices.getSettingsClient(requireContext());
 		locationManager = (LocationManager) requireContext().getSystemService(LOCATION_SERVICE);
 		return binding.getRoot();
 	}
@@ -104,6 +103,25 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 		};
 		binding.carousel.setCarouselListener(carouselListener);
 		locationCode = requireArguments().getString("code");
+/*		viewModel.getLocationData(locationCode).observe(getViewLifecycleOwner(), location -> {
+			binding.tvLocationName.setText(location.getName());
+			binding.tvLocation.setText(location.getLocation());
+			binding.tvLocationDescription.setText(location.getDescription());
+		});
+		viewModel.getLocationImages(locationCode).observe(getViewLifecycleOwner(), images -> {
+			ArrayList<CarouselItem> imagesList = new ArrayList<>();
+			for (String image: images) {
+				imagesList.add(new CarouselItem(image));
+			}
+			binding.carousel.setData(imagesList);
+		});
+		viewModel.getToastObserver().observe(getViewLifecycleOwner(), toast -> {
+			if (toast.equals("Already Visited")) {
+				Toasty.info(requireActivity(), "Already Visited", 2000).show();
+			} else if(toast.equals()){
+
+			}
+		});*/
 		loadLocationData(locationCode);
 	}
 
@@ -113,12 +131,14 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 			if (task.isSuccessful()) {
 				DocumentSnapshot document = task.getResult();
 				if (document.exists()) {
-					locationModel = document.toObject(LocationModel.class);
-					binding.tvLocationName.setText(locationModel.getName());
-					binding.tvLocation.setText(locationModel.getLocation());
-					binding.tvLocationDescription.setText(locationModel.getDescription());
-					loadLocationimages(code);
-					checkIfUserAlreadyVisited(code);
+					locationFBModel = document.toObject(LocationFBModel.class);
+					if (locationFBModel != null) {
+						binding.tvLocationName.setText(locationFBModel.getName());
+						binding.tvLocation.setText(locationFBModel.getLocation());
+						binding.tvLocationDescription.setText(locationFBModel.getDescription());
+						loadLocationimages(code);
+						checkIfUserAlreadyVisited(code);
+					}
 				}
 			}
 		});
@@ -140,130 +160,86 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 		});
 	}
 
-	private static final int code123 = 123123;
+	private static final int LocationEnableCode = 2424;
 
-	@SuppressLint("MissingPermission")
 	private void checkIfUserAlreadyVisited(String code) {
 		refUsers.get().addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
 				ArrayList<String> visited = (ArrayList<String>) task.getResult().get("visited");
 				if (visited != null && visited.contains(code)) {
-					System.out.println("Already Visited");
-					Toasty.info(requireActivity(), "Already Visited", 2000).show();
+					Toasty.info(requireActivity(), "Already Visited", Toasty.LENGTH_SHORT).show();
 				} else {
-/*					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-						if (locationManager.isLocationEnabled()) {
-							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-						}
-					}*/
-					LocationRequest locationRequest = LocationRequest.create()
-							.setInterval(10000)
-							.setFastestInterval(5000)
-							.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-					LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-					SettingsClient client = LocationServices.getSettingsClient(requireContext());
-					Task<LocationSettingsResponse> task1 = client.checkLocationSettings(builder.build());
-					task1.addOnSuccessListener(requireActivity(), new OnSuccessListener<LocationSettingsResponse>() {
-						@Override
-						public void onSuccess(@NonNull LocationSettingsResponse locationSettingsResponse) {
-							// All location settings are satisfied. The client can initialize
-							// location requests here.
-						}
-					});
-					task1.addOnFailureListener(requireActivity(), new OnFailureListener() {
-						@Override
-						public void onFailure(@NonNull Exception e) {
-							if (e instanceof ResolvableApiException) {
-								// Location settings are not satisfied, but this can be fixed
-								// by showing the user a dialog.
-								try {
-									// Show the dialog by calling startResolutionForResult(),
-									// and check the result in onActivityResult().
-									ResolvableApiException resolvable = (ResolvableApiException) e;
-									resolvable.startResolutionForResult(requireActivity(),
-											code123);
-								} catch (IntentSender.SendIntentException sendEx) {
-									// Ignore the error.
-								}
-							}
-
-						}
-					});
-					/*LocationServices
-							.getSettingsClient(requireActivity())
-							.checkLocationSettings(builder.build())
-							.addOnSuccessListener(requireActivity(), (LocationSettingsResponse response) -> {
-								// startUpdatingLocation(...);
-							})
-							.addOnFailureListener(requireActivity(), ex -> {
-								if (ex instanceof ResolvableApiException) {
-									// Location settings are NOT satisfied,  but this can be fixed  by showing the user a dialog.
-									try {
-										// Show the dialog by calling startResolutionForResult(),  and check the result in onActivityResult().
-										ResolvableApiException resolvable = (ResolvableApiException) ex;
-										resolvable.startResolutionForResult(getActivity(), 123123);
-									} catch (IntentSender.SendIntentException sendEx) {
-										// Ignore the error.
-									}
-								}
-							});*/
+					CheckLocationAccessAndRequestLocationUpdates();
 				}
 			}
 		});
 	}
 
-	double currentLat,currentLng, locationLat, locationLng;
+	@SuppressLint("MissingPermission")
+	private void CheckLocationAccessAndRequestLocationUpdates() {
+		LocationRequest locationRequest = LocationRequest.create()
+				.setInterval(10000)
+				.setFastestInterval(5000)
+				.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+		LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+		Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+		task.addOnSuccessListener(requireActivity(), locationSettingsResponse ->
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, LocationInfoFragment.this));
+		task.addOnFailureListener(requireActivity(), e -> {
+			if (e instanceof ResolvableApiException) {
+				try {
+					ResolvableApiException resolvable = (ResolvableApiException) e;
+					resolvable.startResolutionForResult(requireActivity(),
+							LocationEnableCode);
+				} catch (IntentSender.SendIntentException ignored) {}
+			}
+		});
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-		switch (requestCode) {
-			// Check for the integer request code originally supplied to startResolutionForResult().
-			case code123:
-				switch (resultCode) {
-					case Activity.RESULT_OK:
-						Toasty.success(getContext(),"Success, user enabled Location").show();
-						break;
-					case Activity.RESULT_CANCELED:
-						Toasty.warning(getContext(),"User cancelled or rejected Location").show();
-						break;
-				}
-				break;
+		if (requestCode == LocationEnableCode) {
+			switch (resultCode) {
+				case Activity.RESULT_OK:
+					CheckLocationAccessAndRequestLocationUpdates();
+					break;
+				case Activity.RESULT_CANCELED:
+					Toasty.warning(requireActivity(), "You have to enable your Location, " +
+							"so we are able to confirm that you are near this location", Toasty.LENGTH_LONG).show();
+					break;
+			}
 		}
 	}
 
 	@Override
 	public void onLocationChanged(@NonNull Location location) {
-		currentLat = location.getLatitude();
-		currentLng = location.getLongitude();
-		locationLat = locationModel.getCoords().getLatitude();
-		locationLng = locationModel.getCoords().getLongitude();
+		double currentLat = location.getLatitude();
+		double currentLng = location.getLongitude();
+		double locationLat = locationFBModel.getCoords().getLatitude();
+		double locationLng = locationFBModel.getCoords().getLongitude();
 		locationManager.removeUpdates(this);
 		if (calculateDistance(currentLat, currentLng, locationLat, locationLng) < 300) {
 			System.out.println("First visit");
 			refUsers.update("visited", FieldValue.arrayUnion(locationCode));
 			Toasty.success(requireActivity(),"Good job! You have successfully visited "
-					+locationModel.getName()+"! You have also earned "
-					+locationModel.getPoints()+" points!",3000).show();
+					+ locationFBModel.getName()+"! You have also earned "
+					+ locationFBModel.getPoints()+" points!",Toasty.LENGTH_LONG).show();
 		} else {
 			System.out.println("Too Far from Location");
-			Toasty.success(requireActivity(),"Too Far from Location",3000).show();
+			Toasty.success(requireActivity(),"Too Far from Location",Toasty.LENGTH_SHORT).show();
 		}
 	}
+
+	@Override
+	public void onProviderEnabled(@NonNull String provider) {}
+
+	@Override
+	public void onProviderDisabled(@NonNull String provider) {}
 
 	public static double calculateDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
 		float[] results = new float[3];
 		Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
 		return results[0];
-	}
-
-	@Override
-	public void onProviderEnabled(@NonNull String provider) {
-
-	}
-
-	@Override
-	public void onProviderDisabled(@NonNull String provider) {
-
 	}
 }

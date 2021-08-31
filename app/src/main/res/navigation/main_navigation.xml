@@ -28,8 +28,9 @@
         tools:layout="@layout/fragment_scan" >
         <action
             android:id="@+id/action_navigation_scanner_to_locationInfoFragment"
-            app:destination="@id/locationInfoFragment">
-        </action>
+            app:destination="@id/locationInfoFragment"
+            app:popUpTo="@id/navigation_scanner"
+            app:popUpToInclusive="true"></action>
     </fragment>
     <fragment
         android:id="@+id/locationInfoFragment"
