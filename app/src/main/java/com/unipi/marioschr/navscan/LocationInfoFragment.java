@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import com.limerse.slider.listener.CarouselListener;
 import com.limerse.slider.model.CarouselItem;
 import com.unipi.marioschr.navscan.databinding.FragmentLocationInfoBinding;
 import com.unipi.marioschr.navscan.models.LocationFBModel;
+import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,6 +61,8 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 	LocationManager locationManager;
 	LocationFBModel locationFBModel;
 	SettingsClient client;
+	private UserDataViewModel viewModel;
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
 		binding.carousel.registerLifecycle(getLifecycle());
 		CarouselListener carouselListener = new CarouselListener() {
 			@Override
@@ -85,21 +90,12 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 				closeButton.setOnClickListener(l -> customDialog.dismiss());
 				customDialog.show();
 			}
-
 			@Override
-			public void onLongClick(int i, @NonNull CarouselItem carouselItem) {
-
-			}
-
+			public void onLongClick(int i, @NonNull CarouselItem carouselItem) { }
 			@Override
-			public ViewBinding onCreateViewHolder(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup) {
-				return null;
-			}
-
+			public ViewBinding onCreateViewHolder(@NonNull LayoutInflater layoutInflater, @NonNull ViewGroup viewGroup) { return null; }
 			@Override
-			public void onBindViewHolder(@NonNull ViewBinding viewBinding, @NonNull CarouselItem carouselItem, int i) {
-
-			}
+			public void onBindViewHolder(@NonNull ViewBinding viewBinding, @NonNull CarouselItem carouselItem, int i) { }
 		};
 		binding.carousel.setCarouselListener(carouselListener);
 		locationCode = requireArguments().getString("code");
@@ -220,13 +216,15 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 		double locationLng = locationFBModel.getCoords().getLongitude();
 		locationManager.removeUpdates(this);
 		if (calculateDistance(currentLat, currentLng, locationLat, locationLng) < 300) {
-			System.out.println("First visit");
-			refUsers.update("visited", FieldValue.arrayUnion(locationCode));
-			Toasty.success(requireActivity(),"Good job! You have successfully visited "
-					+ locationFBModel.getName()+"! You have also earned "
-					+ locationFBModel.getPoints()+" points!",Toasty.LENGTH_LONG).show();
+			refUsers.update("visited", FieldValue.arrayUnion(locationCode),
+					"coins", FieldValue.increment(locationFBModel.getCoins()),
+							"exp", FieldValue.increment(locationFBModel.getPoints()));
+			Toasty.success(requireActivity(),String.format("Good job! You have successfully " +
+							"visited %s! You have also earned %s exp and %s coins!",
+					locationFBModel.getName(), locationFBModel.getPoints(),
+					locationFBModel.getCoins()), Toasty.LENGTH_LONG).show();
+			viewModel.updateUserData(auth.getUid());
 		} else {
-			System.out.println("Too Far from Location");
 			Toasty.success(requireActivity(),"Too Far from Location",Toasty.LENGTH_SHORT).show();
 		}
 	}

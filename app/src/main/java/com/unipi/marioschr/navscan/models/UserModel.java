@@ -1,12 +1,16 @@
 package com.unipi.marioschr.navscan.models;
 
+import java.util.List;
+
 public class UserModel {
     private String fullName;
     private String email;
     private int level;
+    private int coins;
     private float currentLevelXp;
     private float currentLevelMaxXp;
     private String birthday;
+    private List<String> visited;
 
     public UserModel() {}
 
@@ -34,6 +38,14 @@ public class UserModel {
         this.level = level;
     }
 
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
     public float getCurrentLevelXp() {
         return currentLevelXp;
     }
@@ -56,5 +68,13 @@ public class UserModel {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public List<String> getVisited() {
+        return visited;
+    }
+
+    public void setVisited(List<String> visited) {
+        this.visited = visited;
     }
 }

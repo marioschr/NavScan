@@ -84,18 +84,6 @@ public class LeaderboardFragment extends Fragment {
 
 	private void noInternetWarning() {
 		Toasty.warning(requireContext(), "Can't access the leaderboard live data right now.", Toast.LENGTH_SHORT, true).show();
-		//DynamicToast.makeWarning(requireContext(), "Warning toast").show();
-/*		Toaster.Companion.popWarning(
-				requireContext(),
-				"Can't access the leaderboard live data right now.",
-				Toaster.LENGTH_SHORT
-		).show();*/
-/*		MotionToast.Companion.createToast(getActivity(),"Oops, problem!",
-				"Can't access the leaderboard live data right now.",
-				MotionToast.TOAST_SUCCESS,
-				MotionToast.GRAVITY_BOTTOM,
-				MotionToast.SHORT_DURATION,
-				ResourcesCompat.getFont(getActivity(),R.font.helvetica_regular));*/
 		mySwipeRefreshLayout.setRefreshing(false);
 	}
 }

@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class HomeFragmentViewModel extends ViewModel {
+public class UserDataViewModel extends ViewModel {
 	private UserFBModel userFBModel;
 	private MutableLiveData<UserModel> userData;
 	private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -25,6 +25,10 @@ public class HomeFragmentViewModel extends ViewModel {
 			loadUserData(userID);
 		}
 		return userData;
+	}
+
+	public void updateUserData(String userID) {
+		loadUserData(userID);
 	}
 
 	private void loadUserData(String userID) {
@@ -48,6 +52,8 @@ public class HomeFragmentViewModel extends ViewModel {
 					userModel.setEmail(userFBModel.getEmail());
 					userModel.setBirthday(dateFormat.format(birthday));
 					userModel.setLevel(level);
+					userModel.setCoins(userFBModel.getCoins());
+					userModel.setVisited(userFBModel.getVisited());
 					userModel.setCurrentLevelXp(currentLevelXp);
 					userModel.setCurrentLevelMaxXp(xpRequired(level) - xpRequired(level - 1));
 					userData.setValue(userModel);

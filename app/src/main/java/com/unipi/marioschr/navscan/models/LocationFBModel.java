@@ -5,9 +5,11 @@ import com.google.firebase.firestore.GeoPoint;
 public class LocationFBModel {
     private GeoPoint coords;
     private int points;
+    private int coins;
     private String name;
     private String location;
     private String description;
+
     public LocationFBModel() { }
 
     public GeoPoint getCoords() {
@@ -24,6 +26,14 @@ public class LocationFBModel {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
     }
 
     public String getName() {

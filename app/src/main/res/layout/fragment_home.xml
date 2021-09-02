@@ -87,7 +87,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tvLocationsVisited"
                 style="@style/TextView20Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/tvCoins"
                 style="@style/TextView20Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -18,11 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
-import com.unipi.marioschr.navscan.viewmodels.HomeFragmentViewModel;
+import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 	private FragmentHomeBinding binding;
-	private HomeFragmentViewModel viewModel;
+	private UserDataViewModel viewModel;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -34,17 +35,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = new ViewModelProvider(requireActivity()).get(HomeFragmentViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
 		viewModel.getUserData(FirebaseAuth.getInstance().getUid()).observe(requireActivity(), user -> {
-			Glide.with(requireContext()).load(R.drawable.prof).circleCrop().into(binding.imageViewProfile);
+			Glide.with(HomeFragment.this).load(R.drawable.male).circleCrop().into(binding.imageViewProfile);
 			binding.tvName.setText(user.getFullName());
 			//binding.tvBirthday.setText(user.getBirthday());
 			//binding.tvEmail.setText(user.getEmail());
 			binding.tvLevel.setText(String.valueOf(user.getLevel()));
+			binding.tvCoins.setText(String.valueOf(user.getCoins()));
+			binding.tvLocationsVisited.setText(String.valueOf(user.getVisited().size()));
 			binding.expProgressBar.setMax(user.getCurrentLevelMaxXp());
-			binding.expProgressBar.setProgressText((int) user.getCurrentLevelXp() + "/" + (int) user.getCurrentLevelMaxXp());
 			final Handler handler = new Handler(Looper.getMainLooper());
-			handler.postDelayed(() -> binding.expProgressBar.setProgress(user.getCurrentLevelXp()),0);
+			handler.postDelayed(() -> {
+				binding.expProgressBar.setProgressText((int) user.getCurrentLevelXp() + "/" + (int) user.getCurrentLevelMaxXp());
+			}, 0);
+			final Handler handler1 = new Handler(Looper.getMainLooper());
+			handler1.postDelayed(() -> {
+				binding.expProgressBar.setProgress(user.getCurrentLevelXp());
+			}, 0);
 		});
 	}
 
