@@ -119,6 +119,7 @@
                     style="@style/TextView20Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
                     android:text="Akamas, is a promontory and cape at the northwest extremity of Cyprus with an area of 230 square kilometres. The peninsula is named after Akamas, a son of Theseus, hero of the Trojan War and founder of the city-kingdom of Soli. Akamas, is a promontory and cape at the northwest extremity of Cyprus with an area of 230 square kilometres. The peninsula is named after Akamas, a son of Theseus, hero of the Trojan War and founder of the city-kingdom of Soli." />
 
             </LinearLayout>

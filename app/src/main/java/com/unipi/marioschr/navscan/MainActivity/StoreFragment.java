@@ -67,6 +67,7 @@ public class StoreFragment extends Fragment {
 					noInternetWarning();
 				} else {
 					for (QueryDocumentSnapshot document : task.getResult()) {
+						for (int i = 0; i < 10; i++) //TODO:Remove for loop
 						data.add(document.toObject(StoreItemModel.class));
 					}
 				}

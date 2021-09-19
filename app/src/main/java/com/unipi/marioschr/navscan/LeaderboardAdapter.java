@@ -4,11 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.unipi.marioschr.navscan.models.UserFBModel;
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.unipi.marioschr.navscan.models.LeaderboardUserModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,10 +21,13 @@ import java.util.List;
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
+    public FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView itemNumber, content;
+        public TextView exp, name, position;
+        public ImageView profile;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -29,8 +36,10 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            itemNumber = itemView.findViewById(R.id.item_number);
-            content = itemView.findViewById(R.id.content);
+            exp = itemView.findViewById(R.id.item_exp);
+            name = itemView.findViewById(R.id.item_name);
+            position = itemView.findViewById(R.id.item_position);
+            profile = itemView.findViewById(R.id.item_profile);
         }
     }
 
@@ -41,16 +50,16 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     }
 
     // Add a list of items -- change to type used
-    public void addAll(List<UserFBModel> list) {
+    public void addAll(List<LeaderboardUserModel> list) {
         mUsers.addAll(list);
         notifyDataSetChanged();
     }
 
     // Store a member variable for the contacts
-    private List<UserFBModel> mUsers;
+    private List<LeaderboardUserModel> mUsers;
 
     // Pass in the contact array into the constructor
-    public LeaderboardAdapter(List<UserFBModel> users) {
+    public LeaderboardAdapter(List<LeaderboardUserModel> users) {
         mUsers = users;
     }
 
@@ -72,13 +81,21 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get the data model based on position
-        UserFBModel user = mUsers.get(position);
+        LeaderboardUserModel user = mUsers.get(position);
 
         // Set item views based on your views and data model
-        TextView textView1 = holder.itemNumber;
-        textView1.setText(String.valueOf(user.getExp()));
-        TextView textView2 = holder.content;
-        textView2.setText(String.format("%s %s", user.getFullName(), user.getEmail()));
+        holder.name.setText(String.valueOf(user.getFullName()));;
+        holder.position.setText((position + 1) + ".");
+        holder.exp.setText(String.valueOf((int) user.getExp()));
+        StorageReference storageRef = firebaseStorage.getReference("users").child(user.getUid());
+        storageRef.listAll().addOnSuccessListener(listResult -> {
+            if (!listResult.getItems().isEmpty()) {
+                listResult.getItems().get(0).getDownloadUrl().addOnSuccessListener(
+                        uri -> Glide.with(holder.profile.getContext()).load(uri).circleCrop().into(holder.profile));
+            } else {
+                Glide.with(holder.profile.getContext()).load(R.drawable.male).circleCrop().into(holder.profile);
+            }
+        });
     }
 
     // Returns the total count of items in the list

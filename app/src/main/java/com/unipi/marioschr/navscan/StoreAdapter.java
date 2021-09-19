@@ -1,9 +1,13 @@
 package com.unipi.marioschr.navscan;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,22 +19,50 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
+    private Button button;
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView itemNumber, content;
-
+        private TextView title, cost, content;
+        private ImageView image;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
+            title = itemView.findViewById(R.id.storeItemTitle);
+            cost = itemView.findViewById(R.id.storeItemCost);
+            content = itemView.findViewById(R.id.storeItemContent);
+            image = itemView.findViewById(R.id.storeItemImage);
+            button = itemView.findViewById(R.id.btnStoreItemClaim);
 
-            itemNumber = itemView.findViewById(R.id.item_number);
-            content = itemView.findViewById(R.id.content);
+            View.OnClickListener clickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int mSelectedItem = getBindingAdapterPosition();
+                    String code = String.valueOf(items.get(mSelectedItem).getName());
+                    String title = String.valueOf(items.get(mSelectedItem).getCost());
+                    String details = String.valueOf(items.get(mSelectedItem).getDescription());
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext()); // Η δημιουργία του alert dialog
+                    alert.setTitle("Confirm Purchase?");
+                    LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                    final View customLayout = inflater.inflate(R.layout.alert_dialog, null);
+                    EditText editCode,editTitle,editDetails;
+                    editCode = customLayout.findViewById(R.id.editCode);
+                    editCode.setText(code);
+                    editTitle = customLayout.findViewById(R.id.editTitle);
+                    editTitle.setText(title);
+                    editDetails = customLayout.findViewById(R.id.editDetails);
+                    editDetails.setText(details);
+                    alert.setView(customLayout);
+                    alert.create();
+                    alert.show();
+                }};
+            button.setOnClickListener(clickListener);
         }
     }
 
@@ -72,9 +104,8 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get the data model based on position
         StoreItemModel item = items.get(position);
-
         // Set item views based on your views and data model
-        TextView textView1 = holder.itemNumber;
+        TextView textView1 = holder.title;
         textView1.setText(String.valueOf(item.getName()));
         TextView textView2 = holder.content;
         textView2.setText(String.format("%s %s", item.getDescription(), item.getCost()));
