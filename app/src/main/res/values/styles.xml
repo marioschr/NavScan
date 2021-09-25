@@ -38,4 +38,9 @@
         <item name="android:textSize">18sp</item>
         <item name="fontFamily">@font/shadows_into_light_two</item>
     </style>
+
+    <style name="StoreButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/button_store_selector</item>
+    </style>
+
 </resources>

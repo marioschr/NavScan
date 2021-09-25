@@ -2,11 +2,11 @@ package com.unipi.marioschr.navscan;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
-    private Button button;
+    SharedPreferences sharedPref;
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -27,6 +27,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         // for any view that will be set as you render a row
         private TextView title, cost, content;
         private ImageView image;
+        private Button button;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
@@ -38,26 +39,26 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             content = itemView.findViewById(R.id.storeItemContent);
             image = itemView.findViewById(R.id.storeItemImage);
             button = itemView.findViewById(R.id.btnStoreItemClaim);
-
+            sharedPref = button.getContext()
+                    .getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
             View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int mSelectedItem = getBindingAdapterPosition();
-                    String code = String.valueOf(items.get(mSelectedItem).getName());
-                    String title = String.valueOf(items.get(mSelectedItem).getCost());
-                    String details = String.valueOf(items.get(mSelectedItem).getDescription());
+                    String name = String.valueOf(items.get(mSelectedItem).getName());
+                    String cost = items.get(mSelectedItem).getCost() + " Coins";
+                    String description = String.valueOf(items.get(mSelectedItem).getDescription());
 
                     AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext()); // Η δημιουργία του alert dialog
-                    alert.setTitle("Confirm Purchase?");
                     LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                    final View customLayout = inflater.inflate(R.layout.alert_dialog, null);
-                    EditText editCode,editTitle,editDetails;
-                    editCode = customLayout.findViewById(R.id.editCode);
-                    editCode.setText(code);
-                    editTitle = customLayout.findViewById(R.id.editTitle);
-                    editTitle.setText(title);
-                    editDetails = customLayout.findViewById(R.id.editDetails);
-                    editDetails.setText(details);
+                    final View customLayout = inflater.inflate(R.layout.alert_dialog_confirm, null);
+                    TextView tvName,tvCost,tvDescription;
+                    tvName = customLayout.findViewById(R.id.alertStoreItemTitle);
+                    tvName.setText(name);
+                    tvCost = customLayout.findViewById(R.id.alertStoreItemCost);
+                    tvCost.setText(cost);
+                    tvDescription = customLayout.findViewById(R.id.alertStoreItemDescription);
+                    tvDescription.setText(description);
                     alert.setView(customLayout);
                     alert.create();
                     alert.show();
@@ -105,10 +106,18 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         // Get the data model based on position
         StoreItemModel item = items.get(position);
         // Set item views based on your views and data model
-        TextView textView1 = holder.title;
-        textView1.setText(String.valueOf(item.getName()));
-        TextView textView2 = holder.content;
-        textView2.setText(String.format("%s %s", item.getDescription(), item.getCost()));
+        holder.title.setText(item.getName());
+        holder.cost.setText(item.getCost() + " Coins");
+        holder.content.setText(item.getDescription());
+
+
+        if (sharedPref.getInt("Coins", 0) < item.getCost()) {
+            holder.button.setText("Not Enough Coins");
+            holder.button.setEnabled(false);
+        } else {
+            holder.button.setText("Claim it");
+            holder.button.setEnabled(true);
+        }
     }
 
     // Returns the total count of items in the list

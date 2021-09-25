@@ -5,13 +5,14 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:orientation="vertical"
-    app:cardElevation="3dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="7dp">
 
         <TextView
             android:id="@+id/storeItemTitle"
@@ -45,6 +46,7 @@
 
         <Button
             android:id="@+id/btnStoreItemClaim"
+            style="@style/StoreButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Claim it" />

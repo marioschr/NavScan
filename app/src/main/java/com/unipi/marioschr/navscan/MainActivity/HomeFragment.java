@@ -1,6 +1,8 @@
 package com.unipi.marioschr.navscan.MainActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -43,6 +45,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 			//binding.tvEmail.setText(user.getEmail());
 			binding.tvLevel.setText(String.valueOf(user.getLevel()));
 			binding.tvCoins.setText(String.valueOf(user.getCoins()));
+			SharedPreferences sharedPref = requireActivity().getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = sharedPref.edit();
+			editor.putInt("Coins", user.getCoins());
+			editor.apply();
 			binding.tvLocationsVisited.setText(String.valueOf(user.getVisited().size()));
 			binding.expProgressBar.setMax(user.getCurrentLevelMaxXp());
 			final Handler handler = new Handler(Looper.getMainLooper());

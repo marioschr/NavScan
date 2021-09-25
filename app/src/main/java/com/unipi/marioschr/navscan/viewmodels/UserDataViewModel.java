@@ -1,21 +1,32 @@
 package com.unipi.marioschr.navscan.viewmodels;
 
+import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.unipi.marioschr.navscan.EditProfileFragment;
+import com.unipi.marioschr.navscan.MainActivity.MainActivity;
 import com.unipi.marioschr.navscan.models.UserFBModel;
 import com.unipi.marioschr.navscan.models.UserModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
+
+import es.dmoral.toasty.Toasty;
 
 public class UserDataViewModel extends ViewModel {
 	private UserFBModel userFBModel;
+	private UserModel userModel;
 	private MutableLiveData<UserModel> userData;
 	private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -37,7 +48,7 @@ public class UserDataViewModel extends ViewModel {
 			if (task.isSuccessful()) {
 				DocumentSnapshot document = task.getResult();
 				if (document.exists()) {
-					UserModel userModel = new UserModel();
+					userModel = new UserModel();
 					userFBModel = document.toObject(UserFBModel.class);
 					int level = 1;
 					while (userFBModel.getExp() >= xpRequired(level)) {
@@ -66,5 +77,21 @@ public class UserDataViewModel extends ViewModel {
 		float exponent = 1.5f;
 		float baseXP = 100;
 		return (float) Math.floor(baseXP * (Math.pow(level,exponent)));
+	}
+
+	public void editName(String userID, String name, Context context) {
+		DocumentReference docRef = db.collection("users").document(userID);
+		docRef.update("fullName", name).addOnSuccessListener(l -> {
+			Toasty.success(context, "Edit Successful", Toasty.LENGTH_SHORT).show();
+			userModel.setFullName(name);
+		});
+	}
+
+	public void editBirthday(String userID, LocalDate birthdayLD, Context context) {
+		DocumentReference docRef = db.collection("users").document(userID);
+		docRef.update("birthday", new Timestamp(new Date(birthdayLD.getMonth().toString() + " " + birthdayLD.getDayOfMonth() + ", " + birthdayLD.getYear()))).addOnSuccessListener(l -> {
+			Toasty.success(context, "Edit Successful", Toasty.LENGTH_SHORT).show();
+			userModel.setBirthday(birthdayLD.getDayOfMonth() + "/" + birthdayLD.getMonth().toString() + "/" + birthdayLD.getYear());
+		});
 	}
 }

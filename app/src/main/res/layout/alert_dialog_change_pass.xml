@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/alert_edit_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="7dp"
+    android:paddingVertical="4dp">
+
+    <TextView
+        style="@style/TextView28Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit your Password"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/alertTilCurrentPass"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/branch_brown"
+        app:boxStrokeColor="@color/arizona_greenblue"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/branch_brown">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/alertTietCurrentPass"
+            style="@style/TextView20Style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Current Password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/alertTilNewPass"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/branch_brown"
+        app:boxStrokeColor="@color/arizona_greenblue"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/branch_brown">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/alertTietNewPass"
+            style="@style/TextView20Style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="New Password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/alertTilConfirmNewPass"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/branch_brown"
+        app:boxStrokeColor="@color/arizona_greenblue"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/branch_brown">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/alertTietConfirmNewPass"
+            style="@style/TextView20Style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm new Password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/alertBtnChangePassCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/alertBtnChangePassApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Apply" />
+    </LinearLayout>
+
+
+</LinearLayout>

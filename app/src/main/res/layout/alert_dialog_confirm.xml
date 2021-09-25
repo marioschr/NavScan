@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alert_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="7dp"
+    android:paddingVertical="4dp">
+
+    <TextView
+        android:id="@+id/alertStoreItemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="2 GB for 7 Days" />
+
+    <TextView
+        android:id="@+id/alertStoreItemCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="250 Coins" />
+
+    <ImageView
+        android:id="@+id/alertStoreItemImage"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/male" />
+
+    <TextView
+        android:id="@+id/alertStoreItemDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:justificationMode="inter_word"
+        android:text="Blah blah blah blag" />
+
+    <Button
+        android:id="@+id/alertBtnStoreItemClaim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm Purchase" />
+
+</LinearLayout>
