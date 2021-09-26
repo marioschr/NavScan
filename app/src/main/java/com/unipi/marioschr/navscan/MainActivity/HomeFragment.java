@@ -1,6 +1,5 @@
 package com.unipi.marioschr.navscan.MainActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,21 +17,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.unipi.marioschr.navscan.Auth.AuthActivity;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment{
 	private FragmentHomeBinding binding;
 	private UserDataViewModel viewModel;
 	private StorageReference profileRef;
 	private String userID = FirebaseAuth.getInstance().getUid();
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = FragmentHomeBinding.inflate(inflater, container, false);
-		SetListeners();
 		return binding.getRoot();
 	}
 
@@ -76,23 +74,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 				binding.expProgressBar.setProgress(user.getCurrentLevelXp());
 			}, 0);
 		});
-	}
-
-
-	public void SetListeners() {
-		binding.buttonSignOut.setOnClickListener(this);
-	}
-
-	public void SignOut() {
-		FirebaseAuth.getInstance().signOut();
-		startActivity(new Intent(requireActivity(), AuthActivity.class));
-		requireActivity().finish();
-	}
-
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.buttonSignOut) {
-			SignOut();
-		}
 	}
 }

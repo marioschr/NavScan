@@ -3,9 +3,14 @@ package com.unipi.marioschr.navscan;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,8 +22,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
 import com.unipi.marioschr.navscan.MainActivity.MainActivity;
+import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
 
 import java.security.Permission;
+import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 
@@ -31,6 +38,10 @@ public class LauncherActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launcher);
+
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String lang = sp.getString("language_key","en");
+		LocaleUtils.setLanguage(lang, getBaseContext());
 
 		ActivityResultLauncher<String[]> requestPermissionLauncher =
 				registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {

@@ -43,7 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Akamas" />
+                tools:text="Akamas" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -55,11 +55,11 @@
                 android:paddingVertical="4dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
-                android:text="4.5/5"
                 android:textColor="#FFFFFF"
                 app:drawableStartCompat="@drawable/ic_baseline_star_rate_24"
                 app:drawableTint="#FFFFFF"
-                tools:ignore="TextContrastCheck" />
+                tools:ignore="TextContrastCheck"
+                tools:text="4.5/5" />
         </LinearLayout>
 
         <TextView
@@ -67,10 +67,10 @@
             style="@style/TextView16Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTint="@color/branch_brown"
             android:paddingHorizontal="15dp"
-            android:text="Paphos, Cyprus"
-            app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
+            app:drawableStartCompat="@drawable/ic_baseline_location_on_24"
+            tools:text="Paphos, Cyprus"
+            app:drawableTint="@color/branch_brown" />
 
         <View
             android:id="@+id/divider"
@@ -92,21 +92,6 @@
                 android:paddingHorizontal="15dp">
 
                 <TextView
-                    android:id="@+id/textView3"
-                    style="@style/TextView24Style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/features"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
                     android:id="@+id/textView4"
                     style="@style/TextView24Style"
                     android:layout_width="match_parent"
@@ -120,8 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:justificationMode="inter_word"
-                    android:text="Akamas, is a promontory and cape at the northwest extremity of Cyprus with an area of 230 square kilometres. The peninsula is named after Akamas, a son of Theseus, hero of the Trojan War and founder of the city-kingdom of Soli. Akamas, is a promontory and cape at the northwest extremity of Cyprus with an area of 230 square kilometres. The peninsula is named after Akamas, a son of Theseus, hero of the Trojan War and founder of the city-kingdom of Soli." />
-
+                    tools:text="Akamas, is a promontory and cape at the northwest extremity of Cyprus with an area of 230 square kilometres. The peninsula is named after Akamas, a son of Theseus, hero of the Trojan War and founder of the city-kingdom of Soli. Akamas, is a promontory and cape at the northwest extremity of Cyprus with an area of 230 square kilometres. The peninsula is named after Akamas, a son of Theseus, hero of the Trojan War and founder of the city-kingdom of Soli." />
             </LinearLayout>
         </ScrollView>
 
@@ -139,7 +123,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
+<!--        <TextView
             android:id="@+id/textView8"
             style="@style/TextView20Style"
             android:layout_width="0dp"
@@ -150,12 +134,11 @@
             android:gravity="center_horizontal"
             android:text="@string/are_you_interested" />
 
-
         <Button
             android:id="@+id/button"
             style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/show_on_map" />
+            android:text="@string/show_on_map" />-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/alert_layout"
     android:layout_width="match_parent"
@@ -14,20 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="2 GB for 7 Days" />
+        tools:text="2 GB for 7 Days" />
 
     <TextView
         android:id="@+id/alertStoreItemCost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="250 Coins" />
+        tools:text="250 Coins" />
 
     <ImageView
         android:id="@+id/alertStoreItemImage"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:srcCompat="@drawable/male" />
+        tools:srcCompat="@drawable/male" />
 
     <TextView
         android:id="@+id/alertStoreItemDescription"
@@ -35,12 +34,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:justificationMode="inter_word"
-        android:text="Blah blah blah blag" />
+        tools:text="Item Description" />
 
     <Button
         android:id="@+id/alertBtnStoreItemClaim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirm Purchase" />
+        android:text="@string/confirm_purchase" />
 
 </LinearLayout>

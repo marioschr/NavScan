@@ -46,7 +46,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             View.OnClickListener clickListener = v -> {
                 int mSelectedItem = getBindingAdapterPosition();
                 String name = String.valueOf(items.get(mSelectedItem).getName());
-                String cost = items.get(mSelectedItem).getCost() + " Coins";
+                String cost = items.get(mSelectedItem).getCost() + " " + button.getResources().getString(R.string.coins);
                 String description = String.valueOf(items.get(mSelectedItem).getDescription());
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext()); // Η δημιουργία του alert dialog
                 LayoutInflater inflater = LayoutInflater.from(v.getContext());
@@ -111,15 +111,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         StoreItemModel item = items.get(position);
         // Set item views based on your views and data model
         holder.title.setText(item.getName());
-        holder.cost.setText(item.getCost() + " Coins");
+        holder.cost.setText(item.getCost() + " " + holder.cost.getResources().getString(R.string.coins));
         holder.content.setText(item.getDescription());
 
 
         if (coins < item.getCost()) {
-            holder.button.setText("Not Enough Coins");
+            holder.button.setText(R.string.not_enough_coins);
             holder.button.setEnabled(false);
         } else {
-            holder.button.setText("Claim it");
+            holder.button.setText(R.string.claim_it);
             holder.button.setEnabled(true);
         }
     }

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">NavScan</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="navscan">NavScan</string>
+    <string name="navscan" translatable="false">NavScan</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -23,8 +22,8 @@
     <string name="full_name">Full Name</string>
     <string name="birthday">Birthday</string>
 
-    <string name="facebook_app_id">4574239629288600</string>
-    <string name="fb_login_protocol_scheme">fb4574239629288600</string>
+    <string name="facebook_app_id" translatable="false">4574239629288600</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb4574239629288600</string>
 =    <string name="title_home">Home</string>
     <string name="title_leaderboard">Leaderboard</string>
     <string name="title_notifications">Notifications</string>
@@ -41,5 +40,24 @@
 
     <string name="logout_title">Sign out</string>
     <string name="edit_account_title">Edit my account</string>
+    <string name="edit_your_name">Edit your Name</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="edit_your_password">Edit your Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm new Password</string>
+    <string name="confirm_purchase">Confirm Purchase</string>
+    <string name="change_your_current_password">Change your current password</string>
+    <string name="scans">Scans</string>
+    <string name="coins">Coins</string>
+    <string name="level">Level</string>
+    <string name="experience_points">Experience Points</string>
+    <string name="suggested_locations">Suggested Locations</string>
+    <string name="exp">Exp</string>
+    <string name="name">Name</string>
+    <string name="please_scan_the_qr_code_you_found">Please scan the QR Code you found</string>
+    <string name="claim_it">Claim it</string>
+    <string name="not_enough_coins">Not Enough Coins</string>
 
 </resources>

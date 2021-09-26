@@ -4,12 +4,12 @@
     <PreferenceCategory app:title="@string/language_header">
 
         <ListPreference
+            app:defaultValue="en"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
             app:key="language_key"
             app:title="@string/language_title"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue="english"/>
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

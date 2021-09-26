@@ -3,13 +3,13 @@ package com.unipi.marioschr.navscan.MainActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
+import com.unipi.marioschr.navscan.LocaleUtils;
 import com.unipi.marioschr.navscan.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -30,6 +30,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		if (btnEditProfile != null) {
 			btnEditProfile.setOnPreferenceClickListener(preference -> {
 				NavigateToEditProfile();
+				return true;
+			});
+		}
+
+		Preference lang = getPreferenceManager().findPreference("language_key");
+		if (lang != null) {
+			lang.setOnPreferenceChangeListener((preference, newLang) -> {
+				LocaleUtils.setLanguage(newLang.toString(), getContext());
+				Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(getContext().getPackageName());
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				startActivity(intent);
 				return true;
 			});
 		}

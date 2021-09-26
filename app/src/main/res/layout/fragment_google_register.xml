@@ -109,9 +109,7 @@
                     android:paddingVertical="20dp"
                     android:text="@string/sign_up"
                     app:layout_constraintStart_toStartOf="parent" />
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

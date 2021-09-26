@@ -6,7 +6,7 @@
     </string-array>
 
     <string-array name="language_values">
-        <item>english</item>
-        <item>greek</item>
+        <item>en</item>
+        <item>el</item>
     </string-array>
 </resources>
