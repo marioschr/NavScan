@@ -1,8 +1,15 @@
 package com.unipi.marioschr.navscan;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -24,9 +34,17 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.unipi.marioschr.navscan.databinding.FragmentEditProfileBinding;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -38,11 +56,18 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	FragmentEditProfileBinding binding;
 	LocalDate birthdayLD;
 	DatePickerDialog datePickerDialog;
+	StorageReference profileRef;
+	FirebaseFirestore db;
+	DocumentReference documentRef;
 
+	String userID = FirebaseAuth.getInstance().getUid();
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = FragmentEditProfileBinding.inflate(inflater, container, false);
+		profileRef = FirebaseStorage.getInstance().getReference().child("users").child(userID).child("profile.jpg");
+		db = FirebaseFirestore.getInstance();
+		documentRef = db.collection("users").document(userID);
 		SetOnClickListeners();
 		return binding.getRoot();
 	}
@@ -51,9 +76,29 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
-		viewModel.getUserData(FirebaseAuth.getInstance().getUid()).observe(requireActivity(), user -> {
+		viewModel.getUserData(userID).observe(requireActivity(), user -> {
 			binding.tvEditName.setText(user.getFullName());
 			binding.tvEditBirthday.setText(user.getBirthday());
+			if (user.getPicture() != null) {
+				Glide.with(getContext()).load(user.getPicture())
+						.circleCrop()
+						.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+						.error(R.drawable.male)
+						.into(binding.imgEditProfile);
+			} else {
+				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+					Glide.with(getContext()).load(uri)
+							.circleCrop()
+							.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+							.error(R.drawable.male)
+							.into(binding.imgEditProfile);
+				}).addOnFailureListener(e -> {
+					Glide.with(getContext()).load(R.drawable.male)
+							.circleCrop()
+							.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+							.into(binding.imgEditProfile);
+				});
+			}
 		});
 	}
 
@@ -61,6 +106,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 		binding.btnEditName.setOnClickListener(this);
 		binding.btnEditBirthday.setOnClickListener(this);
 		binding.btnEditPass.setOnClickListener(this);
+		binding.fabEditProfilePicture.setOnClickListener(this);
 	}
 
 	private void EditName() {
@@ -80,7 +126,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 				tietEditName.setError("You have to fill in your full name");
 			} else {
 				binding.tvEditName.setText(tietEditName.getText());
-				viewModel.editName(FirebaseAuth.getInstance().getUid(), tietEditName.getText().toString(), getContext());
+				viewModel.editName(userID, tietEditName.getText().toString(), getContext());
 				dialog.dismiss();
 			}
 		});
@@ -97,7 +143,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 					+ "/" + year;
 			binding.tvEditBirthday.setText(formattedDate);
 			birthdayLD = LocalDate.parse(formattedDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			viewModel.editBirthday(FirebaseAuth.getInstance().getUid(), birthdayLD, getContext());
+			viewModel.editBirthday(userID, birthdayLD, getContext());
 		}, localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
 
 		datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
@@ -128,6 +174,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 		btnApply = customLayout.findViewById(R.id.alertBtnChangePassApply);
 		btnCancel = customLayout.findViewById(R.id.alertBtnChangePassCancel);
 		//endregion
+		//region textChangedListeners
 		tietCurrentPass.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -170,6 +217,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 				else tilConfirmNewPass.setError(null);
 			}
 		});
+		//endregion
 		btnApply.setOnClickListener(view -> {
 			String str_current_pass = String.valueOf(tietCurrentPass.getText());
 			String str_new_pass = String.valueOf(tietNewPass.getText());
@@ -223,8 +271,67 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 			EditBirthday();
 		} else if (view.getId() == R.id.btnEditPass) {
 			EditPassword();
+		} else if (view.getId() == R.id.fabEditProfilePicture) {
+			Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			startActivityForResult(openGalleryIntent, 6969);
 		}
 	}
 
-	//TODO: Edit Profile Picture
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { // Όταν γίνει επιλογή εικόνας από το τηλέφωνο
+		super.onActivityResult( requestCode, resultCode, data);
+		if (requestCode == 6969) {
+			if(resultCode == Activity.RESULT_OK) {
+				Uri imageUri = data.getData();
+				uploadImageToFirebase(imageUri);
+			}
+		}
+	}
+
+	private void uploadImageToFirebase(Uri imageUri) { // Επεξεργασία και αποστολή της εικόνας στο Firebase Storage
+		Bitmap bmp = null;
+		try {
+			bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			Bitmap rotatedBitmap = rotateImageIfRequired(getContext(), bmp, imageUri); // Έλεγχος αν χριάζεται να περιστραφεί
+			rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos); // Συμπίεση της εικόνας
+			byte[] data = baos.toByteArray();
+			UploadTask uploadTask = profileRef.putBytes(data);
+			uploadTask.addOnSuccessListener(taskSnapshot -> {
+				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+					viewModel.updateUserData(userID);
+				});
+				Toasty.success(getContext(), "Profile picture changed successfully", Toasty.LENGTH_LONG).show();
+			}).addOnFailureListener(e -> Toasty.error(getContext(), "Failed to change profile picture", Toasty.LENGTH_LONG).show());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
+		// Μέθοδος που ελέγχει τα Exif data αν χριάζεται rotate η εικόνα
+		InputStream input = context.getContentResolver().openInputStream(selectedImage);
+		ExifInterface ei;
+		ei = new ExifInterface(input);
+
+		int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+		switch (orientation) {
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				return rotateImage(img, 90);
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				return rotateImage(img, 180);
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				return rotateImage(img, 270);
+			default:
+				return img;
+		}
+	}
+
+	private static Bitmap rotateImage(Bitmap img, int degree) {
+		Matrix matrix = new Matrix();
+		matrix.postRotate(degree);
+		Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+		img.recycle();
+		return rotatedImg;
+	}
 }

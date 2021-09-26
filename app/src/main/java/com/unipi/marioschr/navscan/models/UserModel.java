@@ -1,5 +1,6 @@
 package com.unipi.marioschr.navscan.models;
 
+import android.net.Uri;
 import java.util.List;
 
 public class UserModel {
@@ -11,6 +12,7 @@ public class UserModel {
     private float currentLevelMaxXp;
     private String birthday;
     private List<String> visited;
+    private Uri picture;
 
     public UserModel() {}
 
@@ -76,5 +78,13 @@ public class UserModel {
 
     public void setVisited(List<String> visited) {
         this.visited = visited;
+    }
+
+    public Uri getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Uri picture) {
+        this.picture = picture;
     }
 }

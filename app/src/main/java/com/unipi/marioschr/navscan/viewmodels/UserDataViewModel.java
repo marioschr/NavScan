@@ -2,18 +2,16 @@ package com.unipi.marioschr.navscan.viewmodels;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.unipi.marioschr.navscan.EditProfileFragment;
-import com.unipi.marioschr.navscan.MainActivity.MainActivity;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.unipi.marioschr.navscan.models.UserFBModel;
 import com.unipi.marioschr.navscan.models.UserModel;
 
@@ -29,7 +27,6 @@ public class UserDataViewModel extends ViewModel {
 	private UserModel userModel;
 	private MutableLiveData<UserModel> userData;
 	private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 	public LiveData<UserModel> getUserData (String userID) {
 		if (userData == null) {
 			userData = new MutableLiveData<>();
@@ -67,6 +64,10 @@ public class UserDataViewModel extends ViewModel {
 					userModel.setVisited(userFBModel.getVisited());
 					userModel.setCurrentLevelXp(currentLevelXp);
 					userModel.setCurrentLevelMaxXp(xpRequired(level) - xpRequired(level - 1));
+					StorageReference profileRef = FirebaseStorage.getInstance().getReference().child("users").child(userID).child("profile.jpg");
+					profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+						userModel.setPicture(uri);
+					});
 					userData.setValue(userModel);
 				}
 			}

@@ -76,7 +76,7 @@ public class StoreFragment extends Fragment {
 			}
 			// Create adapter passing in the sample user data
 			recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-			recyclerView.setAdapter(new StoreAdapter(data));
+			recyclerView.setAdapter(new StoreAdapter(data, this));
 			storeSwipeContainer.setRefreshing(false);
 		});
 	}
