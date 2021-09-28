@@ -33,6 +33,8 @@
             android:id="@+id/storeItemImage"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"
             tools:srcCompat="@drawable/male" />
 
         <TextView

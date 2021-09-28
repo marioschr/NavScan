@@ -89,7 +89,7 @@ public class LeaderboardFragment extends Fragment {
 	}
 
 	private void noInternetWarning() {
-		Toasty.warning(requireContext(), "Can't access the leaderboard live data right now.", Toast.LENGTH_SHORT, true).show();
+		Toasty.warning(requireContext(), "Can't access the leaderboard live data right now.", Toasty.LENGTH_SHORT, true).show();
 		mySwipeRefreshLayout.setRefreshing(false);
 	}
 }

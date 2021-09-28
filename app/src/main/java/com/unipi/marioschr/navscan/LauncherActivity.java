@@ -46,10 +46,10 @@ public class LauncherActivity extends AppCompatActivity {
 		ActivityResultLauncher<String[]> requestPermissionLauncher =
 				registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
 					if (!isGranted.get(Manifest.permission.CAMERA)) {
-						Toast.makeText(getApplicationContext(), "Can't continue without the required permissions for camera", Toast.LENGTH_LONG).show();
+						Toasty.error(getApplicationContext(), "Can't continue without the required permissions for camera", Toasty.LENGTH_LONG).show();
 					}
 					if (!isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
-						Toast.makeText(getApplicationContext(), "Can't continue without the required permissions for location", Toast.LENGTH_LONG).show();
+						Toasty.error(getApplicationContext(), "Can't continue without the required permissions for location", Toasty.LENGTH_LONG).show();
 					}
 					CheckforUser(currentUser);
 				});

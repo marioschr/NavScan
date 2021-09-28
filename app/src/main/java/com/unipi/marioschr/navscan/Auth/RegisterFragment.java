@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 	private String fullName,birthday,email,password,confirmPassword;
@@ -222,25 +224,26 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 						userData.put("fullName", fullName);
 						userData.put("birthday", new Timestamp(new Date(birthdayLD.getMonth().toString() + " " + birthdayLD.getDayOfMonth() + ", " + birthdayLD.getYear())));
 						userData.put("email", email);
+						userData.put("exp", 0);
 
 						db.collection("users").document(user.getUid())
 								.set(userData)
 								.addOnSuccessListener(l -> {
 									Log.d("Firestore DB", "DocumentSnapshot successfully written!");
-									Toast.makeText(getContext(), "Successfully created user", Toast.LENGTH_SHORT).show();
+									Toasty.success(getContext(), "Registration Successful", Toasty.LENGTH_SHORT).show();
 									navigateToMain();
 								})
 								.addOnFailureListener(e -> {
 									Log.w("Firestore DB", "Error writing document", e);
 									mAuth.getCurrentUser().delete().addOnSuccessListener(l -> {
-										Toast.makeText(getContext(), "Error creating user. Try again", Toast.LENGTH_SHORT).show();
+										Toasty.error(getContext(), "Error registering. Try again", Toasty.LENGTH_SHORT).show();
 									});
 								});
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w("Firebase Register", "createUserWithEmail:failure", task.getException());
-						Toast.makeText(getContext(), "Authentication failed.",
-								Toast.LENGTH_SHORT).show();
+						Toasty.error(getContext(), "Authentication failed.",
+								Toasty.LENGTH_SHORT).show();
 					}
 				});
 	}

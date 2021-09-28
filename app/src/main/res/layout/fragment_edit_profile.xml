@@ -17,7 +17,7 @@ xmlns:tools="http://schemas.android.com/tools"
             style="@style/TextView34Style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/rounded_bottom_corners"
             android:gravity="center_horizontal"
             android:paddingTop="25dp"
@@ -27,7 +27,7 @@ xmlns:tools="http://schemas.android.com/tools"
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp">
+            android:layout_marginBottom="20dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabEditProfilePicture"

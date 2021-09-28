@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.unipi.marioschr.navscan.models.StoreItemModel;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
@@ -24,14 +26,16 @@ import java.util.List;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
     UserDataViewModel viewModel;
+    ViewModelStoreOwner lifecycleOwner;
+    public FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        private TextView title, cost, content;
-        private ImageView image; //TODO: Store Images
-        private Button button;
+        private final TextView title, cost, content;
+        private final ImageView image;
+        private final Button button;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
@@ -51,13 +55,22 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext()); // Η δημιουργία του alert dialog
                 LayoutInflater inflater = LayoutInflater.from(v.getContext());
                 final View customLayout = inflater.inflate(R.layout.alert_dialog_confirm, null);
+
                 TextView tvName,tvCost,tvDescription;
+                Button btnConfirm = customLayout.findViewById(R.id.alertBtnStoreItemClaim);
+                ImageView imageView = customLayout.findViewById(R.id.alertStoreItemImage);
                 tvName = customLayout.findViewById(R.id.alertStoreItemTitle);
-                tvName.setText(name);
                 tvCost = customLayout.findViewById(R.id.alertStoreItemCost);
-                tvCost.setText(cost);
                 tvDescription = customLayout.findViewById(R.id.alertStoreItemDescription);
+
+                StorageReference storageRef = firebaseStorage.getReference("store_items").child(items.get(mSelectedItem).getId()).child("image.jpg");
+                GlideApp.with(customLayout.getContext()).load(storageRef).fitCenter().error(R.drawable.male).into(imageView);
+
+                tvName.setText(name);
+                tvCost.setText(cost);
                 tvDescription.setText(description);
+                btnConfirm.setOnClickListener(l ->
+                        viewModel.purchase(FirebaseAuth.getInstance().getUid(), items.get(mSelectedItem).getCost(), v.getContext()));
                 alert.setView(customLayout);
                 alert.create();
                 alert.show();
@@ -66,28 +79,16 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         }
     }
 
-    // Clean all elements of the recycler
-    public void clear() {
-        items.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<StoreItemModel> list) {
-        items.addAll(list);
-        notifyDataSetChanged();
-    }
-
     // Store a member variable for the contacts
-    private List<StoreItemModel> items;
+    private final List<StoreItemModel> items;
     private int coins;
     // Pass in the contact array into the constructor
     public StoreAdapter(List<StoreItemModel> items, ViewModelStoreOwner lifecycleOwner) {
         this.items = items;
+        this.lifecycleOwner = lifecycleOwner;
         viewModel = new ViewModelProvider(lifecycleOwner).get(UserDataViewModel.class);
-        viewModel.getUserData(FirebaseAuth.getInstance().getUid()).observe((LifecycleOwner) lifecycleOwner, data -> {
-            coins = data.getCoins();
-        });
+        viewModel.getUserData(FirebaseAuth.getInstance().getUid()).observe((LifecycleOwner) lifecycleOwner, data ->
+                coins = data.getCoins());
     }
 
     // Usually involves inflating a layout from XML and returning the holder
@@ -113,7 +114,8 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         holder.title.setText(item.getName());
         holder.cost.setText(item.getCost() + " " + holder.cost.getResources().getString(R.string.coins));
         holder.content.setText(item.getDescription());
-
+        StorageReference storageRef = firebaseStorage.getReference("store_items").child(item.getId()).child("image.jpg");
+        GlideApp.with(holder.image.getContext()).load(storageRef).fitCenter().error(R.drawable.male).into(holder.image);
 
         if (coins < item.getCost()) {
             holder.button.setText(R.string.not_enough_coins);

@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -75,7 +76,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
+		viewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner()).get(UserDataViewModel.class);
 		viewModel.getUserData(userID).observe(requireActivity(), user -> {
 			binding.tvEditName.setText(user.getFullName());
 			binding.tvEditBirthday.setText(user.getBirthday());

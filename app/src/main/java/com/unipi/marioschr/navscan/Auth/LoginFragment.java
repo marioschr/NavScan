@@ -55,6 +55,8 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import es.dmoral.toasty.Toasty;
+
 public class LoginFragment extends Fragment implements View.OnClickListener {
 	private static final String TAG = "GoogleActivity";
 	private static final int RC_SIGN_IN = 9001;
@@ -111,16 +113,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 			public void onSuccess(LoginResult loginResult) {
 				handleFacebookAccessToken(loginResult.getAccessToken());
 			}
-
 			@Override
-			public void onCancel() {
-				Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
-			}
-
+			public void onCancel() { }
 			@Override
-			public void onError(FacebookException error) {
-				Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
-			}
+			public void onError(FacebookException error) { }
 		});
 		//region TextChanged Listeners
 		binding.tietLoginEmail.addTextChangedListener(new TextWatcher() {
@@ -192,7 +188,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				if (e.getStatusCode() != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
 					Log.w(TAG, "signInWithCredential:failure" + e.getStatusCode(), e.getCause());
 					// Google Sign In failed, update UI appropriately
-					Toast.makeText(requireActivity(), "Sign in failed. Try again.", Toast.LENGTH_SHORT).show();
+					Toasty.error(requireActivity(), "Sign in failed. Try again.", Toasty.LENGTH_SHORT).show();
 				}
 			}
 		} else {
@@ -226,7 +222,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w(TAG, "signInWithCredential:failure", task.getException());
-						Toast.makeText(requireActivity(), "Sign in failed. Try again.", Toast.LENGTH_SHORT).show();
+						Toasty.error(requireActivity(), "Sign in failed. Try again.", Toasty.LENGTH_SHORT).show();
 					}
 				});
 	}
@@ -267,8 +263,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w(TAG, "signInWithCredential:failure", task.getException());
-						Toast.makeText(getContext(), "Authentication failed.",
-								Toast.LENGTH_SHORT).show();
+						Toasty.error(getContext(), "Authentication failed.",
+								Toasty.LENGTH_SHORT).show();
 					}
 				});
 	}
@@ -291,18 +287,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 								e.printStackTrace();
 							}
 							userData.put("email", email);
+							userData.put("exp",0);
 
 							db.collection("users").document(mAuth.getUid())
 									.set(userData)
 									.addOnSuccessListener(l -> {
 										Log.d("Firestore DB", "DocumentSnapshot successfully written!");
-										Toast.makeText(getContext(), "Successfully created user", Toast.LENGTH_SHORT).show();
+										Toasty.success(getContext(), "Registration Successful", Toasty.LENGTH_SHORT).show();
 										navigateToMain();
 									})
 									.addOnFailureListener(e -> {
 										Log.w("Firestore DB", "Error writing document", e);
 										mAuth.getCurrentUser().delete().addOnSuccessListener(l ->
-												Toast.makeText(getContext(), "Error creating user. Try again", Toast.LENGTH_SHORT).show());
+												Toasty.error(getContext(), "Error creating user. Try again", Toasty.LENGTH_SHORT).show());
 									});
 						}
 						catch (JSONException | NullPointerException e) {
@@ -331,8 +328,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 			} else {
 				// If sign in fails, display a message to the user.
 				Log.w(TAG, "signInWithEmail:failure", task.getException());
-				Toast.makeText(getContext(), "Authentication failed.",
-						Toast.LENGTH_SHORT).show();
+				Toasty.error(getContext(), "Authentication failed.",
+						Toasty.LENGTH_SHORT).show();
 			}
 
 		});
@@ -355,7 +352,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 			return false;
 		}
 		foundError = false;
-		Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
 		return true;
 	}
 

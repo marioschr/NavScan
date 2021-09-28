@@ -30,6 +30,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import es.dmoral.toasty.Toasty;
+
 public class ScannerFragment extends Fragment {
 
 	private static ScannerFragment scannerFragmentContext;
@@ -50,10 +52,10 @@ public class ScannerFragment extends Fragment {
 		ActivityResultLauncher<String[]> requestPermissionLauncher =
 				registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
 					if (!isGranted.get(Manifest.permission.CAMERA)) {
-						Toast.makeText(getContext(), "Can't continue without the required permissions for camera", Toast.LENGTH_LONG).show();
+						Toasty.error(getContext(), "Can't continue without the required permissions for camera", Toasty.LENGTH_LONG).show();
 					}
 					if (!isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
-						Toast.makeText(getContext(), "Can't continue without the required permissions for location", Toast.LENGTH_LONG).show();
+						Toasty.error(getContext(), "Can't continue without the required permissions for location", Toasty.LENGTH_LONG).show();
 					}
 					barcodeAnalyzer = new BarcodeAnalyzer();
 					analysisExecutor = Executors.newSingleThreadExecutor();

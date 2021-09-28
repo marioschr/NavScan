@@ -55,11 +55,12 @@
                 android:paddingVertical="4dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
+                android:text="4.7/5"
                 android:textColor="#FFFFFF"
                 app:drawableStartCompat="@drawable/ic_baseline_star_rate_24"
                 app:drawableTint="#FFFFFF"
                 tools:ignore="TextContrastCheck"
-                tools:text="4.5/5" />
+                tools:text="4.7/5" />
         </LinearLayout>
 
         <TextView

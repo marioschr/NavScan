@@ -99,25 +99,6 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 		};
 		binding.carousel.setCarouselListener(carouselListener);
 		locationCode = requireArguments().getString("code");
-/*		viewModel.getLocationData(locationCode).observe(getViewLifecycleOwner(), location -> {
-			binding.tvLocationName.setText(location.getName());
-			binding.tvLocation.setText(location.getLocation());
-			binding.tvLocationDescription.setText(location.getDescription());
-		});
-		viewModel.getLocationImages(locationCode).observe(getViewLifecycleOwner(), images -> {
-			ArrayList<CarouselItem> imagesList = new ArrayList<>();
-			for (String image: images) {
-				imagesList.add(new CarouselItem(image));
-			}
-			binding.carousel.setData(imagesList);
-		});
-		viewModel.getToastObserver().observe(getViewLifecycleOwner(), toast -> {
-			if (toast.equals("Already Visited")) {
-				Toasty.info(requireActivity(), "Already Visited", 2000).show();
-			} else if(toast.equals()){
-
-			}
-		});*/
 		loadLocationData(locationCode);
 	}
 

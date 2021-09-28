@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -93,6 +94,15 @@ public class UserDataViewModel extends ViewModel {
 		docRef.update("birthday", new Timestamp(new Date(birthdayLD.getMonth().toString() + " " + birthdayLD.getDayOfMonth() + ", " + birthdayLD.getYear()))).addOnSuccessListener(l -> {
 			Toasty.success(context, "Edit Successful", Toasty.LENGTH_SHORT).show();
 			userModel.setBirthday(birthdayLD.getDayOfMonth() + "/" + birthdayLD.getMonth().toString() + "/" + birthdayLD.getYear());
+		});
+	}
+
+	public void purchase(String userID, int cost, Context context) {
+		DocumentReference docRef = db.collection("users").document(userID);
+		docRef.update("coins", FieldValue.increment(-cost)).addOnSuccessListener(l -> {
+			Toasty.success(context, "Congratulations! You have successfully claimed this item.", Toasty.LENGTH_LONG).show();
+			userModel.setCoins(userModel.getCoins()-cost);
+			userData.setValue(userModel);
 		});
 	}
 }

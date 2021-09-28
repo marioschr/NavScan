@@ -54,12 +54,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayoutHomeInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:divider="@drawable/divider_horizontal"
-        android:dividerPadding="10dp"
+        android:divider="@drawable/divider_horizontal2"
+        android:gravity="center"
         android:orientation="horizontal"
         android:showDividers="middle"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
@@ -70,11 +70,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
             android:divider="@drawable/divider_vertical"
             android:orientation="vertical"
-            android:showDividers="middle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -83,7 +80,7 @@
                 style="@style/TextView24Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:shadowColor="@color/branch_brown"
                 android:shadowDx="4"
                 android:shadowDy="3"
@@ -95,9 +92,9 @@
             <TextView
                 android:id="@+id/tvLocationsVisited"
                 style="@style/TextView20Style"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:shadowColor="@color/branch_brown"
                 android:shadowDx="4"
                 android:shadowDy="3"
@@ -109,10 +106,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:divider="@drawable/divider_vertical"
             android:orientation="vertical"
-            android:showDividers="middle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -121,7 +116,7 @@
                 style="@style/TextView34Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:shadowColor="@color/branch_brown"
                 android:shadowDx="4"
                 android:shadowDy="3"
@@ -133,9 +128,9 @@
             <TextView
                 android:id="@+id/tvLevel"
                 style="@style/TextView28Style"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:shadowColor="@color/branch_brown"
                 android:shadowDx="4"
                 android:shadowDy="3"
@@ -147,11 +142,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
             android:divider="@drawable/divider_vertical"
             android:orientation="vertical"
-            android:showDividers="middle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -160,7 +152,7 @@
                 style="@style/TextView24Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:shadowColor="@color/branch_brown"
                 android:shadowDx="4"
                 android:shadowDy="3"
@@ -172,9 +164,9 @@
             <TextView
                 android:id="@+id/tvCoins"
                 style="@style/TextView20Style"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:shadowColor="@color/branch_brown"
                 android:shadowDx="4"
                 android:shadowDy="3"
@@ -192,8 +184,8 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/shadows_into_light_two"
         android:shadowColor="#49220E"
-        android:shadowDx="1.5"
-        android:shadowDy="1.5"
+        android:shadowDx="2"
+        android:shadowDy="2"
         android:shadowRadius="0.1"
         android:text="@string/experience_points"
         app:layout_constraintEnd_toEndOf="parent"
@@ -230,7 +222,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/locations_list"
+                android:name="com.unipi.marioschr.navscan.HomeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_location" />
+        </LinearLayout>
     </ScrollView>
 
     <TextView
@@ -238,9 +239,13 @@
         style="@style/TextView24Style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/suggested_locations"
+        android:shadowColor="#49220E"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expProgressBar" />
 
