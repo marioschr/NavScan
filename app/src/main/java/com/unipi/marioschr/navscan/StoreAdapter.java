@@ -73,7 +73,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                 tvDescription = customLayout.findViewById(R.id.alertStoreItemDescription);
 
                 StorageReference storageRef = firebaseStorage.getReference("store_items").child(items.get(mSelectedItem).getId()).child("image.jpg");
-                GlideApp.with(customLayout.getContext()).load(storageRef).fitCenter().error(R.drawable.male).into(imageView);
+                GlideApp.with(customLayout.getContext()).load(storageRef).fitCenter().error(R.drawable.default_profile).into(imageView);
 
                 tvName.setText(name);
                 tvCost.setText(cost);
@@ -82,7 +82,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                     DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getUid());
                     int costValue = items.get(mSelectedItem).getCost();
                     docRef.update("coins", FieldValue.increment(-costValue)).addOnSuccessListener(listener -> {
-                        Toasty.success(tvName.getContext(), "Congratulations! You have successfully claimed this item.", Toasty.LENGTH_LONG).show();
+                        Toasty.success(tvName.getContext(), tvName.getContext().getString(R.string.congratulation_you_have_claimed_this_item), Toasty.LENGTH_LONG).show();
                         viewModel.purchase(items.get(mSelectedItem).getCost());
                         notifyDataSetChanged();
                         dialog.dismiss();
@@ -131,7 +131,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         holder.cost.setText(item.getCost() + " " + holder.cost.getResources().getString(R.string.coins));
         holder.content.setText(item.getDescription());
         StorageReference storageRef = firebaseStorage.getReference("store_items").child(item.getId()).child("image.jpg");
-        GlideApp.with(holder.image.getContext()).load(storageRef).fitCenter().error(R.drawable.male).into(holder.image);
+        GlideApp.with(holder.image.getContext()).load(storageRef).fitCenter().error(R.drawable.default_profile).into(holder.image);
 
         if (coins < item.getCost()) {
             holder.button.setText(R.string.not_enough_coins);

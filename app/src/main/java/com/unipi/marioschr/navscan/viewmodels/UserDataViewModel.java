@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.models.UserFBModel;
 import com.unipi.marioschr.navscan.models.UserModel;
 
@@ -83,7 +84,7 @@ public class UserDataViewModel extends ViewModel {
 	public void editName(String userID, String name, Context context) {
 		DocumentReference docRef = db.collection("users").document(userID);
 		docRef.update("fullName", name).addOnSuccessListener(l -> {
-			Toasty.success(context, "Edit Successful", Toasty.LENGTH_SHORT).show();
+			Toasty.success(context, context.getString(R.string.edit_successful), Toasty.LENGTH_SHORT).show();
 			userModel.setFullName(name);
 		});
 	}
@@ -91,7 +92,7 @@ public class UserDataViewModel extends ViewModel {
 	public void editBirthday(String userID, LocalDate birthdayLD, Context context) {
 		DocumentReference docRef = db.collection("users").document(userID);
 		docRef.update("birthday", new Timestamp(new Date(birthdayLD.getMonth().toString() + " " + birthdayLD.getDayOfMonth() + ", " + birthdayLD.getYear()))).addOnSuccessListener(l -> {
-			Toasty.success(context, "Edit Successful", Toasty.LENGTH_SHORT).show();
+			Toasty.success(context, context.getString(R.string.edit_successful), Toasty.LENGTH_SHORT).show();
 			userModel.setBirthday(birthdayLD.getDayOfMonth() + "/" + birthdayLD.getMonth().toString() + "/" + birthdayLD.getYear());
 		});
 	}

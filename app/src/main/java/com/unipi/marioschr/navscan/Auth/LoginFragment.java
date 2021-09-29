@@ -187,7 +187,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				if (e.getStatusCode() != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
 					Log.w(TAG, "signInWithCredential:failure" + e.getStatusCode(), e.getCause());
 					// Google Sign In failed, update UI appropriately
-					Toasty.error(requireActivity(), "Sign in failed. Try again.", Toasty.LENGTH_SHORT).show();
+					Toasty.error(requireActivity(), getString(R.string.sign_in_failed_try_again), Toasty.LENGTH_SHORT).show();
 				}
 			}
 		} else {
@@ -221,7 +221,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w(TAG, "signInWithCredential:failure", task.getException());
-						Toasty.error(requireActivity(), "Sign in failed. Try again.", Toasty.LENGTH_SHORT).show();
+						Toasty.error(requireActivity(), getString(R.string.sign_in_failed_try_again), Toasty.LENGTH_SHORT).show();
 					}
 				});
 	}
@@ -262,7 +262,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 					} else {
 						// If sign in fails, display a message to the user.
 						Log.w(TAG, "signInWithCredential:failure", task.getException());
-						Toasty.error(getContext(), "Authentication failed.",
+						Toasty.error(getContext(), getString(R.string.authentication_failed),
 								Toasty.LENGTH_SHORT).show();
 					}
 				});
@@ -292,13 +292,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 									.set(userData)
 									.addOnSuccessListener(l -> {
 										Log.d("Firestore DB", "DocumentSnapshot successfully written!");
-										Toasty.success(getContext(), "Registration Successful", Toasty.LENGTH_SHORT).show();
+										Toasty.success(getContext(), getString(R.string.registration_successful), Toasty.LENGTH_SHORT).show();
 										navigateToMain();
 									})
 									.addOnFailureListener(e -> {
 										Log.w("Firestore DB", "Error writing document", e);
 										mAuth.getCurrentUser().delete().addOnSuccessListener(l ->
-												Toasty.error(getContext(), "Error creating user. Try again", Toasty.LENGTH_SHORT).show());
+												Toasty.error(getContext(), getString(R.string.error_registering_try_again), Toasty.LENGTH_SHORT).show());
 									});
 						}
 						catch (JSONException | NullPointerException e) {
@@ -327,7 +327,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 			} else {
 				// If sign in fails, display a message to the user.
 				Log.w(TAG, "signInWithEmail:failure", task.getException());
-				Toasty.error(getContext(), "Authentication failed.",
+				Toasty.error(getContext(), getString(R.string.sign_in_failed_try_again),
 						Toasty.LENGTH_SHORT).show();
 			}
 
@@ -355,10 +355,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void setErrorLoginEmail() {
-		binding.tilLoginEmail.setError("You have to fill in your email");
+		binding.tilLoginEmail.setError(getString(R.string.you_have_to_fill_in_your_email));
 	}
 	private void setErrorLoginPassword() {
-		binding.tilLoginPassword.setError("You have to fill in your password");
+		binding.tilLoginPassword.setError(getString(R.string.you_have_to_fill_in_your_password));
 	}
 
 	private void navigateToMain() {

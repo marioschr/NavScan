@@ -35,18 +35,6 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         }
     }
 
-    // Clean all elements of the recycler
-    public void clear() {
-        mLocations.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<LocationFBModel> list) {
-        mLocations.addAll(list);
-        notifyDataSetChanged();
-    }
-
     // Store a member variable for the contacts
     private List<LocationFBModel> mLocations;
 

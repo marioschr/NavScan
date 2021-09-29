@@ -76,25 +76,25 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner()).get(UserDataViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
 		viewModel.getUserData(userID).observe(requireActivity(), user -> {
 			binding.tvEditName.setText(user.getFullName());
 			binding.tvEditBirthday.setText(user.getBirthday());
 			if (user.getPicture() != null) {
-				Glide.with(getContext()).load(user.getPicture())
+				Glide.with(requireActivity()).load(user.getPicture())
 						.circleCrop()
 						.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-						.error(R.drawable.male)
+						.error(R.drawable.default_profile)
 						.into(binding.imgEditProfile);
 			} else {
 				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-					Glide.with(getContext()).load(uri)
+					Glide.with(requireActivity()).load(uri)
 							.circleCrop()
 							.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-							.error(R.drawable.male)
+							.error(R.drawable.default_profile)
 							.into(binding.imgEditProfile);
 				}).addOnFailureListener(e -> {
-					Glide.with(getContext()).load(R.drawable.male)
+					Glide.with(requireActivity()).load(R.drawable.default_profile)
 							.circleCrop()
 							.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
 							.into(binding.imgEditProfile);
@@ -111,7 +111,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	}
 
 	private void EditName() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(getContext()); // Η δημιουργία του alert dialog
+		AlertDialog.Builder alert = new AlertDialog.Builder(requireActivity()); // Η δημιουργία του alert dialog
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		final View customLayout = inflater.inflate(R.layout.alert_dialog_change_name, null);
 		alert.setView(customLayout);
@@ -124,7 +124,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 		tietEditName.setText(binding.tvEditName.getText());
 		btnApply.setOnClickListener(view -> {
 			if (tietEditName.getText().toString().trim().isEmpty()) {
-				tietEditName.setError("You have to fill in your full name");
+				tietEditName.setError(getString(R.string.you_have_to_fill_in_your_full_name));
 			} else {
 				binding.tvEditName.setText(tietEditName.getText());
 				viewModel.editName(userID, tietEditName.getText().toString(), getContext());
@@ -225,17 +225,17 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 			String str_confirm_new_pass = String.valueOf(tietConfirmNewPass.getText());
 			if (str_current_pass.trim().isEmpty() || str_new_pass.trim().isEmpty() || str_confirm_new_pass.trim().isEmpty()) {
 				if (str_current_pass.trim().isEmpty()) {
-					tilCurrentPass.setError("You have to fill in your current password");
+					tilCurrentPass.setError(getString(R.string.you_have_to_fill_in_your_current_password));
 				}
 				if (str_new_pass.trim().isEmpty()) {
-					tilNewPass.setError("You have to fill in your new password");
+					tilNewPass.setError(getString(R.string.you_have_to_fill_in_your_new_password));
 				}
 				if (str_confirm_new_pass.trim().isEmpty()) {
-					tilConfirmNewPass.setError("You have to fill in your new password");
+					tilConfirmNewPass.setError(getString(R.string.you_have_to_fill_in_your_new_password));
 				}
 			} else if (!str_new_pass.equals(str_confirm_new_pass)) {
-				tilNewPass.setError("Passwords don't match");
-				tilConfirmNewPass.setError("Passwords don't match");
+				tilNewPass.setError(getString(R.string.passwords_dont_match));
+				tilConfirmNewPass.setError(getString(R.string.passwords_dont_match));
 			} else { // Πρέπει πρώτα να γίνει reauthenticate για να μπορεί να γίνει αλλαγή του κωδικού
 				AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), str_current_pass);
 				firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
@@ -245,17 +245,17 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 								try {
 									throw task1.getException();
 								} catch (FirebaseAuthWeakPasswordException e) {
-									Toasty.error(requireContext(), "The new password is weak", Toasty.LENGTH_SHORT).show();
+									Toasty.error(requireContext(), getString(R.string.the_new_password_is_weak), Toasty.LENGTH_SHORT).show();
 								} catch (Exception ex) {
-									Toasty.error(requireContext(), "Password change failed", Toasty.LENGTH_SHORT).show();
+									Toasty.error(requireContext(), getString(R.string.password_change_failed), Toasty.LENGTH_SHORT).show();
 								}
 							} else {
-								Toasty.success(requireContext(), "Password changed successfully", Toasty.LENGTH_SHORT).show();
+								Toasty.success(requireContext(), getString(R.string.password_changed_successfully), Toasty.LENGTH_SHORT).show();
 								dialog.dismiss();
 							}
 						});
 					} else {
-						tilCurrentPass.setError("Wrong Password");
+						tilCurrentPass.setError(getString(R.string.wrong_password));
 					}
 				});
 			}
@@ -302,8 +302,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 					viewModel.updateUserData(userID);
 				});
-				Toasty.success(getContext(), "Profile picture changed successfully", Toasty.LENGTH_LONG).show();
-			}).addOnFailureListener(e -> Toasty.error(getContext(), "Failed to change profile picture", Toasty.LENGTH_LONG).show());
+				Toasty.success(getContext(), getString(R.string.profile_picture_changed_successfully), Toasty.LENGTH_LONG).show();
+			}).addOnFailureListener(e -> Toasty.error(getContext(), getString(R.string.failed_to_change_profile_picture), Toasty.LENGTH_LONG).show());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -51,10 +51,10 @@ public class ScannerFragment extends Fragment {
 		ActivityResultLauncher<String[]> requestPermissionLauncher =
 				registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
 					if (!isGranted.get(Manifest.permission.CAMERA)) {
-						Toasty.error(getContext(), "Can't continue without the required permissions for camera", Toasty.LENGTH_LONG).show();
+						Toasty.error(getContext(), getString(R.string.cant_continue_without_camera_permission), Toasty.LENGTH_LONG).show();
 					}
 					if (!isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
-						Toasty.error(getContext(), "Can't continue without the required permissions for location", Toasty.LENGTH_LONG).show();
+						Toasty.error(getContext(), getString(R.string.cant_continue_without_location_permission), Toasty.LENGTH_LONG).show();
 					}
 					barcodeAnalyzer = new BarcodeAnalyzer();
 					analysisExecutor = Executors.newSingleThreadExecutor();

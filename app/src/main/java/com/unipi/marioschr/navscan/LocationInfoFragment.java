@@ -144,7 +144,7 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 			if (task.isSuccessful()) {
 				ArrayList<String> visited = (ArrayList<String>) task.getResult().get("visited");
 				if (visited != null && visited.contains(code)) {
-					Toasty.info(requireActivity(), "Already Visited", Toasty.LENGTH_SHORT).show();
+					Toasty.info(requireActivity(), getString(R.string.already_visited), Toasty.LENGTH_SHORT).show();
 				} else {
 					CheckLocationAccessAndRequestLocationUpdates();
 				}
@@ -182,8 +182,7 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 					CheckLocationAccessAndRequestLocationUpdates();
 					break;
 				case Activity.RESULT_CANCELED:
-					Toasty.warning(requireActivity(), "You have to enable your Location, " +
-							"so we are able to confirm that you are near this location", Toasty.LENGTH_LONG).show();
+					Toasty.warning(requireActivity(), getString(R.string.you_have_to_enable_location), Toasty.LENGTH_LONG).show();
 					break;
 			}
 		}
@@ -200,13 +199,12 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 			refUsers.update("visited", FieldValue.arrayUnion(locationCode),
 					"coins", FieldValue.increment(locationFBModel.getCoins()),
 							"exp", FieldValue.increment(locationFBModel.getPoints()));
-			Toasty.success(requireActivity(),String.format("Good job! You have successfully " +
-							"visited %s! You have also earned %s exp and %s coins!",
+			Toasty.success(requireActivity(),String.format("Good job! You have successfully visited %s! You have also earned %s exp and %s coins!",
 					locationFBModel.getName(), locationFBModel.getPoints(),
 					locationFBModel.getCoins()), Toasty.LENGTH_LONG).show();
 			viewModel.updateUserData(auth.getUid());
 		} else {
-			Toasty.success(requireActivity(),"Too Far from Location",Toasty.LENGTH_SHORT).show();
+			Toasty.success(requireActivity(), getString(R.string.too_far_from_location),Toasty.LENGTH_SHORT).show();
 		}
 	}
 

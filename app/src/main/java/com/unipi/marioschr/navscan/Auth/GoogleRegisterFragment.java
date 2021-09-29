@@ -142,13 +142,13 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 				.set(userData)
 				.addOnSuccessListener(l -> {
 					Log.d("Firestore DB", "DocumentSnapshot successfully written!");
-					Toasty.success(getContext(), "Registration Successful", Toasty.LENGTH_SHORT).show();
+					Toasty.success(getContext(), getString(R.string.registration_successful), Toasty.LENGTH_SHORT).show();
 					navigateToMain();
 				})
 				.addOnFailureListener(e -> {
 					Log.w("Firestore DB", "Error writing document", e);
 					mAuth.getCurrentUser().delete().addOnSuccessListener(l -> {
-						Toasty.error(getContext(), "Error registering. Try again", Toasty.LENGTH_SHORT).show();
+						Toasty.error(getContext(), getString(R.string.error_registering_try_again), Toasty.LENGTH_SHORT).show();
 					});
 				});
 	}
@@ -200,10 +200,10 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 
 	//region Set Errors
 	private void setErrorFullName() {
-		binding.tilGoogleFullName.setError("You have to fill in your full name");
+		binding.tilGoogleFullName.setError(getString(R.string.you_have_to_fill_in_your_full_name));
 	}
 	private void setErrorBirthday() {
-		binding.tilGoogleBirthday.setError("You have to fill in your birthday");
+		binding.tilGoogleBirthday.setError(getString(R.string.you_have_to_fill_in_your_birthday));
 	}
 	//endregion
 }

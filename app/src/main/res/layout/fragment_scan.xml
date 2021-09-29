@@ -17,20 +17,37 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextView28Style" />
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-    </androidx.camera.view.PreviewView>
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:src="@drawable/scanner_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/flashlightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_margin="12dp"
         android:clickable="true"
         android:src="@drawable/ic_baseline_flash_off_24" />
 

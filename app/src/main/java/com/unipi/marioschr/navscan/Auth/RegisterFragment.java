@@ -109,7 +109,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
 				if (s.toString().trim().isEmpty()) setErrorPassword();
 				else if (s.toString().trim().length()<6)
-					binding.tilPassword.setError("You need a stronger password (Minimum length: 6)");
+					binding.tilPassword.setError(getString(R.string.you_need_a_stronger_password));
 				else binding.tilPassword.setError(null);
 			}
 		});
@@ -122,7 +122,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			public void onTextChanged(CharSequence s, int start, int count, int after) {
 				if (s.toString().trim().isEmpty()) setErrorConfirmPassword();
 				else if (!s.toString().equals(String.valueOf(binding.tietPassword.getText())))
-					binding.tilConfirmPassword.setError("Passwords don't match");
+					binding.tilConfirmPassword.setError(getString(R.string.passwords_dont_match));
 				else binding.tilConfirmPassword.setError(null);
 			}
 		});
@@ -193,7 +193,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 		}
 		if (passOk) {
 			if (!password.equals(confirmPassword)) {
-				binding.tilConfirmPassword.setError("Passwords don't match");
+				binding.tilConfirmPassword.setError(getString(R.string.passwords_dont_match));
 				foundError = true;
 			}
 		}
@@ -223,13 +223,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 								.set(userData)
 								.addOnSuccessListener(l -> {
 									Log.d("Firestore DB", "DocumentSnapshot successfully written!");
-									Toasty.success(getContext(), "Registration Successful", Toasty.LENGTH_SHORT).show();
+									Toasty.success(getContext(), getString(R.string.registration_successful), Toasty.LENGTH_SHORT).show();
 									navigateToMain();
 								})
 								.addOnFailureListener(e -> {
 									Log.w("Firestore DB", "Error writing document", e);
 									mAuth.getCurrentUser().delete().addOnSuccessListener(l -> {
-										Toasty.error(getContext(), "Error registering. Try again", Toasty.LENGTH_SHORT).show();
+										Toasty.error(getContext(), getString(R.string.error_registering_try_again), Toasty.LENGTH_SHORT).show();
 									});
 								});
 					} else {
@@ -283,19 +283,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
 	//region Set Errors
 	private void setErrorFullName() {
-		binding.tilFullName.setError("You have to fill in your name");
+		binding.tilFullName.setError(getString(R.string.you_have_to_fill_in_your_full_name));
 	}
 	private void setErrorBirthday() {
-		binding.tilBirthday.setError("You have to fill in your birthday");
+		binding.tilBirthday.setError(getString(R.string.you_have_to_fill_in_your_birthday));
 	}
 	private void setErrorEmail() {
-		binding.tilEmail.setError("You have to fill in your email");
+		binding.tilEmail.setError(getString(R.string.you_have_to_fill_in_your_email));
 	}
 	private void setErrorPassword() {
-		binding.tilPassword.setError("You have to fill in your password");
+		binding.tilPassword.setError(getString(R.string.you_have_to_fill_in_your_password));
 	}
 	private void setErrorConfirmPassword() {
-		binding.tilConfirmPassword.setError("You have to fill in your password");
+		binding.tilConfirmPassword.setError(getString(R.string.you_have_to_fill_in_your_password));
 	}
 	//endregion
 }

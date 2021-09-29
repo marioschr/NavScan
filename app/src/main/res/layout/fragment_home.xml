@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.888"
-            tools:srcCompat="@drawable/male" />
+            tools:srcCompat="@drawable/default_profile" />
 
         <TextView
             android:id="@+id/tvName"

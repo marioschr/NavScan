@@ -43,18 +43,6 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         }
     }
 
-    // Clean all elements of the recycler
-    public void clear() {
-        mUsers.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<LeaderboardUserModel> list) {
-        mUsers.addAll(list);
-        notifyDataSetChanged();
-    }
-
     // Store a member variable for the contacts
     private List<LeaderboardUserModel> mUsers;
 
@@ -93,7 +81,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
                 listResult.getItems().get(0).getDownloadUrl().addOnSuccessListener(
                         uri -> Glide.with(holder.profile.getContext()).load(uri).circleCrop().into(holder.profile));
             } else {
-                Glide.with(holder.profile.getContext()).load(R.drawable.male).circleCrop().into(holder.profile);
+                Glide.with(holder.profile.getContext()).load(R.drawable.default_profile).circleCrop().into(holder.profile);
             }
         });
     }

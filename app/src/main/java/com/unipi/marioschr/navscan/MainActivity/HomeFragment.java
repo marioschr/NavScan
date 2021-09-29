@@ -73,17 +73,17 @@ public class HomeFragment extends Fragment{
 				Glide.with(getContext()).load(user.getPicture())
 						.circleCrop()
 						.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-						.error(R.drawable.male)
+						.error(R.drawable.default_profile)
 						.into(binding.imageViewProfile);
 			} else {
 				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 					Glide.with(getContext()).load(uri)
 							.circleCrop()
 							.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-							.error(R.drawable.male)
+							.error(R.drawable.default_profile)
 							.into(binding.imageViewProfile);
 				}).addOnFailureListener(e -> {
-					Glide.with(getContext()).load(R.drawable.male)
+					Glide.with(getContext()).load(R.drawable.default_profile)
 							.circleCrop()
 							.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
 							.into(binding.imageViewProfile);
@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment{
 		colRef.get().addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
 				if (task.getResult().getMetadata().isFromCache()) {
-					Toasty.warning(requireContext(), "No Internet Connection").show();
+					Toasty.warning(requireContext(), getString(R.string.no_internet_connection)).show();
 				} else {
 					for (QueryDocumentSnapshot document : task.getResult()) {
 						data.add(document.toObject(LocationFBModel.class));

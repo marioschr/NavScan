@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import com.google.firebase.storage.FirebaseStorage;
+import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.StoreAdapter;
 import com.unipi.marioschr.navscan.databinding.FragmentStoreBinding;
 import com.unipi.marioschr.navscan.models.StoreItemFBModel;
@@ -50,7 +51,7 @@ public class StoreFragment extends Fragment {
 		recyclerView = binding.rvStoreItems;
 		storeSwipeContainer = binding.storeSwipeContainer;
 		storeSwipeContainer.setOnRefreshListener(
-				this::retrieveLeaderboardData
+				this::retrieveStoreData
 		);
 		storeSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
 				android.R.color.holo_green_light,
@@ -58,10 +59,10 @@ public class StoreFragment extends Fragment {
 				android.R.color.holo_red_light);
 
 		recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-		retrieveLeaderboardData();
+		retrieveStoreData();
 	}
 
-	private void retrieveLeaderboardData() {
+	private void retrieveStoreData() {
 		data.clear();
 		colRef.get().addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
@@ -89,7 +90,7 @@ public class StoreFragment extends Fragment {
 	}
 
 	private void noInternetWarning() {
-		Toasty.warning(requireContext(), "Can't access the leaderboard live data right now.", Toasty.LENGTH_SHORT, true).show();
+		Toasty.warning(requireContext(), getString(R.string.cant_access_store_offers_now), Toasty.LENGTH_SHORT, true).show();
 		storeSwipeContainer.setRefreshing(false);
 	}
 }
