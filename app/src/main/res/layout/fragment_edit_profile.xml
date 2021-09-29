@@ -46,10 +46,10 @@ xmlns:tools="http://schemas.android.com/tools"
                 android:layout_height="150dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/default_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/default_profile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
