@@ -13,22 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.StoreAdapter;
 import com.unipi.marioschr.navscan.databinding.FragmentStoreBinding;
-import com.unipi.marioschr.navscan.models.LeaderboardUserModel;
 import com.unipi.marioschr.navscan.models.StoreItemFBModel;
 import com.unipi.marioschr.navscan.models.StoreItemModel;
-import com.unipi.marioschr.navscan.models.UserFBModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,16 +69,13 @@ public class StoreFragment extends Fragment {
 					noInternetWarning();
 				} else {
 					for (QueryDocumentSnapshot document : task.getResult()) {
-						for (int i = 0; i < 8; i++) //TODO:Remove for loop
-						{
-							StoreItemFBModel storeItemFBModel = document.toObject(StoreItemFBModel.class);
-							StoreItemModel storeItemModel = new StoreItemModel();
-							storeItemModel.setId(document.getId());
-							storeItemModel.setName(storeItemFBModel.getName());
-							storeItemModel.setCost(storeItemFBModel.getCost());
-							storeItemModel.setDescription(storeItemFBModel.getDescription());
-							data.add(storeItemModel);
-						}
+						StoreItemFBModel storeItemFBModel = document.toObject(StoreItemFBModel.class);
+						StoreItemModel storeItemModel = new StoreItemModel();
+						storeItemModel.setId(document.getId());
+						storeItemModel.setName(storeItemFBModel.getName());
+						storeItemModel.setCost(storeItemFBModel.getCost());
+						storeItemModel.setDescription(storeItemFBModel.getDescription());
+						data.add(storeItemModel);
 					}
 					// Create adapter passing in the sample user data
 					recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));

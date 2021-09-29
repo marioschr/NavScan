@@ -1,6 +1,5 @@
 package com.unipi.marioschr.navscan.MainActivity;
 
-import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,12 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -26,17 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.unipi.marioschr.navscan.LeaderboardAdapter;
 import com.unipi.marioschr.navscan.LocationListAdapter;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
-import com.unipi.marioschr.navscan.models.LeaderboardUserModel;
 import com.unipi.marioschr.navscan.models.LocationFBModel;
-import com.unipi.marioschr.navscan.models.UserFBModel;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
 import java.util.ArrayList;
@@ -124,10 +117,7 @@ public class HomeFragment extends Fragment{
 					Toasty.warning(requireContext(), "No Internet Connection").show();
 				} else {
 					for (QueryDocumentSnapshot document : task.getResult()) {
-						LocationFBModel locationFBModel = document.toObject(LocationFBModel.class);
-						for (int i = 0; i < 5; i++) {
-							data.add(locationFBModel);
-						}
+						data.add(document.toObject(LocationFBModel.class));
 					}
 				}
 			} else {

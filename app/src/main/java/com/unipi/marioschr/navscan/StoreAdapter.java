@@ -1,6 +1,6 @@
 package com.unipi.marioschr.navscan;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unipi.marioschr.navscan.models.StoreItemModel;
@@ -24,9 +27,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
     UserDataViewModel viewModel;
     ViewModelStoreOwner lifecycleOwner;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -55,6 +62,8 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext()); // Η δημιουργία του alert dialog
                 LayoutInflater inflater = LayoutInflater.from(v.getContext());
                 final View customLayout = inflater.inflate(R.layout.alert_dialog_confirm, null);
+                alert.setView(customLayout);
+                AlertDialog dialog = alert.create();
 
                 TextView tvName,tvCost,tvDescription;
                 Button btnConfirm = customLayout.findViewById(R.id.alertBtnStoreItemClaim);
@@ -69,11 +78,18 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                 tvName.setText(name);
                 tvCost.setText(cost);
                 tvDescription.setText(description);
-                btnConfirm.setOnClickListener(l ->
-                        viewModel.purchase(FirebaseAuth.getInstance().getUid(), items.get(mSelectedItem).getCost(), v.getContext()));
-                alert.setView(customLayout);
-                alert.create();
-                alert.show();
+                btnConfirm.setOnClickListener(l -> {
+                    DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getUid());
+                    int costValue = items.get(mSelectedItem).getCost();
+                    docRef.update("coins", FieldValue.increment(-costValue)).addOnSuccessListener(listener -> {
+                        Toasty.success(tvName.getContext(), "Congratulations! You have successfully claimed this item.", Toasty.LENGTH_LONG).show();
+                        viewModel.purchase(items.get(mSelectedItem).getCost());
+                        notifyDataSetChanged();
+                        dialog.dismiss();
+                    });
+
+                });
+                dialog.show();
             };
             button.setOnClickListener(clickListener);
         }

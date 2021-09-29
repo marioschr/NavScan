@@ -46,13 +46,19 @@
             android:maxLines="3"
             android:minLines="3"
             tools:text="Content Text" />
-
-        <Button
-            android:id="@+id/btnStoreItemClaim"
-            style="@style/StoreButtonStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/claim_it" />
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/btnStoreItemClaim"
+                style="@style/StoreButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/claim_it" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
