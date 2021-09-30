@@ -3,17 +3,13 @@ package com.unipi.marioschr.navscan;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.ListPreference;
 import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,10 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
 import com.unipi.marioschr.navscan.MainActivity.MainActivity;
-import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
-
-import java.security.Permission;
-import java.util.Locale;
+import com.unipi.marioschr.navscan.utils.LocaleUtils;
 
 import es.dmoral.toasty.Toasty;
 

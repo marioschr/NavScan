@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.unipi.marioschr.navscan.Auth.AuthActivity;
-import com.unipi.marioschr.navscan.LocaleUtils;
+import com.unipi.marioschr.navscan.utils.LocaleUtils;
 import com.unipi.marioschr.navscan.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {

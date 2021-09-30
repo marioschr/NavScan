@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context=".LocationInfoFragment">
+    tools:context=".MainActivity.LocationInfoFragment">
     <com.limerse.slider.ImageCarousel
         android:id="@+id/carousel"
         android:layout_width="match_parent"

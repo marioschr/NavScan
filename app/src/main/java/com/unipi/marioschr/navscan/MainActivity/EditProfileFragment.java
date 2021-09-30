@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.MainActivity;
 
 import android.app.Activity;
 import androidx.appcompat.app.AlertDialog;
@@ -40,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentEditProfileBinding;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
@@ -60,8 +61,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	StorageReference profileRef;
 	FirebaseFirestore db;
 	DocumentReference documentRef;
-
 	String userID = FirebaseAuth.getInstance().getUid();
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {

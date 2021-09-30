@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.MainActivity;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -41,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.limerse.slider.listener.CarouselListener;
 import com.limerse.slider.model.CarouselItem;
+import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentLocationInfoBinding;
 import com.unipi.marioschr.navscan.models.LocationFBModel;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;

@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;

@@ -20,7 +20,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.unipi.marioschr.navscan.BarcodeAnalyzer;
+import com.unipi.marioschr.navscan.utils.BarcodeAnalyzer;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentScanBinding;
 

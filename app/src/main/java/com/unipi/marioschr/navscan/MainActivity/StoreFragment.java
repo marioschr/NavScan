@@ -18,9 +18,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import com.google.firebase.storage.FirebaseStorage;
 import com.unipi.marioschr.navscan.R;
-import com.unipi.marioschr.navscan.StoreAdapter;
+import com.unipi.marioschr.navscan.adapters.StoreAdapter;
 import com.unipi.marioschr.navscan.databinding.FragmentStoreBinding;
 import com.unipi.marioschr.navscan.models.StoreItemFBModel;
 import com.unipi.marioschr.navscan.models.StoreItemModel;
@@ -35,13 +34,12 @@ public class StoreFragment extends Fragment {
 	private SwipeRefreshLayout storeSwipeContainer;
 	private RecyclerView recyclerView;
 	List<StoreItemModel> data = new ArrayList<>();
-	public FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 	CollectionReference colRef = FirebaseFirestore.getInstance().collection("store_items");
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = FragmentStoreBinding.inflate(inflater, container, false);
-		// Inflate the layout for this fragment
 		return binding.getRoot();
 	}
 
@@ -78,7 +76,6 @@ public class StoreFragment extends Fragment {
 						storeItemModel.setDescription(storeItemFBModel.getDescription());
 						data.add(storeItemModel);
 					}
-					// Create adapter passing in the sample user data
 					recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 					recyclerView.setAdapter(new StoreAdapter(data, requireActivity()));
 					storeSwipeContainer.setRefreshing(false);

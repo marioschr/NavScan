@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.MainActivity;
 
 import android.os.Bundle;
 
@@ -17,8 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.unipi.marioschr.navscan.R;
+import com.unipi.marioschr.navscan.adapters.ClaimedItemsListAdapter;
 import com.unipi.marioschr.navscan.models.ClaimedItemModel;
-import com.unipi.marioschr.navscan.models.StoreItemModel;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,6 @@ public class ClaimedItemsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.fragment_claimed_items, container, false);
 	}
 

@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.adapters;
 
 import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.unipi.marioschr.navscan.GlideApp;
+import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.models.StoreItemModel;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
@@ -38,19 +40,13 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    // Provide a direct reference to each of the views within a data item
-    // Used to cache the views within the item layout for fast access
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
         private final TextView title, cost, content;
         private final ImageView image;
         private final Button button;
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
+
         public ViewHolder(View itemView) {
-            // Stores the itemView in a public final member variable that can be used
-            // to access the context from any ViewHolder instance.
             super(itemView);
             title = itemView.findViewById(R.id.storeItemTitle);
             cost = itemView.findViewById(R.id.storeItemCost);
@@ -103,10 +99,9 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         }
     }
 
-    // Store a member variable for the contacts
     private final List<StoreItemModel> items;
     private int coins;
-    // Pass in the contact array into the constructor
+
     public StoreAdapter(List<StoreItemModel> items, ViewModelStoreOwner lifecycleOwner) {
         this.items = items;
         this.lifecycleOwner = lifecycleOwner;
@@ -115,26 +110,18 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                 coins = data.getCoins());
     }
 
-    // Usually involves inflating a layout from XML and returning the holder
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
-        // Inflate the custom layout
         View contactView = inflater.inflate(R.layout.item_store, parent, false);
-
-        // Return a new holder instance
         return new ViewHolder(contactView);
     }
 
-    // Involves populating data into the item through holder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // Get the data model based on position
         StoreItemModel item = items.get(position);
-        // Set item views based on your views and data model
         holder.title.setText(item.getName());
         holder.cost.setText(item.getCost() + " " + holder.cost.getResources().getString(R.string.coins));
         holder.content.setText(item.getDescription());
@@ -150,7 +137,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         }
     }
 
-    // Returns the total count of items in the list
     @Override
     public int getItemCount() {
         return items.size();

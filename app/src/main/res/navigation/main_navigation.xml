@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationInfoFragment"
-        android:name="com.unipi.marioschr.navscan.LocationInfoFragment"
+        android:name="com.unipi.marioschr.navscan.MainActivity.LocationInfoFragment"
         android:label="fragment_location_info"
         tools:layout="@layout/fragment_location_info" />
     <fragment
@@ -56,12 +56,12 @@
         tools:layout="@layout/fragment_store" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.unipi.marioschr.navscan.EditProfileFragment"
+        android:name="com.unipi.marioschr.navscan.MainActivity.EditProfileFragment"
         android:label="@string/title_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/claimedItemsFragment"
-        android:name="com.unipi.marioschr.navscan.ClaimedItemsFragment"
+        android:name="com.unipi.marioschr.navscan.MainActivity.ClaimedItemsFragment"
         android:label="fragment_claimed_items"
         tools:layout="@layout/fragment_claimed_items" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.unipi.marioschr.navscan;
+package com.unipi.marioschr.navscan.utils;
 
 import android.annotation.SuppressLint;
 import android.media.Image;
@@ -20,6 +20,7 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;
 import com.unipi.marioschr.navscan.MainActivity.ScannerFragment;
+import com.unipi.marioschr.navscan.R;
 
 import es.dmoral.toasty.Toasty;
 

@@ -7,20 +7,21 @@
     android:layout_margin="15dp"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ClaimedItemsFragment">
+    tools:context=".MainActivity.ClaimedItemsFragment">
 
 
     <TextView
         style="@style/TextView34Style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:text="@string/my_claimed_deal_offers" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/rounded_corners"
-        tools:context=".ClaimedItemsFragment">
+        tools:context=".MainActivity.ClaimedItemsFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

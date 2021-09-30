@@ -129,7 +129,6 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 	}
 
 	private void setDataToFirestore() {
-		// Sign in success, update UI with the signed-in user's information
 		Log.d("Firebase Register", "createUserWithEmail:success");
 		FirebaseUser user = mAuth.getCurrentUser();
 		Map<String, Object> userData = new HashMap<>();

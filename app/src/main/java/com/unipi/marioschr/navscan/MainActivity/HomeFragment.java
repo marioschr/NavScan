@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.unipi.marioschr.navscan.LocationListAdapter;
+import com.unipi.marioschr.navscan.adapters.LocationListAdapter;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentHomeBinding;
 import com.unipi.marioschr.navscan.models.LocationFBModel;

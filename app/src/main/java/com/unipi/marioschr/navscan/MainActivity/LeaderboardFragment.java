@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import com.unipi.marioschr.navscan.LeaderboardAdapter;
+import com.unipi.marioschr.navscan.adapters.LeaderboardAdapter;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.models.LeaderboardUserModel;
 import com.unipi.marioschr.navscan.models.UserFBModel;
