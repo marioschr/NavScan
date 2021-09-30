@@ -21,9 +21,9 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.unipi.marioschr.navscan.GlideApp;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.models.StoreItemModel;
+import com.unipi.marioschr.navscan.utils.GlideApp;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
 import org.jetbrains.annotations.NotNull;
