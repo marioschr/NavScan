@@ -34,6 +34,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 			});
 		}
 
+		Preference btnViewClaimedItems = getPreferenceManager().findPreference("claimed_items_key");
+		if (btnViewClaimedItems != null) {
+			btnViewClaimedItems.setOnPreferenceClickListener(preference -> {
+				NavigateToViewClaimedItems();
+				return true;
+			});
+		}
+
 		Preference lang = getPreferenceManager().findPreference("language_key");
 		if (lang != null) {
 			lang.setOnPreferenceChangeListener((preference, newLang) -> {
@@ -55,5 +63,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
 	public void NavigateToEditProfile() {
 		Navigation.findNavController(requireView()).navigate(R.id.action_navigation_settings_to_editProfileFragment);
+	}
+
+	public void NavigateToViewClaimedItems() {
+		Navigation.findNavController(requireView()).navigate(R.id.action_navigation_settings_to_claimedItemsFragment);
 	}
 }

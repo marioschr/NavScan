@@ -24,7 +24,8 @@
 
     <string name="facebook_app_id" translatable="false">4574239629288600</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb4574239629288600</string>
-=    <string name="title_home">Home</string>
+    =
+    <string name="title_home">Home</string>
     <string name="title_leaderboard">Leaderboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_settings">Settings</string>
@@ -87,5 +88,11 @@
     <string name="you_have_to_enable_location">You have to enable your Location so we are able to confirm that you are near this location</string>
     <string name="too_far_from_location">Too Far from Location</string>
     <string name="congratulation_you_have_claimed_this_item">Congratulations! You have successfully claimed this item.</string>
+    <string name="good_job_you_have_earned">"Good Job! You have earned "</string>
+    <string name="exp_and">" exp and "</string>
+    <string name="_coins">" coins!"</string>
+    <string name="view_your_claimed_deal_offers">View your claimed Deal Offers</string>
+    <string name="my_claimed_deal_offers">My Claimed Deal Offers</string>
+    <string name="no_claimed_offers_found">No claimed offers found</string>
 
 </resources>

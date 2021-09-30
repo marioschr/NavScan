@@ -81,4 +81,10 @@
     <string name="you_have_to_enable_location">Πρέπει να ενεργοποίησεις την Τοποθεσία έτσι ώστε να μπορέσουμε να επιβεβαιώσουμε ότι είσαι κοντά στο σημείο</string>
     <string name="too_far_from_location">Είσαι μακριά από την τοποθεσία</string>
     <string name="congratulation_you_have_claimed_this_item">Συγχαρητήρια! Έχεις αποκτήσει επιτυχώς αυτή την προσφορά.</string>
+    <string name="good_job_you_have_earned">"Συγχαρητήρια! Έχεις κερδίσει "</string>
+    <string name="exp_and">" πόντους εμπειρίας και "</string>
+    <string name="_coins">" κέρματα!"</string>
+    <string name="view_your_claimed_deal_offers">Δες τις προσφορές που έχεις αποκτήσει</string>
+    <string name="my_claimed_deal_offers">Οι κωδικοί των προσφορών μου</string>
+    <string name="no_claimed_offers_found">Δεν έχουν βρεθεί εξαργυρωμένοι κωδικοί</string>
 </resources>

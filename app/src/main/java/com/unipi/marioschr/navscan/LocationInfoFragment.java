@@ -199,12 +199,12 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 			refUsers.update("visited", FieldValue.arrayUnion(locationCode),
 					"coins", FieldValue.increment(locationFBModel.getCoins()),
 							"exp", FieldValue.increment(locationFBModel.getPoints()));
-			Toasty.success(requireActivity(),String.format("Good job! You have successfully visited %s! You have also earned %s exp and %s coins!",
-					locationFBModel.getName(), locationFBModel.getPoints(),
-					locationFBModel.getCoins()), Toasty.LENGTH_LONG).show();
+			Toasty.success(requireActivity(), getString(R.string.good_job_you_have_earned)
+					+ locationFBModel.getPoints() + getString(R.string.exp_and)
+					+ locationFBModel.getCoins() + getString(R.string._coins), Toasty.LENGTH_LONG).show();
 			viewModel.updateUserData(auth.getUid());
 		} else {
-			Toasty.success(requireActivity(), getString(R.string.too_far_from_location),Toasty.LENGTH_SHORT).show();
+			Toasty.error(requireActivity(), getString(R.string.too_far_from_location),Toasty.LENGTH_SHORT).show();
 		}
 	}
 

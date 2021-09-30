@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +26,9 @@ import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
@@ -82,12 +85,17 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                     DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getUid());
                     int costValue = items.get(mSelectedItem).getCost();
                     docRef.update("coins", FieldValue.increment(-costValue)).addOnSuccessListener(listener -> {
-                        Toasty.success(tvName.getContext(), tvName.getContext().getString(R.string.congratulation_you_have_claimed_this_item), Toasty.LENGTH_LONG).show();
-                        viewModel.purchase(items.get(mSelectedItem).getCost());
-                        notifyDataSetChanged();
-                        dialog.dismiss();
+                        CollectionReference refClaimedItems = db.collection("users").document(FirebaseAuth.getInstance().getUid()).collection("claimed_items");
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("item_id", items.get(mSelectedItem).getId());
+                        data.put("name", items.get(mSelectedItem).getName());
+                        refClaimedItems.add(data).addOnSuccessListener(listener1 -> {
+                            viewModel.purchase(items.get(mSelectedItem).getCost());
+                            Toasty.success(tvName.getContext(), tvName.getContext().getString(R.string.congratulation_you_have_claimed_this_item), Toasty.LENGTH_LONG).show();
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+                        });
                     });
-
                 });
                 dialog.show();
             };

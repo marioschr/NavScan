@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_navigation_settings_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_claimedItemsFragment"
+            app:destination="@id/claimedItemsFragment" />
     </fragment>
         <!--tools:layout="@layout/fragment_settings"-->
     <fragment
@@ -56,4 +59,9 @@
         android:name="com.unipi.marioschr.navscan.EditProfileFragment"
         android:label="@string/title_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/claimedItemsFragment"
+        android:name="com.unipi.marioschr.navscan.ClaimedItemsFragment"
+        android:label="fragment_claimed_items"
+        tools:layout="@layout/fragment_claimed_items" />
 </navigation>
