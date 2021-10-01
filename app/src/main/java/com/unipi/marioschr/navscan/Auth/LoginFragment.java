@@ -40,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.marioschr.navscan.MainActivity.MainActivity;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentLoginBinding;
+import com.unipi.marioschr.navscan.utils.LoadingDialog;
 
 import org.json.JSONException;
 
@@ -67,6 +68,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	private boolean foundError = false;
 	private CallbackManager callbackManager;
 	private FragmentLoginBinding binding;
+	LoadingDialog loadingDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	public void onViewCreated(@Nonnull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		findViewsAndSetListeners(view);
-
+		loadingDialog = new LoadingDialog(getActivity());
 		if (getActivity().getIntent().getBooleanExtra("HaveToGoogleRegister",false)) {
 			getActivity().getIntent().removeExtra("HaveToGoogleRegister");
 			navigateToGoogleSignUp();
@@ -239,9 +241,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 		Log.d(TAG, "handleFacebookAccessToken:" + token);
 
 		AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+		loadingDialog.startLoadingDialog();
 		mAuth.signInWithCredential(credential)
 				.addOnCompleteListener(requireActivity(), task -> {
 					if (task.isSuccessful()) {
+						loadingDialog.dismissDialog();
 						// Sign in success, update UI with the signed-in user's information
 						Log.d(TAG, "signInWithCredential:success");
 						DocumentReference docIdRef = db.collection("users").document(mAuth.getUid());
@@ -319,8 +323,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	//region Email/Password Sign In
 	private void emailSignIn() {
 		if(!validateData()) return;
+		loadingDialog.startLoadingDialog();
 		mAuth.signInWithEmailAndPassword(loginEmail, loginPassword).addOnCompleteListener(requireActivity(), task -> {
 			if (task.isSuccessful()) {
+				loadingDialog.dismissDialog();
 				// Sign in success, update UI with the signed-in user's information
 				Log.d(TAG, "signInWithEmail:success");
 				navigateToMain();

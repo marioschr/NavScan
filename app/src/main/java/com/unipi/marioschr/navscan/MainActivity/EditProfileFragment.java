@@ -42,6 +42,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.unipi.marioschr.navscan.R;
 import com.unipi.marioschr.navscan.databinding.FragmentEditProfileBinding;
+import com.unipi.marioschr.navscan.utils.LoadingDialog;
 import com.unipi.marioschr.navscan.viewmodels.UserDataViewModel;
 
 import java.io.ByteArrayOutputStream;
@@ -291,6 +292,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	}
 
 	private void uploadImageToFirebase(Uri imageUri) { // Επεξεργασία και αποστολή της εικόνας στο Firebase Storage
+		LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+		loadingDialog.startLoadingDialog();
 		Bitmap bmp = null;
 		try {
 			bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
@@ -303,8 +306,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 					viewModel.updateUserData(userID);
 				});
+				loadingDialog.dismissDialog();
 				Toasty.success(getContext(), getString(R.string.profile_picture_changed_successfully), Toasty.LENGTH_LONG).show();
-			}).addOnFailureListener(e -> Toasty.error(getContext(), getString(R.string.failed_to_change_profile_picture), Toasty.LENGTH_LONG).show());
+			}).addOnFailureListener(e -> {
+				loadingDialog.dismissDialog();
+				Toasty.error(getContext(), getString(R.string.failed_to_change_profile_picture), Toasty.LENGTH_LONG).show();
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
