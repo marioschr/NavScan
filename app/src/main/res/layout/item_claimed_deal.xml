@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/text_margin"
-    android:background="@color/arizona_greenblue"
+    android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="@color/white"
-        android:shadowColor="@color/branch_brown"
-        android:shadowDx="3"
-        android:shadowDy="3"
+        android:textColor="@color/branch_brown"
+        android:shadowColor="#49220E"
+        android:shadowDx="2"
+        android:shadowDy="2"
         android:shadowRadius="0.1"
         tools:text="1 + 1 Deal" />
 
@@ -27,12 +27,12 @@
         android:layout_gravity="center_vertical|end"
         android:layout_weight="0.3"
         android:gravity="end"
-        android:shadowColor="@color/branch_brown"
-        android:shadowDx="3"
-        android:shadowDy="3"
+        android:textColor="@color/branch_brown"
+        android:shadowColor="#49220E"
+        android:shadowDx="2"
+        android:shadowDy="2"
         android:shadowRadius="0.1"
         android:text="Show Code"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="@color/white"
         android:textStyle="bold" />
 </LinearLayout>

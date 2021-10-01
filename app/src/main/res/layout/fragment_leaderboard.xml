@@ -22,7 +22,12 @@
 
             <TextView
                 android:id="@+id/textView6"
-                style="?attr/textAppearanceListItem"
+                style="@style/TextView20Style"
+                android:textColor="@color/white"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.12"
@@ -38,7 +43,12 @@
 
             <TextView
                 android:id="@+id/textView11"
-                style="?attr/textAppearanceListItem"
+                style="@style/TextView20Style"
+                android:textColor="@color/white"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
@@ -47,7 +57,12 @@
 
             <TextView
                 android:id="@+id/textView12"
-                style="?attr/textAppearanceListItem"
+                style="@style/TextView20Style"
+                android:textColor="@color/white"
+                android:shadowColor="@color/branch_brown"
+                android:shadowDx="4"
+                android:shadowDy="3"
+                android:shadowRadius="0.1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"

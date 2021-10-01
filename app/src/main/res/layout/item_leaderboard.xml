@@ -14,8 +14,13 @@
         android:layout_margin="@dimen/text_margin"
         android:layout_weight="0.1"
         android:gravity="end"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="1." />
+        android:textAppearance="@style/TextView16Style"
+        android:textStyle="bold"
+        tools:text="1."
+        android:shadowColor="#49220E"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="0.1"/>
 
     <ImageView
         android:id="@+id/item_profile"
@@ -30,8 +35,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:layout_weight="0.6"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="@string/full_name" />
+        android:textAppearance="@style/TextView16Style"
+        tools:text="@string/full_name"
+        android:shadowColor="#49220E"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.1"/>
 
     <TextView
         android:id="@+id/item_exp"
@@ -41,7 +50,12 @@
         android:layout_margin="@dimen/text_margin"
         android:layout_weight="0.2"
         android:gravity="start"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="1235" />
+        android:textAppearance="@style/TextView16Style"
+        android:textStyle="bold"
+        tools:text="1235"
+        android:shadowColor="#49220E"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="0.1"/>
 
 </LinearLayout>

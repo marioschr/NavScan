@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/rounded_corners"
+                android:background="@drawable/rounded_corners_colored"
                 android:paddingVertical="4dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="10dp"
