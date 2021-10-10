@@ -379,4 +379,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 	private void navigateToGoogleSignUp() {
 		NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_googleRegisterFragment);
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

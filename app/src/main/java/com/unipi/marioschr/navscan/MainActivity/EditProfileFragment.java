@@ -1,11 +1,9 @@
 package com.unipi.marioschr.navscan.MainActivity;
 
-import android.app.Activity;
 import androidx.appcompat.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
@@ -16,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -50,11 +47,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import es.dmoral.toasty.Toasty;
+import lv.chi.photopicker.PhotoPickerFragment;
 
-public class EditProfileFragment extends Fragment implements View.OnClickListener {
+public class EditProfileFragment extends Fragment implements View.OnClickListener, PhotoPickerFragment.Callback {
 	UserDataViewModel viewModel;
 	FragmentEditProfileBinding binding;
 	LocalDate birthdayLD;
@@ -63,6 +62,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 	FirebaseFirestore db;
 	DocumentReference documentRef;
 	String userID = FirebaseAuth.getInstance().getUid();
+	LoadingDialog loadingDialog;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -71,6 +71,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 		profileRef = FirebaseStorage.getInstance().getReference().child("users").child(userID).child("profile.jpg");
 		db = FirebaseFirestore.getInstance();
 		documentRef = db.collection("users").document(userID);
+		loadingDialog = new LoadingDialog(getActivity());
 		SetOnClickListeners();
 		return binding.getRoot();
 	}
@@ -275,26 +276,13 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 		} else if (view.getId() == R.id.btnEditPass) {
 			EditPassword();
 		} else if (view.getId() == R.id.fabEditProfilePicture) {
-			Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-			startActivityForResult(openGalleryIntent, 6969);
-		}
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { // Όταν γίνει επιλογή εικόνας από το τηλέφωνο
-		super.onActivityResult( requestCode, resultCode, data);
-		if (requestCode == 6969) {
-			if(resultCode == Activity.RESULT_OK) {
-				Uri imageUri = data.getData();
-				uploadImageToFirebase(imageUri);
-			}
+			PhotoPickerFragment.Companion.newInstance(false, false, 1, R.style.ChiliPhotoPicker_Light).show(getChildFragmentManager(), "ChiliPicker");
 		}
 	}
 
 	private void uploadImageToFirebase(Uri imageUri) { // Επεξεργασία και αποστολή της εικόνας στο Firebase Storage
-		LoadingDialog loadingDialog = new LoadingDialog(getActivity());
 		loadingDialog.startLoadingDialog();
-		Bitmap bmp = null;
+		Bitmap bmp;
 		try {
 			bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -303,9 +291,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 			byte[] data = baos.toByteArray();
 			UploadTask uploadTask = profileRef.putBytes(data);
 			uploadTask.addOnSuccessListener(taskSnapshot -> {
-				profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-					viewModel.updateUserData(userID);
-				});
+				profileRef.getDownloadUrl().addOnSuccessListener(uri -> viewModel.updateUserData(userID));
 				loadingDialog.dismissDialog();
 				Toasty.success(getContext(), getString(R.string.profile_picture_changed_successfully), Toasty.LENGTH_LONG).show();
 			}).addOnFailureListener(e -> {
@@ -314,6 +300,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 			});
 		} catch (IOException e) {
 			e.printStackTrace();
+			loadingDialog.dismissDialog();
 		}
 	}
 	private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
@@ -342,5 +329,16 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 		Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
 		img.recycle();
 		return rotatedImg;
+	}
+
+	@Override
+	public void onImagesPicked(@NonNull ArrayList<Uri> arrayList) {
+		if (!arrayList.isEmpty()) uploadImageToFirebase(arrayList.get(0));
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

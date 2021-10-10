@@ -37,7 +37,7 @@ public class StoreFragment extends Fragment {
 	CollectionReference colRef = FirebaseFirestore.getInstance().collection("store_items");
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = FragmentStoreBinding.inflate(inflater, container, false);
 		return binding.getRoot();
@@ -89,5 +89,11 @@ public class StoreFragment extends Fragment {
 	private void noInternetWarning() {
 		Toasty.warning(requireContext(), getString(R.string.cant_access_store_offers_now), Toasty.LENGTH_SHORT, true).show();
 		storeSwipeContainer.setRefreshing(false);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

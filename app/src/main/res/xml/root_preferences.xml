@@ -19,7 +19,7 @@
             app:title="@string/edit_account_title" />
         <Preference
             app:key="claimed_items_key"
-            app:title="@string/view_your_claimed_deal_offers" />
+            app:title="@string/view_my_claimed_deal_offers" />
         <Preference
             app:key="sign_out_key"
             app:title="@string/logout_title" />

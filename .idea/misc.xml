@@ -26,7 +26,7 @@
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/alert_dialog_confirm.xml" value="0.2" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/alert_dialog_edit.xml" value="0.176" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/custom_dialog_loading.xml" value="0.4" />
-        <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/fragment_claimed_items.xml" value="0.264" />
+        <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/fragment_claimed_items.xml" value="0.2" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/fragment_edit_profile.xml" value="0.2" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/fragment_google_register.xml" value="0.176" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/fragment_home.xml" value="0.6" />
@@ -46,6 +46,7 @@
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/layout/preview_layout.xml" value="0.1675925925925926" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.536" />
+        <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/xml/file_paths.xml" value="0.12395833333333334" />
         <entry key="..\:/Users/Marios/AndroidProjects/NavScan/app/src/main/res/xml/root_preferences.xml" value="0.264" />
       </map>
     </option>

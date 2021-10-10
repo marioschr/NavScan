@@ -112,4 +112,10 @@ public class ScannerFragment extends Fragment {
 			binding.flashlightButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_baseline_flash_on_24, requireContext().getTheme()));
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

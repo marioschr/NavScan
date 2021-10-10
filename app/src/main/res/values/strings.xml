@@ -91,8 +91,8 @@
     <string name="good_job_you_have_earned">"Good Job! You have earned "</string>
     <string name="exp_and">" exp and "</string>
     <string name="_coins">" coins!"</string>
-    <string name="view_your_claimed_deal_offers">View your claimed Deal Offers</string>
     <string name="my_claimed_deal_offers">My Claimed Deal Offers</string>
     <string name="no_claimed_offers_found">No claimed offers found</string>
+    <string name="view_my_claimed_deal_offers">View my claimed Deal Offers</string>
 
 </resources>

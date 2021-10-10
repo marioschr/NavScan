@@ -205,4 +205,10 @@ public class GoogleRegisterFragment extends Fragment implements View.OnClickList
 		binding.tilGoogleBirthday.setError(getString(R.string.you_have_to_fill_in_your_birthday));
 	}
 	//endregion
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

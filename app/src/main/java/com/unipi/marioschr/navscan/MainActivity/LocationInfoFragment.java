@@ -220,4 +220,10 @@ public class LocationInfoFragment extends Fragment implements LocationListener {
 		Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
 		return results[0];
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

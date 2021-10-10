@@ -141,4 +141,10 @@ public class HomeFragment extends Fragment{
 			binding.locationsList.setLayoutManager(new LinearLayoutManager(getContext()));
 		});
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }
