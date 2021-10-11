@@ -45,24 +45,28 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                 if (!barcodes.isEmpty()) {
                     CollectionReference colRef = db.collection("locations");
                     for (Barcode barcode: barcodes) {
-                        DocumentReference docRef = colRef.document(barcode.getRawValue());
-                        docRef.get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("code", barcode.getRawValue());
-                                    if (navController.getCurrentDestination().getId() == R.id.navigation_scanner) {
-                                        navController.navigate(R.id.action_navigation_scanner_to_locationInfoFragment, bundle);
+                        if (!barcode.getRawValue().contains("/")) {
+                            DocumentReference docRef = colRef.document(barcode.getRawValue());
+                            docRef.get().addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("code", barcode.getRawValue());
+                                        if (navController.getCurrentDestination().getId() == R.id.navigation_scanner) {
+                                            navController.navigate(R.id.action_navigation_scanner_to_locationInfoFragment, bundle);
+                                        }
+                                    } else {
+                                        Log.d(TAG, "No such document");
+                                        Toasty.warning(ScannerFragment.getScannerFragmentContext().requireActivity(), "This QR-code doesn't match with any of the available locations.",Toasty.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Log.d(TAG, "No such document");
-                                    Toasty.warning(ScannerFragment.getScannerFragmentContext().requireActivity(), "This QR-code doesn't match with any of the available locations.",Toasty.LENGTH_LONG).show();
+                                    Log.d(TAG, "get failed with ", task.getException());
                                 }
-                            } else {
-                                Log.d(TAG, "get failed with ", task.getException());
-                            }
-                        });
+                            });
+                        } else {
+                            Toasty.warning(ScannerFragment.getScannerFragmentContext().requireActivity(), "This QR-code doesn't match with any of the available locations.",Toasty.LENGTH_LONG).show();
+                        }
                     }
                 } else {
                     ScannerFragment.getScannerFragmentContext().processingBarcode.set(false);
